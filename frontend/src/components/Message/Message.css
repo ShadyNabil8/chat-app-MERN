@@ -1,0 +1,83 @@
+.message-container {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+}
+
+.my-message {
+    align-self: flex-start;
+    flex-direction: row;
+}
+
+.his-message {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.message-container .image-container img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.message-container .text-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.my-message .text-container {
+    align-items: flex-start;
+
+}
+
+.his-message .text-container {
+    align-items: flex-end;
+
+}
+
+
+
+.message-container .text-container .message-metadata {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.my-message .message-metadata {
+    flex-direction: row;
+
+}
+
+.his-message .message-metadata {
+    flex-direction: row-reverse;
+}
+
+.message-container .sender-name {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.my-message .sender-name {
+
+    color:darkorange;
+}
+
+.his-message .sender-name {
+
+    color: silver;
+}
+
+
+.message-container .message-date {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgb(162, 160, 159);
+}
+
+.message-container .message-body {
+    color: aliceblue;
+    font-size: 20px;
+}

@@ -1,13 +1,13 @@
 .explore-container {
     height: 100vh;
     flex: 1;
-    background-color: #2F3136;
+    background-color: #303136;
 }
 
 .chat-container {
     height: 100vh;
     flex: 3.25;
-    background-color: #35393E;
+    background-color: #393943;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,16 +17,15 @@
 .friends-container {
     height: 100vh;
     flex: 0.75;
-    background-color: #2F3136;
+    background-color: #303136;
 }
 
 .chat-container .input-container {
     height: fit-content;
     width: 100%;
     padding: 0px 40px 30px;
-    background-color: #35393E;
     position: relative;
-
+    flex: 0.25;
 }
 
 .chat-container .input-container .text-container {
@@ -37,7 +36,7 @@
     padding: 0px 60px 0px 20px;
     color: #B5BAC1;
     border-radius: 10px;
-    background-color: #40444B;
+    background-color: #303136;
     border: 0;
     font-size: 18px;
 }
@@ -62,4 +61,13 @@
     position: absolute;
     right: 5%;
     bottom: 120%;
+}
+
+.chat-container .messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
+    flex: 10;
+    padding: 40px;
 }

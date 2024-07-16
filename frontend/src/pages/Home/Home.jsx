@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import './Home.css'
 import emoji from '../../assets/emoji.png'
 import EmojiPicker from 'emoji-picker-react';
-
+import Message from '../../components/Message/Message'
+import image1 from '../../assets/naruto.jpeg'
+import image2 from '../../assets/Kakashi.webp'
 const Home = () => {
   const [message, setMessage] = useState('')
   const [emojiPicker, setEmojiPicker] = useState(false)
@@ -45,7 +47,56 @@ const Home = () => {
       <div className="chat-container">
 
         <div className='messages-container'>
+          <Message className='my-message' data={{
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'السلام عليكم و رحمة الله و بركاته',
+            image: image1,
+            myMessage: true
+          }}>
+          </Message>
+          <Message className='his-message' data={{
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'السلام عليكم و رحمة الله و بركاته',
+            image: image2,
+            myMessage: false
+          }}>
+          </Message>
+          <Message className='my-message' data={{
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'Hello world!, My name is Shady. What is yours 😅?',
+            image: image1,
+            myMessage: true
+          }}>
+          </Message>
+          <Message className='his-message' data={{
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'Hello world!, My name is Shady. What is yours?',
+            image: image2,
+            myMessage: false
+          }}>
+          </Message>
+          <Message className='my-message' data={{
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'Hello world!, My name is Shady. What is yours?',
+            image: image1,
+            myMessage: true
+          }}>
 
+
+          </Message>
+          <Message className='his-message' data={{
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'Hello world!, My name is Shady. What is yours?',
+            image: image2,
+            myMessage: false
+          }}>
+          </Message>
         </div>
 
         <div className="input-container">
@@ -73,7 +124,7 @@ const Home = () => {
       <div className='friends-container'>
 
       </div>
-    </div>
+    </div >
   )
 }
 
