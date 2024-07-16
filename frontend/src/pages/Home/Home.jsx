@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
-import './Home.css'
 import emoji from '../../assets/emoji.png'
 import EmojiPicker from 'emoji-picker-react';
 import Message from '../../components/Message/Message'
 import image1 from '../../assets/naruto.jpeg'
 import image2 from '../../assets/Kakashi.webp'
+import { colorEmojiList } from '../../assets/assets.js'
+import './Home.css'
 const Home = () => {
   const [message, setMessage] = useState('')
   const [emojiPicker, setEmojiPicker] = useState(false)
+  const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
   const inputRef = useRef(null);
 
   const handleEmojiClick = (emojiObject) => {
@@ -31,6 +33,24 @@ const Home = () => {
     const arabicPattern = /[\u0600-\u06FF]/;
     return arabicPattern.test(text);
   };
+
+  const emojiOnMouseEnter = (e) => {
+    const length = colorEmojiList.length;
+    const newIndex = (displayedEmoji.index + 1) % length
+    setDisplayedEmoji({
+      index: newIndex,
+      emoji: colorEmojiList[newIndex],
+      focus: true
+    })
+  }
+  const emojiOnMouseLeave = (e) => {
+    setDisplayedEmoji((prev) => {
+      return {
+        ...prev,
+        focus: false
+      }
+    })
+  }
 
   useEffect(() => {
     // console.log(message)
@@ -108,7 +128,13 @@ const Home = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-          <img src={emoji} alt="emoji" className="emoji-icon" onClick={toggleEmojiPicker}></img>
+          <img src={displayedEmoji.emoji}
+            alt="emoji"
+            className={displayedEmoji.focus ? "emoji-icon" : "emoji-icon emoji-icon-leave"}
+            onClick={toggleEmojiPicker}
+            onMouseEnter={emojiOnMouseEnter}
+            onMouseLeave={emojiOnMouseLeave}
+          ></img>
           <div className='emoji-picker'>
             <EmojiPicker
               open={emojiPicker}

@@ -1,13 +1,13 @@
 .explore-container {
     height: 100vh;
     flex: 1;
-    background-color: #303136;
+    background-color: #2B2D31;
 }
 
 .chat-container {
     height: 100vh;
     flex: 3.25;
-    background-color: #393943;
+    background-color: #313338;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,7 +17,7 @@
 .friends-container {
     height: 100vh;
     flex: 0.75;
-    background-color: #303136;
+    background-color: #2B2D31;
 }
 
 .chat-container .input-container {
@@ -32,11 +32,11 @@
     box-sizing: border-box;
     height: fit-content;
     width: 100%;
-    height: 45px;
+    height: 55px;
     padding: 0px 60px 0px 20px;
     color: #B5BAC1;
     border-radius: 10px;
-    background-color: #303136;
+    background-color: #383A40;
     border: 0;
     font-size: 18px;
 }
@@ -47,17 +47,32 @@
 }
 
 
-.chat-container .input-container .emoji-icon {
+.chat-container .emoji-icon {
     position: absolute;
     right: 60px;
     top: 10px;
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
+    /* opacity: 0.3; */
+    transition: all 0.3s;
+
+
+}
+
+.chat-container .emoji-icon-leave {
+    opacity: 0.3;
+
+
 }
 
 
-.chat-container .input-container .emoji-picker {
+
+.chat-container .emoji-icon:hover {
+    transform: scale(1.2);
+}
+
+.chat-container .emoji-picker {
     position: absolute;
     right: 5%;
     bottom: 120%;
