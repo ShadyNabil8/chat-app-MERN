@@ -1,0 +1,67 @@
+.login-page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../assets/galaxy.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 20px;
+}
+
+.login-div {
+    background-color: #150a56ee;
+    height: 500px;
+    width: 500px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px;
+}
+
+.login-div input {
+    height: 40px;
+    background-color: #120354;
+    border: 0;
+    color: #B5BAC1;
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 0 10px;
+}
+
+.login-div label {
+    color: #B5BAC1;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.login-div form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-div form button {
+    font-size: 18px;
+    background-color: #43bbfcc2;
+    color: white;
+    border: 0;
+    border-radius: 5px;
+    height: 40px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.login-div form button:hover {
+    background-color: #3576DAc2;
+}
+
+
+.login-div .label-input-div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

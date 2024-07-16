@@ -1,0 +1,65 @@
+.explore-container {
+    height: 100vh;
+    flex: 1;
+    background-color: #2F3136;
+}
+
+.chat-container {
+    height: 100vh;
+    flex: 3.25;
+    background-color: #35393E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.friends-container {
+    height: 100vh;
+    flex: 0.75;
+    background-color: #2F3136;
+}
+
+.chat-container .input-container {
+    height: fit-content;
+    width: 100%;
+    padding: 0px 40px 30px;
+    background-color: #35393E;
+    position: relative;
+
+}
+
+.chat-container .input-container .text-container {
+    box-sizing: border-box;
+    height: fit-content;
+    width: 100%;
+    height: 45px;
+    padding: 0px 60px 0px 20px;
+    color: #B5BAC1;
+    border-radius: 10px;
+    background-color: #40444B;
+    border: 0;
+    font-size: 18px;
+}
+
+.chat-container .input-container .text-input-rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+
+.chat-container .input-container .emoji-icon {
+    position: absolute;
+    right: 60px;
+    top: 10px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+
+.chat-container .input-container .emoji-picker {
+    position: absolute;
+    right: 5%;
+    bottom: 120%;
+}
