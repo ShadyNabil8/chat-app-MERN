@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import emoji from '../../assets/emoji.png'
 import EmojiPicker from 'emoji-picker-react';
 import Message from '../../components/Message/Message'
+import Profile from '../../components/Profile/Profile'
+import ExploredUser from '../../components/ExploredUser/ExploredUser'
 import image1 from '../../assets/naruto.jpeg'
 import image2 from '../../assets/Kakashi.webp'
 import { colorEmojiList } from '../../assets/assets.js'
@@ -62,7 +64,10 @@ const Home = () => {
       display: 'flex'
     }}>
       <div className="explore-container">
-
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
       </div>
       <div className="chat-container">
 

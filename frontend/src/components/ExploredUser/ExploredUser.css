@@ -1,0 +1,49 @@
+.explored-user-container {
+    display: flex;
+    height: fit-content;
+    padding: 5px 15px;
+    background-color: #313338;
+    border-radius: 10px;
+    justify-content: space-between;
+}
+
+.explored-user-container .image-container img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.explored-user-container .info-container {
+    display: flex;
+    gap: 10px;
+}
+
+.explored-user-container .name {
+    color: silver;
+    font-size: 20px;
+    font-weight: 500;
+    padding-top: 10px;
+
+}
+
+.explored-user-container .actions-container {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 10px;
+}
+
+.explored-user-container .actions-container .add-friend,
+.explored-user-container .actions-container .send-message {
+    width: 25px;
+    height: 25px;
+    color: #B5BAC1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.explored-user-container .actions-container .add-friend:hover,
+.explored-user-container .actions-container .send-message:hover {
+    transform: scale(1.2);
+}

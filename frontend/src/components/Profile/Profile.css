@@ -1,0 +1,54 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+    gap: 20px;
+}
+
+.profile .image-container {
+    position: relative;
+}
+
+.profile .image-container img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.profile .active-dot {
+    width: 15px;
+    height: 15px;
+    background-color: lime;
+    position: absolute;
+    border-radius: 50%;
+    left: 80%;
+    bottom: 10%;
+}
+
+.profile .name-container {
+    font-size: 24px;
+    font-weight: 500;
+    color: #B5BAC1;
+}
+
+.profile .actions-container {
+    width: 20%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile .actions-container .add-friend,
+.profile .actions-container .send-message {
+    width: 30px;
+    height: 30px;
+    color: #B5BAC1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.profile .actions-container .add-friend:hover,
+.profile .actions-container .send-message:hover {
+    transform: scale(1.2);
+}
