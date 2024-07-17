@@ -8,6 +8,21 @@
     gap: 20px;
 }
 
+.explore-container .search-bar {
+    display: flex;
+    height: 40px;
+}
+
+.explore-container .search-bar input {
+    width: 100%;
+    background-color: #383A40;
+    color: #B5BAC1;
+    border-radius: 10px;
+    border: 0;
+    padding: 0px 10px;
+    font-size: 18px;
+}
+
 .chat-container {
     height: 100vh;
     flex: 3.25;
@@ -22,6 +37,11 @@
     height: 100vh;
     flex: 0.75;
     background-color: #2B2D31;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
 }
 
 .chat-container .input-container {

@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import emoji from '../../assets/emoji.png'
 import EmojiPicker from 'emoji-picker-react';
 import Message from '../../components/Message/Message'
-import Profile from '../../components/Profile/Profile'
 import ExploredUser from '../../components/ExploredUser/ExploredUser'
+import Friend from '../../components/Friend/Friend'
 import image1 from '../../assets/naruto.jpeg'
 import image2 from '../../assets/Kakashi.webp'
 import { colorEmojiList } from '../../assets/assets.js'
 import './Home.css'
+
 const Home = () => {
   const [message, setMessage] = useState('')
   const [emojiPicker, setEmojiPicker] = useState(false)
@@ -64,6 +64,9 @@ const Home = () => {
       display: 'flex'
     }}>
       <div className="explore-container">
+        <div className="search-bar">
+          <input type='text' placeholder='Search for friends'></input>
+        </div>
         <ExploredUser></ExploredUser>
         <ExploredUser></ExploredUser>
         <ExploredUser></ExploredUser>
@@ -153,7 +156,13 @@ const Home = () => {
 
       </div>
       <div className='friends-container'>
-
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
       </div>
     </div >
   )
