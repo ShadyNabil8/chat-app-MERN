@@ -1,7 +1,7 @@
 .explored-user-container {
     display: flex;
     height: fit-content;
-    padding: 5px 15px;
+    padding: 5px 15px 5px 5px ;
     background-color: #313338;
     border-radius: 10px;
     justify-content: space-between;
@@ -10,8 +10,7 @@
 }
 
 .explored-user-container:hover {
-    /* transform: scale(1.05); */
-    background-color:#222222 
+    background: linear-gradient(to left, #c33764, #1d2671);
 }
 
 .explored-user-container .image-container img {

@@ -1,9 +1,12 @@
 .message-container {
     display: flex;
     gap: 25px;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 500px;
+    height: fit-content;
+    box-sizing: border-box;
+    animation: smooth 0.3s linear 1 normal forwards;
 }
 
 .my-message {
@@ -61,7 +64,7 @@
 
 .my-message .sender-name {
 
-    color:darkorange;
+    color: darkorange;
 }
 
 .his-message .sender-name {
@@ -79,8 +82,10 @@
 .message-container .message-body {
     color: aliceblue;
     font-size: 20px;
-    
+    max-width: 50ch;
+    overflow-wrap: break-word;
 }
+
 .message-container .message-body-rtl {
     direction: rtl;
     text-align: right;

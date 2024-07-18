@@ -16,6 +16,8 @@ const Home = () => {
   const [emojiPicker, setEmojiPicker] = useState(false)
   const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
   const inputRef = useRef(null);
+  const scrollRef = useRef(null);
+
 
   const handleEmojiClick = (emojiObject) => {
     const cursorPosition = inputRef.current.selectionStart;
@@ -71,6 +73,13 @@ const Home = () => {
         ]
       })
       setMessage('');
+
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    }
+    else if (event.key === 'Escape') {
+      setEmojiPicker(false);
     }
   };
 
@@ -86,23 +95,30 @@ const Home = () => {
         <div className="search-bar">
           <input type='text' placeholder='Search for friends'></input>
         </div>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
-        <ExploredUser></ExploredUser>
+        <div className="explore-elements-container">
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+          <ExploredUser></ExploredUser>
+
+        </div>
       </div>
       <div className="chat-container">
-        <div className='messages-container' id='container'>
+        <div className='messages-container' ref={scrollRef} >
           {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
         </div>
         <div className="input-container">
@@ -135,24 +151,24 @@ const Home = () => {
 
       </div>
       <div className='friends-container'>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "السﻻم عليكم السﻻم عليكم السﻻم عليكم السﻻم" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
       </div>
     </div >
   )

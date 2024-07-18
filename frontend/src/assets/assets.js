@@ -17,9 +17,9 @@ import emojiSmiling from './emoji-smiling.png'
 import emojiAngry from './emoji-angry.png'
 import emojiWow from './emoji-wow.png'
 
-export const colorEmojiList = [emojiLaugh,
-    emojiLove,
+export const colorEmojiList = [
     emojiSuperstar,
+    emojiLove,
     emojiSad,
     emojicool,
     emojiConfusion,
@@ -27,7 +27,8 @@ export const colorEmojiList = [emojiLaugh,
     emojiShocked,
     emojiSmiling,
     emojiAngry,
-    emojiWow
+    emojiWow,
+    emojiLaugh,
 ]
 
 export const testMessages = [
