@@ -6,6 +6,8 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    overflow-y: scroll;
+
 }
 
 .explore-container .search-bar {
@@ -35,12 +37,13 @@
 
 .friends-container {
     height: 100vh;
-    flex: 0.75;
+    flex: 1;
     background-color: #2B2D31;
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    overflow-y: scroll;
 
 }
 
@@ -109,4 +112,18 @@
     width: 100%;
     flex: 10;
     padding: 40px;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #464848;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(90, 90, 90);
+    border-radius: 10px;
 }

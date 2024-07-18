@@ -5,11 +5,14 @@ import ExploredUser from '../../components/ExploredUser/ExploredUser'
 import Friend from '../../components/Friend/Friend'
 import image1 from '../../assets/naruto.jpeg'
 import image2 from '../../assets/Kakashi.webp'
-import { colorEmojiList } from '../../assets/assets.js'
+import { colorEmojiList, testMessages } from '../../assets/assets.js'
 import './Home.css'
+import RSC from "react-scrollbars-custom";
 
 const Home = () => {
+
   const [message, setMessage] = useState('')
+  const [messageList, setMessageList] = useState(testMessages);
   const [emojiPicker, setEmojiPicker] = useState(false)
   const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
   const inputRef = useRef(null);
@@ -53,11 +56,27 @@ const Home = () => {
       }
     })
   }
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      setMessageList((prevMessageList) => {
+        return [
+          ...prevMessageList,
+          {
+            sender: 'Shady',
+            image: image1,
+            date: 'Today 15.30 AM',
+            text: message,
+            myMessage: true
+          }
+        ]
+      })
+      setMessage('');
+    }
+  };
 
   useEffect(() => {
     // console.log(message)
   })
-
 
   return (
     <div style={{
@@ -71,62 +90,21 @@ const Home = () => {
         <ExploredUser></ExploredUser>
         <ExploredUser></ExploredUser>
         <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
+        <ExploredUser></ExploredUser>
       </div>
       <div className="chat-container">
-
-        <div className='messages-container'>
-          <Message className='my-message' data={{
-            sender: 'shady',
-            date: 'Today 15.30 AM',
-            text: 'السلام عليكم و رحمة الله و بركاته',
-            image: image1,
-            myMessage: true
-          }}>
-          </Message>
-          <Message className='his-message' data={{
-            sender: 'shady',
-            date: 'Today 15.30 AM',
-            text: 'السلام عليكم و رحمة الله و بركاته',
-            image: image2,
-            myMessage: false
-          }}>
-          </Message>
-          <Message className='my-message' data={{
-            sender: 'shady',
-            date: 'Today 15.30 AM',
-            text: 'Hello world!, My name is Shady. What is yours 😅?',
-            image: image1,
-            myMessage: true
-          }}>
-          </Message>
-          <Message className='his-message' data={{
-            sender: 'shady',
-            date: 'Today 15.30 AM',
-            text: 'Hello world!, My name is Shady. What is yours?',
-            image: image2,
-            myMessage: false
-          }}>
-          </Message>
-          <Message className='my-message' data={{
-            sender: 'shady',
-            date: 'Today 15.30 AM',
-            text: 'Hello world!, My name is Shady. What is yours?',
-            image: image1,
-            myMessage: true
-          }}>
-
-
-          </Message>
-          <Message className='his-message' data={{
-            sender: 'shady',
-            date: 'Today 15.30 AM',
-            text: 'Hello world!, My name is Shady. What is yours?',
-            image: image2,
-            myMessage: false
-          }}>
-          </Message>
+        <div className='messages-container' id='container'>
+          {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
         </div>
-
         <div className="input-container">
           <input
             className={isArabic(message) ? 'text-input-rtl text-container' : 'text-container'}
@@ -135,6 +113,7 @@ const Home = () => {
             placeholder="Type your message..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <img src={displayedEmoji.emoji}
             alt="emoji"
@@ -156,6 +135,17 @@ const Home = () => {
 
       </div>
       <div className='friends-container'>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
+        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
         <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
         <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>
         <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?  How     are you?  How are you?  How are you?  How are you?  How are you?" }}></Friend>

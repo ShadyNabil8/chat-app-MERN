@@ -34,7 +34,6 @@
 
 .his-message .text-container {
     align-items: flex-end;
-
 }
 
 
@@ -80,4 +79,9 @@
 .message-container .message-body {
     color: aliceblue;
     font-size: 20px;
+    
+}
+.message-container .message-body-rtl {
+    direction: rtl;
+    text-align: right;
 }
