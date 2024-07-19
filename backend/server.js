@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const path = require('path');
+const cors = require('cors');
+
+// Allow all origins
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,6 +19,9 @@ app.use('/', indexRoutes);
 
 const uploadRoutes = require('./routes/upload');
 app.use('/upload', uploadRoutes);
+
+const userRoute = require('./routes/User');
+app.use('/user', userRoute);
 
 // Custom error handler
 app.use((err, req, res, next) => {

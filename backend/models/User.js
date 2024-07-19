@@ -13,4 +13,4 @@ const schema = new mongoose.Schema({
     createdAt: Date,
 })
 
-module.exports = mongoose.model(User, schema);
+module.exports = mongoose.model('User', schema);
