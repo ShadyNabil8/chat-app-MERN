@@ -1,16 +1,22 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-    username: String,
+    displayedName: String,
     email: String,
     passwordHash: String,
-    isActive: Boolean,
     profilePicture: String,
+    isActive: {
+        type: Boolean,
+        default: false
+    },
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
-    createdAt: Date,
-})
+    isVerified: {
+        type: Boolean,
+        default: false
+    }
+}, { timestamps: true })
 
-module.exports = mongoose.model('User', schema);
+module.exports = mongoose.model('user', schema);

@@ -12,8 +12,9 @@
 }
 
 .register-div {
+    animation: smooth 0.2s linear 1 normal forwards;
     background-color: #150a56ee;
-    height: fit-content;
+    min-height: 500px;
     width: 500px;
     border-radius: 5px;
     display: flex;

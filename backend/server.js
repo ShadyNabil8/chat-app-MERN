@@ -1,8 +1,14 @@
 const express = require('express');
-const app = express();
-const port = 3000;
 const path = require('path');
 const cors = require('cors');
+const connectDB = require('./config/db')
+const customErrorHandler = require('./utils/error')
+
+const port = 3000;
+const app = express();
+
+// Connect to MongoDB
+// connectDB();
 
 // Allow all origins
 app.use(cors());
@@ -24,13 +30,7 @@ const userRoute = require('./routes/User');
 app.use('/user', userRoute);
 
 // Custom error handler
-app.use((err, req, res, next) => {
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || 'Internal Server Error',
-    error: process.env.NODE_ENV === 'development' ? err : {}
-  });
-});
+app.use(customErrorHandler);
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
