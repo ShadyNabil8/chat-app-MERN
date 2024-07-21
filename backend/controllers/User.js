@@ -22,7 +22,7 @@ const create = [
     asyncHandler(async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.log(errors);
+            // console.log(errors);
             return res.status(400).json({ errors: errors.array() });
         }
         const hashedPassword = await hashPassword(req.body.password)
@@ -35,7 +35,7 @@ const create = [
 
         });
 
-        // await userRecord.save();
+        await userRecord.save();
 
         const verificationCode = crypto.randomBytes(20).toString('hex')
         const verificationExpires = Date.now() + 3600000  // 1 Hour
@@ -46,9 +46,9 @@ const create = [
             expiresAt: verificationExpires
         });
 
-        // await verificationRecord.save();
+        await verificationRecord.save();
 
-        // await sendVerificationCode(req.body.email, verificationCode)
+        await sendVerificationCode(req.body.email, verificationCode)
 
         // console.log(userRecord);
 
