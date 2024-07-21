@@ -6,7 +6,7 @@ const { hashPassword, comparePassword } = require('../utils/password')
 const { sendVerificationCode } = require('../config/transporter')
 const crypto = require('crypto');
 
-require('dotenv').config();;
+require('dotenv').config();
 
 const create = [
     body('displayedName')
@@ -23,7 +23,13 @@ const create = [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             // console.log(errors);
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({
+                success: false,
+                error: {
+                    cause: 'input-fields',
+                    errors: errors.array()
+                }
+            });
         }
         const hashedPassword = await hashPassword(req.body.password)
 
@@ -35,7 +41,7 @@ const create = [
 
         });
 
-        await userRecord.save();
+        // await userRecord.save();
 
         const verificationCode = crypto.randomBytes(20).toString('hex')
         const verificationExpires = Date.now() + 3600000  // 1 Hour
@@ -46,9 +52,11 @@ const create = [
             expiresAt: verificationExpires
         });
 
-        await verificationRecord.save();
+        // console.log(verificationRecord);
 
-        await sendVerificationCode(req.body.email, verificationCode)
+        // await verificationRecord.save();
+
+        // await sendVerificationCode(req.body.email, verificationCode)
 
         // console.log(userRecord);
 
@@ -69,25 +77,116 @@ const verifyEmail = asyncHandler(async (req, res) => {
     });
 
     if (!verificationCodeRecord) {
-        return res.status(400).json({ error: 'Verification code is invalid or has expired.' });
+        return res.status(400).json({
+            success: false,
+            error: {
+                cause: 'verification',
+                message: 'Verification code is invalid or has expired.'
+            }
+        });
 
     }
 
     const userRecord = await userModel.findById(verificationCodeRecord.userId);
 
     if (!userRecord) {
-        return res.status(400).json({ error: 'User not found.' })
+        return res.status(400).json({
+            success: false,
+            error: {
+                cause: 'verification',
+                message: 'User not found.'
+            }
+        })
     }
 
     userRecord.isActive = true;
 
-    await userRecord.save()
+    // await userRecord.save()
 
-    await verificationCodeRecord.deleteOne({ _id: verificationCodeRecord._id });
+    // await verificationCodeModel.deleteOne({ _id: verificationCodeRecord._id });
 
     res.status(200).json({ success: true, message: 'Email verified successfully!' });
 })
 
+const login = asyncHandler(async (req, res) => {
 
+    const { email, password } = req.body;
+
+    const userRecord = await userModel.findOne({ email: email });
+
+    if (!userRecord) {
+        return res.status(401).json({
+            success: false,
+            error: {
+                cause: 'email',
+                message: 'The email address you entered isn\'t connected to an account'
+            }
+        })
+    }
+
+    const isCorrectPassword = await comparePassword(password, userRecord.passwordHash)
+
+    if (!isCorrectPassword) {
+        return res.status(400).json({
+            success: false,
+            error: {
+                cause: 'password',
+                message: 'Email or password is not correct'
+            }
+        })
+    }
+
+    if (!userRecord.isVerified) {
+
+        const verificationCodeRecord = await verificationCodeModel.findOne({
+            userId: userRecord._id
+        })
+
+        // Convert expiresAt to a Date object
+        const expiresAtDate = new Date(verificationCodeRecord.expiresAt);
+
+        if (!verificationCodeRecord || (Date.now() > expiresAtDate.getTime())) {
+
+            const verificationCode = crypto.randomBytes(20).toString('hex');
+            const verificationExpires = Date.now() + 3600000; // 1 Hour
+
+            const verificationRecord = new verificationCodeModel({
+                userId: userRecord._id,
+                code: verificationCode,
+                expiresAt: verificationExpires
+            });
+
+            await verificationRecord.save();
+
+            await sendVerificationCode(email, verificationCode)
+
+            return res.status(403).json({
+                success: false,
+                error: {
+                    cause: 'verification',
+                    message: 'We have resent a verification code. Please check your email to verify your account.'
+                }
+            })
+        }
+
+        if (verificationCodeRecord) {
+            await verificationCodeModel.deleteOne({ _id: verificationCodeRecord._id });
+        }
+
+        return res.status(403).json({
+            success: false,
+            error: {
+                cause: 'verification',
+                message: 'Please check your email to verify your account first.'
+            }
+        })
+    }
+
+    return res.status(200).json({
+        success: true,
+        data: userRecord
+    })
+
+})
 
 module.exports = { create, verifyEmail }

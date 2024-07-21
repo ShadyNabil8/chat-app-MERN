@@ -8,7 +8,7 @@ const port = 3000;
 const app = express();
 
 // Connect to MongoDB
-connectDB();
+// connectDB();
 
 // Allow all origins
 app.use(cors());
