@@ -25,9 +25,10 @@ const Register = () => {
       setResponseMessage(response.data.message)
 
     } catch (err) {
-      err.response.data.errors.map((fieldError) => {
-        newError[fieldError.path] = fieldError.msg;
-      })
+      if (err.response.data.error.cause === 'input-fields')
+        err.response.data.error.errors.map((fieldError) => {
+          newError[fieldError.path] = fieldError.msg;
+        })
 
     } finally {
       setResponseError(newError);
