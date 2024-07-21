@@ -9,11 +9,12 @@
     background-repeat: no-repeat;
     background-size: cover;
     padding: 20px;
+    position: relative;
 }
 
 .register-div {
     animation: smooth 0.2s linear 1 normal forwards;
-    background-color: #150a56ee;
+    background-color: #2B2D31;
     min-height: 500px;
     width: 500px;
     border-radius: 5px;
@@ -25,7 +26,7 @@
 
 .register-div input {
     height: 40px;
-    background-color: #120354;
+    background-color: #383A40;;
     border: 0;
     color: #B5BAC1;
     border-radius: 5px;

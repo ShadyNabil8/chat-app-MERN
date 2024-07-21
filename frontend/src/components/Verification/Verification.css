@@ -1,0 +1,46 @@
+.verification-box {
+    animation: smooth 0.2s linear 1 normal forwards;
+    z-index: 2;
+    height: 300px;
+    width: min(400px, 80%);
+    border-radius: 5px;
+    background-color: #2B2D31;
+    position: absolute;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-top: 1px solid #7F30FD;
+    border-right: 1px solid #ED78FA;
+    border-left: 1px solid #842AE4;
+    border-bottom: 1px solid #B730E0;
+}
+
+.verification-box .header {
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
+    align-self: center;
+}
+
+.verification-box .body {
+    color: rgb(200, 200, 200);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.verification-box button {
+    font-size: 18px;
+    background-color: #43bbfcc2;
+    color: white;
+    border: 0;
+    border-radius: 5px;
+    height: 40px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.verification-box button:hover {
+    background-color: #3576DAc2;
+}

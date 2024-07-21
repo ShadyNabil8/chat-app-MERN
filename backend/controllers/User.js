@@ -22,44 +22,72 @@ const create = [
     asyncHandler(async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            // console.log(errors);
+            console.log(errors);
             return res.status(400).json({ errors: errors.array() });
         }
-        try {
-            const hashedPassword = await hashPassword(req.body.password)
+        const hashedPassword = await hashPassword(req.body.password)
 
-            const user = new userModel({
-                displayedName: req.body.displayedName,
-                email: req.body.email,
-                passwordHash: hashedPassword,
-                profilePicture: `${process.env.AVATAR_API}/${Date.now()}-${req.body.displayedName}.png`,
-                
-            });
-            // await user.save();
+        const userRecord = new userModel({
+            displayedName: req.body.displayedName,
+            email: req.body.email,
+            passwordHash: hashedPassword,
+            profilePicture: `${process.env.AVATAR_API}/${Date.now()}-${req.body.displayedName}.png`,
 
-            const verificationCode = crypto.randomBytes(20).toString('hex')
-            const verificationExpires = Date.now() + 3600000  // 1 Hour
+        });
 
-            const verificationRecord = new verificationCodeModel({
-                userId: user._id,
-                code: verificationCode,
-                expiresAt: verificationExpires
-            });
-            // await verificationRecord.save();
+        // await userRecord.save();
 
-            await sendVerificationCode(req.body.email, verificationCode)
-            console.log(user);
-            res.status(201).json({
-                success: true,
-                message: 'Registration successful. Please check your email to verify your account.'
-            });
-        } catch (err) {
-            console.error('Error creating user:', err);
-            res.status(500).json({ error: 'Internal server error' });
-        }
+        const verificationCode = crypto.randomBytes(20).toString('hex')
+        const verificationExpires = Date.now() + 3600000  // 1 Hour
+
+        const verificationRecord = new verificationCodeModel({
+            userId: userRecord._id,
+            code: verificationCode,
+            expiresAt: verificationExpires
+        });
+
+        // await verificationRecord.save();
+
+        // await sendVerificationCode(req.body.email, verificationCode)
+
+        // console.log(userRecord);
+
+        res.status(201).json({
+            success: true,
+            message: 'Registration successful. Please check your email to verify your account.'
+        });
     })
 ]
 
+const verifyEmail = asyncHandler(async (req, res) => {
+
+    const { code } = req.query;
+
+    const verificationCodeRecord = await verificationCodeModel.findOne({
+        code: code,
+        expiresAt: { $gt: Date.now() }
+    });
+
+    if (!verificationCodeRecord) {
+        return res.status(400).json({ error: 'Verification code is invalid or has expired.' });
+
+    }
+
+    const userRecord = await userModel.findById(verificationCodeRecord.userId);
+
+    if (!userRecord) {
+        return res.status(400).json({ error: 'User not found.' })
+    }
+
+    userRecord.isActive = true;
+
+    await userRecord.save()
+
+    await verificationCodeRecord.deleteOne({ _id: verificationCodeRecord._id });
+
+    res.status(200).json({ success: true, message: 'Email verified successfully!' });
+})
 
 
-module.exports = { create }
+
+module.exports = { create, verifyEmail }

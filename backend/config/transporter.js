@@ -27,7 +27,7 @@ const sendVerificationCode = async (receiverEmail, verificationCode) => {
             from: process.env.EMAIL_USER,
             to: receiverEmail,
             subject: "Verification Code",
-            text: `Please verify your email by clicking the link: http://${process.env.HOST}/verify-email?code=${verificationCode}`,
+            text: `Please verify your email by clicking the link: http://${process.env.HOST}/user/verify-email?code=${verificationCode}`,
         });
         console.log('Email sent:', info.response);
     } catch (error) {
