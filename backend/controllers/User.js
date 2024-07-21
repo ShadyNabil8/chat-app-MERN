@@ -8,9 +8,8 @@ const crypto = require('crypto');
 
 require('dotenv').config();
 
-const create = [
+const register = [
     body('displayedName')
-        .isAlphanumeric()
         .isLength({ min: 3, max: 30 })
         .withMessage('Displayed name must be alphanumeric and between 3 to 30 characters long.'),
     body('password')
@@ -27,7 +26,7 @@ const create = [
                 success: false,
                 error: {
                     cause: 'input-fields',
-                    errors: errors.array()
+                    data: errors.array()
                 }
             });
         }
@@ -41,7 +40,7 @@ const create = [
 
         });
 
-        // await userRecord.save();
+        await userRecord.save();
 
         const verificationCode = crypto.randomBytes(20).toString('hex')
         const verificationExpires = Date.now() + 3600000  // 1 Hour
@@ -54,15 +53,15 @@ const create = [
 
         // console.log(verificationRecord);
 
-        // await verificationRecord.save();
+        await verificationRecord.save();
 
-        // await sendVerificationCode(req.body.email, verificationCode)
+        await sendVerificationCode(req.body.email, verificationCode)
 
         // console.log(userRecord);
 
         res.status(201).json({
             success: true,
-            message: 'Registration successful. Please check your email to verify your account.'
+            data: 'Registration successful. Please check your email to verify your account.'
         });
     })
 ]
@@ -81,7 +80,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
             success: false,
             error: {
                 cause: 'verification',
-                message: 'Verification code is invalid or has expired.'
+                data: 'Verification code is invalid or has expired.'
             }
         });
 
@@ -94,23 +93,26 @@ const verifyEmail = asyncHandler(async (req, res) => {
             success: false,
             error: {
                 cause: 'verification',
-                message: 'User not found.'
+                data: 'User not found.'
             }
         })
     }
 
-    userRecord.isActive = true;
+    userRecord.isVerified = true;
 
-    // await userRecord.save()
+    await userRecord.save()
 
-    // await verificationCodeModel.deleteOne({ _id: verificationCodeRecord._id });
+    await verificationCodeModel.deleteOne({ _id: verificationCodeRecord._id });
 
-    res.status(200).json({ success: true, message: 'Email verified successfully!' });
+    res.status(200).json({
+        success: true,
+        data: 'Email verified successfully!'
+    });
 })
 
 const login = asyncHandler(async (req, res) => {
 
-    const { email, password } = req.body;
+    const { email, password } = req.query;
 
     const userRecord = await userModel.findOne({ email: email });
 
@@ -118,8 +120,11 @@ const login = asyncHandler(async (req, res) => {
         return res.status(401).json({
             success: false,
             error: {
-                cause: 'email',
-                message: 'The email address you entered isn\'t connected to an account'
+                cause: 'input-fields',
+                data: [{
+                    path: "email",
+                    msg: 'The email address you entered isn\'t connected to an account'
+                }]
             }
         })
     }
@@ -130,8 +135,11 @@ const login = asyncHandler(async (req, res) => {
         return res.status(400).json({
             success: false,
             error: {
-                cause: 'password',
-                message: 'Email or password is not correct'
+                cause: 'input-fields',
+                data: [{
+                    path: "password",
+                    msg: 'Email or password is not correct'
+                }]
             }
         })
     }
@@ -164,7 +172,7 @@ const login = asyncHandler(async (req, res) => {
                 success: false,
                 error: {
                     cause: 'verification',
-                    message: 'We have resent a verification code. Please check your email to verify your account.'
+                    data: 'We have resent a verification code. Please check your email to verify your account.'
                 }
             })
         }
@@ -177,11 +185,11 @@ const login = asyncHandler(async (req, res) => {
             success: false,
             error: {
                 cause: 'verification',
-                message: 'Please check your email to verify your account first.'
+                data: 'Please check your email to verify your account first.'
             }
         })
     }
-
+    // console.log(userRecord);
     return res.status(200).json({
         success: true,
         data: userRecord
@@ -189,4 +197,4 @@ const login = asyncHandler(async (req, res) => {
 
 })
 
-module.exports = { create, verifyEmail }
+module.exports = { register, verifyEmail, login }

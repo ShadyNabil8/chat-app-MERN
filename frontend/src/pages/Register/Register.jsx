@@ -15,7 +15,7 @@ const Register = () => {
     let newError = {};
 
     try {
-      const url = 'http://localhost:3000/user/create'
+      const url = 'http://localhost:3000/user/register'
 
       const response = await axios.post(url, {
         displayedName: registrationData.displayedName,
@@ -26,7 +26,7 @@ const Register = () => {
 
     } catch (err) {
       if (err.response.data.error.cause === 'input-fields')
-        err.response.data.error.errors.map((fieldError) => {
+        err.response.data.error.data.map((fieldError) => {
           newError[fieldError.path] = fieldError.msg;
         })
 

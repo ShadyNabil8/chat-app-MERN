@@ -25,7 +25,8 @@
 
 .login-div input {
     height: 40px;
-    background-color: #383A40;;
+    background-color: #383A40;
+    ;
     border: 0;
     color: #B5BAC1;
     border-radius: 5px;
@@ -61,8 +62,12 @@
 }
 
 
-.login-div .label-input-div{
+.login-div .label-input-div {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.login-div .error-container {
+    color: #c23030;
 }

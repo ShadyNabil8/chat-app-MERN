@@ -1,16 +1,54 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 import './Login.css'
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const handleSubmit = (event) => {
+  const [loginData, setLoginData] = useState({ email: '', password: '' })
+  const [responseError, setResponseError] = useState({});
+  const [responseMessage, setResponseMessage] = useState('')
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle login logic here
-    console.log('Username:', username);
-    console.log('Password:', password);
+
+    const url = 'http://localhost:3000/user/login'
+
+    let newError = {};
+
+    try {
+      await axios.get(url, {
+        params: {
+          email: loginData.email,
+          password: loginData.password
+        }
+      })
+    } catch (err) {
+      if (!err.response.data.success) {
+
+        const { cause, data } = err.response.data.error;
+
+        if (cause === 'input-fields')
+          data.map((fieldError) => {
+            newError[fieldError.path] = fieldError.msg;
+          });
+
+        if (newError.hasOwnProperty('email')) {
+          setLoginData({ email: '', password: '' })
+        }
+        else if (newError.hasOwnProperty('password')) {
+          setLoginData((prev) => {
+            return {
+              email: prev.email,
+              password: ''
+            }
+          })
+        }
+      }
+    } finally {
+      setResponseError(newError);
+    }
+
   };
   return (
     <div className="login-page">
@@ -49,22 +87,32 @@ const Login = () => {
               <label htmlFor="username">
                 EMAIL:
               </label>
+              {(responseError.email) &&
+                <div className='error-container'>
+                  {responseError.email}
+                </div>
+              }
               <input
                 type="text"
                 id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={loginData.email}
+                onChange={(e) => setLoginData((prev) => { return { ...prev, email: e.target.value } })}
               />
             </div>
             <div className='label-input-div'>
               <label htmlFor="password">
                 PASSWORD:
               </label>
+              {/* {(responseError.password) &&
+                <div className='error-container'>
+                  {responseError.password}
+                </div>
+              } */}
               <input
                 type="password"
                 id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={loginData.password}
+                onChange={(e) => setLoginData((prev) => { return { ...prev, password: e.target.value } })}
               />
             </div>
           </div>

@@ -29,7 +29,7 @@ const sendVerificationCode = async (receiverEmail, verificationCode) => {
             subject: "Verification Code",
             text: `Please verify your email by clicking the link: http://${process.env.HOST}/user/verify-email?code=${verificationCode}`,
         });
-        console.log('Email sent:', info.response);
+        // console.log('Email sent:', info.response);
     } catch (error) {
         console.error('Error sending email:', error);
         throw new Error('Failed to send verification email'); // Optionally throw an error to handle it upstream
