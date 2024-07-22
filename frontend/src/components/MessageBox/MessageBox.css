@@ -1,4 +1,4 @@
-.verification-box {
+.message-box {
     animation: smooth 0.2s linear 1 normal forwards;
     z-index: 2;
     height: 300px;
@@ -17,20 +17,20 @@
     border-bottom: 1px solid #B730E0;
 }
 
-.verification-box .header {
+.message-box .header {
     color: white;
     font-size: 24px;
     font-weight: 500;
     align-self: center;
 }
 
-.verification-box .body {
+.message-box .body {
     color: rgb(200, 200, 200);
     font-size: 16px;
     font-weight: 500;
 }
 
-.verification-box button {
+.message-box button {
     font-size: 18px;
     background-color: #43bbfcc2;
     color: white;
@@ -41,6 +41,6 @@
     cursor: pointer;
 }
 
-.verification-box button:hover {
+.message-box button:hover {
     background-color: #3576DAc2;
 }

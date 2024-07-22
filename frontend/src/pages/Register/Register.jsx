@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link, redirect } from "react-router-dom";
 import axios from 'axios';
-import Verification from '../../components/Verification/Verification'
+import MessageBox from '../../components/MessageBox/MessageBox'
 import './Register.css'
 
 const Register = () => {
   const [registrationData, setRegistrationData] = useState({ email: '', displayedName: '', password: '' })
   const [responseError, setResponseError] = useState({});
-  const [responseMessage, setResponseMessage] = useState('')
+  const [responseMessage, setResponseMessage] = useState({ title: '', body: '' })
+  const [messageBox, setMessageBox] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,29 +23,62 @@ const Register = () => {
         email: registrationData.email,
         password: registrationData.password
       })
-      setResponseMessage(response.data.message)
+
+      setResponseMessage({
+        title: 'Registiration successful',
+        body: response.data.data
+      })
+
+      setRegistrationData({ email: '', displayedName: '', password: '' });
+
+      setMessageBox(true);
 
     } catch (err) {
-      if (err.response.data.error.cause === 'input-fields')
-        err.response.data.error.data.map((fieldError) => {
-          newError[fieldError.path] = fieldError.msg;
-        })
+
+      if (err.response && err.response.data && err.response.data.err) {
+
+        const { cause, data } = err.response.data.error;
+
+        if (cause === 'input-fields')
+          data.map((fieldError) => {
+            newError[fieldError.path] = fieldError.msg;
+          })
+        else {
+          // Handle other error causes (e.g., server errors)
+          setResponseMessage({
+            title: 'Error',
+            body: 'An error occurred while registering. Please try again later.'
+          });
+          setMessageBox(true);
+        }
+      }
+      else {
+        // Handle other errors (network issues, etc.)
+        console.error('Registration error:', err);
+        setResponseMessage({
+          title: 'Error',
+          body: 'An error occurred while registering. Please try again later.'
+        });
+        
+        setMessageBox(true);
+      }
+
 
     } finally {
       setResponseError(newError);
     }
   };
-  useEffect(() => {
-    console.log(responseError);
-  })
+
   return (
     <div className="register-page">
-      {(responseMessage) && <Verification
+
+      {(messageBox) && <MessageBox
         responseMessage={responseMessage}
         setResponseMessage={setResponseMessage}
-        setRegistrationData={setRegistrationData}>
-      </Verification>}
-      <div className='register-div' style={(responseMessage) ? { pointerEvents: 'none' } : {}}>
+        setMessageBox={setMessageBox}>
+      </MessageBox>}
+
+      <div className='register-div' style={(messageBox) ? { pointerEvents: 'none' } : {}}>
         <div style={{
           alignSelf: 'center',
           display: 'flex',

@@ -21,7 +21,6 @@ const register = [
     asyncHandler(async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            // console.log(errors);
             return res.status(400).json({
                 success: false,
                 error: {
@@ -51,13 +50,11 @@ const register = [
             expiresAt: verificationExpires
         });
 
-        // console.log(verificationRecord);
 
         await verificationRecord.save();
 
         await sendVerificationCode(req.body.email, verificationCode)
 
-        // console.log(userRecord);
 
         res.status(201).json({
             success: true,
@@ -112,7 +109,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
 
-    const { email, password } = req.query;
+    const { email, password } = req.body;
 
     const userRecord = await userModel.findOne({ email: email });
 
@@ -150,21 +147,23 @@ const login = asyncHandler(async (req, res) => {
             userId: userRecord._id
         })
 
-        // Convert expiresAt to a Date object
-        const expiresAtDate = new Date(verificationCodeRecord.expiresAt);
 
-        if (!verificationCodeRecord || (Date.now() > expiresAtDate.getTime())) {
+        if (!verificationCodeRecord || (Date.now() > new Date(verificationCodeRecord.expiresAt).getTime())) {
+
+            if (verificationCodeRecord) {
+                await verificationCodeModel.deleteOne({ _id: verificationCodeRecord._id });
+            }
 
             const verificationCode = crypto.randomBytes(20).toString('hex');
             const verificationExpires = Date.now() + 3600000; // 1 Hour
 
-            const verificationRecord = new verificationCodeModel({
+            const newVerificationCodeRecord = new verificationCodeModel({
                 userId: userRecord._id,
                 code: verificationCode,
                 expiresAt: verificationExpires
             });
 
-            await verificationRecord.save();
+            await newVerificationCodeRecord.save();
 
             await sendVerificationCode(email, verificationCode)
 
@@ -175,10 +174,6 @@ const login = asyncHandler(async (req, res) => {
                     data: 'We have resent a verification code. Please check your email to verify your account.'
                 }
             })
-        }
-
-        if (verificationCodeRecord) {
-            await verificationCodeModel.deleteOne({ _id: verificationCodeRecord._id });
         }
 
         return res.status(403).json({

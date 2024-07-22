@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
+import MessageBox from '../../components/MessageBox/MessageBox'
 import axios from 'axios';
 
 import './Login.css'
@@ -7,7 +8,8 @@ import './Login.css'
 const Login = () => {
   const [loginData, setLoginData] = useState({ email: '', password: '' })
   const [responseError, setResponseError] = useState({});
-  const [responseMessage, setResponseMessage] = useState('')
+  const [responseMessage, setResponseMessage] = useState({ title: '', body: '' })
+  const [messageBox, setMessageBox] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,33 +19,58 @@ const Login = () => {
     let newError = {};
 
     try {
-      await axios.get(url, {
-        params: {
-          email: loginData.email,
-          password: loginData.password
-        }
-      })
+      await axios.post(url, {
+        email: loginData.email,
+        password: loginData.password
+      });
+
     } catch (err) {
-      if (!err.response.data.success) {
+
+      if (err.response && err.response.data && !err.response.data.success) {
 
         const { cause, data } = err.response.data.error;
 
-        if (cause === 'input-fields')
+        if (cause === 'input-fields') {
+
           data.map((fieldError) => {
             newError[fieldError.path] = fieldError.msg;
           });
 
-        if (newError.hasOwnProperty('email')) {
-          setLoginData({ email: '', password: '' })
+
+          setLoginData((prev) => ({
+            ...prev,
+            email: newError.hasOwnProperty('email') ? '' : prev.email,
+            password: ''
+          }));
+
         }
-        else if (newError.hasOwnProperty('password')) {
-          setLoginData((prev) => {
-            return {
-              email: prev.email,
-              password: ''
-            }
+
+        else if (cause === 'verification') {
+
+          setResponseMessage({
+            title: 'Verification required',
+            body: data
           })
+
+          setLoginData((prev) => ({
+            ...prev,
+            email: prev.email,
+            password: ''
+          }));
+
+          setMessageBox(true);
         }
+      }
+      else {
+        
+        // Handle other errors (network issues, server errors, etc.)
+        console.error('Login error:', err);
+        setResponseMessage({
+          title: 'Error',
+          body: 'An error occurred while logging in. Please try again later.'
+        });
+
+        setMessageBox(true);
       }
     } finally {
       setResponseError(newError);
@@ -52,6 +79,13 @@ const Login = () => {
   };
   return (
     <div className="login-page">
+
+      {(messageBox) && <MessageBox
+        responseMessage={responseMessage}
+        setResponseMessage={setResponseMessage}
+        setMessageBox={setMessageBox}>
+      </MessageBox>}
+
       <div className='login-div'>
         <div style={{
           alignSelf: 'center',
