@@ -19,7 +19,9 @@ const register = [
         .isEmail()
         .withMessage('Email must be valid.'),
     asyncHandler(async (req, res) => {
+
         const errors = validationResult(req);
+        
         if (!errors.isEmpty()) {
             return res.status(400).json({
                 success: false,
@@ -30,7 +32,9 @@ const register = [
             });
         }
 
-        const existedEmail = await userModel.findOne({ email: req.body.email });
+        const { displayedName, email, password } = req.body;
+
+        const existedEmail = await userModel.findOne({ email: email });
 
         if (existedEmail) {
             return res.status(403).json({
@@ -47,9 +51,6 @@ const register = [
                 }
             });
         }
-
-
-        const { displayedName, email, password } = req.body;
 
         const hashedPassword = await hashPassword(password)
 
