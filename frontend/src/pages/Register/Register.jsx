@@ -16,7 +16,7 @@ const Register = () => {
     let newError = {};
 
     try {
-      const url = 'http://localhost:3000/user/register'
+      const url = 'http://localhost:5000/user/register'
 
       const response = await axios.post(url, {
         displayedName: registrationData.displayedName,
@@ -34,8 +34,7 @@ const Register = () => {
       setMessageBox(true);
 
     } catch (err) {
-
-      if (err.response && err.response.data && err.response.data.err) {
+      if (err.response && err.response.data && err.response.data.error) {
 
         const { cause, data } = err.response.data.error;
 

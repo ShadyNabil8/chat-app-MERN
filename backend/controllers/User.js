@@ -29,6 +29,26 @@ const register = [
                 }
             });
         }
+
+        const existedEmail = await userModel.findOne({ email: req.body.email });
+
+        if (existedEmail) {
+            return res.status(403).json({
+                success: false,
+                error: {
+                    cause: 'input-fields',
+                    data: [{
+                        "type": "field",
+                        "value": "",
+                        "msg": "Email is already registered.",
+                        "path": "email",
+                        "location": "body"
+                    }]
+                }
+            });
+        }
+
+
         const hashedPassword = await hashPassword(req.body.password)
 
         const userRecord = new userModel({

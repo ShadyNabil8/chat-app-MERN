@@ -4,7 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db')
 const customErrorHandler = require('./utils/error')
 
-const port = 3000;
+const port = 5000;
 const app = express();
 
 // Connect to MongoDB

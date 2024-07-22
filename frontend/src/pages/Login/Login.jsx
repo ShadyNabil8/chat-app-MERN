@@ -14,7 +14,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const url = 'http://localhost:3000/user/login'
+    const url = 'http://localhost:5000/user/login'
 
     let newError = {};
 
