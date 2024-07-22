@@ -49,13 +49,15 @@ const register = [
         }
 
 
-        const hashedPassword = await hashPassword(req.body.password)
+        const { displayedName, email, password } = req.body;
+
+        const hashedPassword = await hashPassword(password)
 
         const userRecord = new userModel({
-            displayedName: req.body.displayedName,
-            email: req.body.email,
+            displayedName: displayedName,
+            email: email,
             passwordHash: hashedPassword,
-            profilePicture: `${process.env.AVATAR_API}/${Date.now()}-${req.body.displayedName}.png`,
+            profilePicture: `${process.env.AVATAR_API}/${Date.now()}-${displayedName}.png`,
 
         });
 
@@ -73,7 +75,7 @@ const register = [
 
         await verificationRecord.save();
 
-        await sendVerificationCode(req.body.email, verificationCode)
+        await sendVerificationCode(email, verificationCode)
 
 
         res.status(201).json({
