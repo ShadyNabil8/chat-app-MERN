@@ -19,11 +19,10 @@ const Login = () => {
     let newError = {};
 
     try {
-      await axios.post(url, {
+      const response = await axios.post(url, {
         email: loginData.email,
         password: loginData.password
       });
-
     } catch (err) {
 
       if (err.response && err.response.data && !err.response.data.success) {
@@ -62,7 +61,7 @@ const Login = () => {
         }
       }
       else {
-        
+
         // Handle other errors (network issues, server errors, etc.)
         console.error('Login error:', err);
         setResponseMessage({

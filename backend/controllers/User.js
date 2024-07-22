@@ -5,6 +5,7 @@ const { body, validationResult } = require('express-validator');
 const { hashPassword, comparePassword } = require('../utils/password')
 const { sendVerificationCode } = require('../config/transporter')
 const crypto = require('crypto');
+const { generateToken } = require('../utils/authorization')
 
 require('dotenv').config();
 
@@ -21,7 +22,7 @@ const register = [
     asyncHandler(async (req, res) => {
 
         const errors = validationResult(req);
-        
+
         if (!errors.isEmpty()) {
             return res.status(400).json({
                 success: false,
@@ -207,10 +208,13 @@ const login = asyncHandler(async (req, res) => {
             }
         })
     }
-    // console.log(userRecord);
+
+    const token = generateToken(userRecord);
+
     return res.status(200).json({
         success: true,
-        data: userRecord
+        data: userRecord,
+        token,
     })
 
 })
