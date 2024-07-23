@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 import MessageBox from '../../components/MessageBox/MessageBox'
-import axios from 'axios';
-
+import { useAuthorization } from '../../context/authorizationContext';
 import './Login.css'
 
 const Login = () => {
@@ -10,19 +9,20 @@ const Login = () => {
   const [responseError, setResponseError] = useState({});
   const [responseMessage, setResponseMessage] = useState({ title: '', body: '' })
   const [messageBox, setMessageBox] = useState(false);
+  const { login } = useAuthorization();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const url = 'http://localhost:5000/user/login'
-
     let newError = {};
 
     try {
-      const response = await axios.post(url, {
-        email: loginData.email,
-        password: loginData.password
-      });
+      const { email, password } = loginData;
+
+      const response = await login(email, password);
+
+      console.log(response);
+
     } catch (err) {
 
       if (err.response && err.response.data && !err.response.data.success) {

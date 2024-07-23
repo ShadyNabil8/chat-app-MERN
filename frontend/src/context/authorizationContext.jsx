@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const authorizationContext = createContext();
 
-const authorizationProvider = ({ children }) => {
+export const AuthorizationProvider = ({ children }) => {
     const [userData, setUserData] = useState({
         displayedName: '',
         email: '',
@@ -12,7 +12,7 @@ const authorizationProvider = ({ children }) => {
         friends: []
     });
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
 
     axios.interceptors.response.use(function (response) {
@@ -30,7 +30,7 @@ const authorizationProvider = ({ children }) => {
                 profilePicture: '',
                 friends: []
             });
-            history.push('/user/login');
+            navigate.push('/login');
         }
 
         /**
@@ -40,8 +40,15 @@ const authorizationProvider = ({ children }) => {
         return Promise.reject(error);
     });
 
-    const login = () => {
+    const login = async (email, password) => {
 
+        const url = 'http://localhost:5000/user/login'
+
+        const response = await axios.post(url, {
+            email: email,
+            password: password
+        });
+        return response;
     }
 
     const logout = () => {
@@ -53,7 +60,7 @@ const authorizationProvider = ({ children }) => {
             friends: []
         });
 
-        history.push('./user/login')
+        navigate.push('./login')
     }
 
     return (
