@@ -2,9 +2,9 @@ import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const authorizationContext = createContext();
+const authContext = createContext();
 
-export const AuthorizationProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
     const [userData, setUserData] = useState({
         displayedName: '',
         email: '',
@@ -64,12 +64,12 @@ export const AuthorizationProvider = ({ children }) => {
     }
 
     return (
-        <authorizationContext.Provider value={{ login, logout, userData }}>
+        <authContext.Provider value={{ login, logout, userData }}>
             {children}
-        </authorizationContext.Provider>
+        </authContext.Provider>
     )
 }
 
 export const useAuthorization = () => {
-    return useContext(authorizationContext)
+    return useContext(authContext)
 }
