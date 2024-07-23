@@ -211,9 +211,16 @@ const login = asyncHandler(async (req, res) => {
 
     const token = generateToken(userRecord);
 
+    const { displayedName, profilePicture, friends } = userRecord;
+
     return res.status(200).json({
         success: true,
-        data: userRecord,
+        data: {
+            email,
+            displayedName,
+            profilePicture,
+            friends
+        },
         token,
     })
 

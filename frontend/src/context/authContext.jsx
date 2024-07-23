@@ -48,7 +48,20 @@ export const AuthProvider = ({ children }) => {
             email: email,
             password: password
         });
-        return response;
+
+        if (response.data && response.data.success) {
+
+            const { displayedName, email, profilePicture, friends } = response.data.data;
+
+            setUserData({
+                displayedName: displayedName,
+                email: email,
+                profilePicture: profilePicture,
+                friends: friends
+            });
+        }
+        navigate('./home')
+
     }
 
     const logout = () => {

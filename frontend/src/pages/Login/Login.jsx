@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 import MessageBox from '../../components/MessageBox/MessageBox'
-import { useAuthorization } from '../../context/authorizationContext';
+import { useAuthorization } from '../../context/authContext';
 import './Login.css'
 
 const Login = () => {
@@ -19,9 +19,7 @@ const Login = () => {
     try {
       const { email, password } = loginData;
 
-      const response = await login(email, password);
-
-      console.log(response);
+      await login(email, password);
 
     } catch (err) {
 
