@@ -4,10 +4,10 @@ import Message from '../../components/Message/Message'
 import ExploredUser from '../../components/ExploredUser/ExploredUser'
 import Friend from '../../components/Friend/Friend'
 import image1 from '../../assets/naruto.jpeg'
-import image2 from '../../assets/Kakashi.webp'
 import { colorEmojiList, testMessages } from '../../assets/assets.js'
+import { useAuth } from '../../context/authContext';
+import { getFormattedDate } from '../../utils/date.js'
 import './Home.css'
-import RSC from "react-scrollbars-custom";
 
 const Home = () => {
 
@@ -17,7 +17,7 @@ const Home = () => {
   const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
   const inputRef = useRef(null);
   const scrollRef = useRef(null);
-
+  const { userData } = useAuth();
 
   const handleEmojiClick = (emojiObject) => {
     const cursorPosition = inputRef.current.selectionStart;
@@ -64,9 +64,9 @@ const Home = () => {
         return [
           ...prevMessageList,
           {
-            sender: 'Shady',
-            image: image1,
-            date: 'Today 15.30 AM',
+            sender: userData.displayedName,
+            image: userData.profilePicture,
+            date: getFormattedDate(),
             text: message,
             myMessage: true
           }
@@ -82,10 +82,6 @@ const Home = () => {
       setEmojiPicker(false);
     }
   };
-
-  useEffect(() => {
-    // console.log(message)
-  })
 
   return (
     <div style={{

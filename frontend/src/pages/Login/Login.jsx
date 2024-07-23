@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 import MessageBox from '../../components/MessageBox/MessageBox'
-import { useAuthorization } from '../../context/authContext';
+import { useAuth } from '../../context/authContext';
 import './Login.css'
 
 const Login = () => {
@@ -9,7 +9,7 @@ const Login = () => {
   const [responseError, setResponseError] = useState({});
   const [responseMessage, setResponseMessage] = useState({ title: '', body: '' })
   const [messageBox, setMessageBox] = useState(false);
-  const { login } = useAuthorization();
+  const { login } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
