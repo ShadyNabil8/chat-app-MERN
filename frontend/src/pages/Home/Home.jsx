@@ -116,6 +116,7 @@ const Home = () => {
 
       }
     }
+    
     if (!authState.isAuthenticated) {
       fetchProfile();
     }

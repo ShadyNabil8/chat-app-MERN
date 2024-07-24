@@ -1,12 +1,8 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-    message: {
+    body: {
         type: String,
-        required: true
-    },
-    sentAt: {
-        type: Data,
         required: true
     },
     senderId: {
@@ -25,10 +21,10 @@ const schema = new mongoose.Schema({
             ref: 'user'
         },
         readAt: {
-            type: Data,
+            type: Date,
         },
     },
 
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model('message', schema)
