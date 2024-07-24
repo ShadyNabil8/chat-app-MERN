@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, redirect } from "react-router-dom";
-import axios from 'axios';
+import api from '../../api/api';
 import MessageBox from '../../components/MessageBox/MessageBox'
 import './Register.css'
 
@@ -16,9 +16,9 @@ const Register = () => {
     let newError = {};
 
     try {
-      const url = 'http://localhost:5000/user/register'
+      const url = 'user/register'
 
-      const response = await axios.post(url, {
+      const response = await api.post(url, {
         displayedName: registrationData.displayedName,
         email: registrationData.email,
         password: registrationData.password
@@ -58,7 +58,7 @@ const Register = () => {
           title: 'Error',
           body: 'An error occurred while registering. Please try again later.'
         });
-        
+
         setMessageBox(true);
       }
 

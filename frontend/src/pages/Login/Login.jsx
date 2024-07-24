@@ -9,7 +9,7 @@ const Login = () => {
   const [responseError, setResponseError] = useState({});
   const [responseMessage, setResponseMessage] = useState({ title: '', body: '' })
   const [messageBox, setMessageBox] = useState(false);
-  const { login } = useAuth();
+  const { login, setAuthState } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,8 +23,19 @@ const Login = () => {
 
     } catch (err) {
 
-      if (err.response && err.response.data && !err.response.data.success) {
+      if (error.response && error.response.status === 401) {
+        setAuthState({
+          isAuthenticated: false,
+          userData: {
+            displayedName: '',
+            email: '',
+            profilePicture: '',
+            friends: []
+          }
+        })
+      }
 
+      if (err.response && err.response.data && !err.response.data.success) {
         const { cause, data } = err.response.data.error;
 
         if (cause === 'input-fields') {
