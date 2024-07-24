@@ -5,6 +5,7 @@ const { protect } = require('../utils/auth')
 
 router.post('/register', userController.register)
 router.get('/verify-email', userController.verifyEmail)
-router.post('/login', protect, userController.login)
+router.post('/login', userController.login)
+router.get('/profile', protect, userController.profile)
 
 module.exports = router;

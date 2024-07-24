@@ -23,7 +23,7 @@ const Login = () => {
 
     } catch (err) {
 
-      if (error.response && error.response.status === 401) {
+      if (err.response && err.response.status === 401) {
         setAuthState({
           isAuthenticated: false,
           userData: {

@@ -7,17 +7,18 @@ import image1 from '../../assets/naruto.jpeg'
 import { colorEmojiList, testMessages } from '../../assets/assets.js'
 import { useAuth } from '../../context/authContext';
 import { getFormattedDate } from '../../utils/date.js'
+import api from '../../api/api.jsx'
 import './Home.css'
 
 const Home = () => {
-
+  console.log("HOME");
   const [message, setMessage] = useState('')
   const [messageList, setMessageList] = useState(testMessages);
   const [emojiPicker, setEmojiPicker] = useState(false)
   const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
   const inputRef = useRef(null);
   const scrollRef = useRef(null);
-  const { authState } = useAuth();
+  const { authState, setAuthState } = useAuth();
 
   const userData = authState.userData;
 
@@ -84,6 +85,42 @@ const Home = () => {
       setEmojiPicker(false);
     }
   };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await api.get('user/profile');
+        const { displayedName, email, profilePicture, friends } = response.data.data;
+
+        setAuthState({
+          isAuthenticated: true,
+          userData: {
+            displayedName: displayedName,
+            email: email,
+            profilePicture: profilePicture,
+            friends: friends
+          }
+        });
+
+      } catch (error) {
+        console.log(error);
+        setAuthState({
+          isAuthenticated: false,
+          userData: {
+            displayedName: '',
+            email: '',
+            profilePicture: '',
+            friends: []
+          }
+        });
+
+      }
+    }
+    if (!authState.isAuthenticated) {
+      fetchProfile();
+    }
+
+  }, [] /* [setUserData] */);
 
   return (
     <div style={{

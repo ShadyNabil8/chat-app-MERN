@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
             email: email,
             password: password
         });
-
+        console.log(response);
         if (response.data && response.data.success) {
 
             const { displayedName, email, profilePicture, friends } = response.data.data;
@@ -59,9 +59,8 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        console.log(authState.isAuthenticated);
         if (authState.isAuthenticated) {
-            navigate('./home')
+            navigate('./home') // Will this make re-render?
         }
         else {
             navigate('./login')

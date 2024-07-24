@@ -28,14 +28,12 @@ const protect = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
 
     try {
-        console.log(token);
 
         const decoded = jwt.verify(token, process.env.PRIVATE_KEY);
         req.user = decoded.id;
         next();
 
     } catch (error) {
-        
         res.status(401).json({
             success: false,
             error: {

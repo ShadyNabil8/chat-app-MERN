@@ -132,7 +132,6 @@ const verifyEmail = asyncHandler(async (req, res) => {
 })
 
 const login = asyncHandler(async (req, res) => {
-
     const { email, password } = req.body;
 
     const userRecord = await userModel.findOne({ email: email });
@@ -226,4 +225,33 @@ const login = asyncHandler(async (req, res) => {
 
 })
 
-module.exports = { register, verifyEmail, login }
+
+const profile = asyncHandler(async (req, res, next) => {
+    if (!req.user) {
+        res.status(401).json({
+            success: false,
+            error: {
+                cause: 'authorization',
+                data: 'Not authorized, token failed'
+            }
+        })
+    }
+
+    const userId = req.user;
+
+    const userRecord = await userModel.findById(userId)
+
+    const { displayedName, profilePicture, friends, email } = userRecord;
+
+    return res.status(200).json({
+        success: true,
+        data: {
+            email,
+            displayedName,
+            profilePicture,
+            friends
+        },
+    })
+})
+
+module.exports = { register, verifyEmail, login, profile }
