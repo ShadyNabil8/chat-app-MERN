@@ -1,36 +1,62 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const authContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [userData, setUserData] = useState({
-        displayedName: '',
-        email: '',
-        profilePicture: '',
-        friends: []
-    });
+    const [authState, setAuthState] = useState({
+        isAuthenticated: false,
+        userData: {
+            displayedName: '',
+            email: '',
+            profilePicture: '',
+            friends: []
+        }
+    })
 
     const navigate = useNavigate();
+
+
+    axios.interceptors.request.use(
+        (config) => {
+            console.log('in REQ');
+            const token = localStorage.getItem('chatAppToken');
+
+            if (token) {
+                config.headers['Authorization'] = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        }
+    );
 
 
     axios.interceptors.response.use(function (response) {
 
         // Any status code that lie within the range of 2xx cause this function to trigger
+        console.log('in RES');
+        if (response.data.token) {
+            localStorage.setItem('chatAppToken', response.data.token);
+        }
+
         return response;
 
     }, function (error) {
 
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         if (error.response && error.response.status === 401) {
-            setUser({
-                displayedName: '',
-                email: '',
-                profilePicture: '',
-                friends: []
-            });
-            navigate.push('/login');
+            setAuthState({
+                isAuthenticated: false,
+                userData: {
+                    displayedName: '',
+                    email: '',
+                    profilePicture: '',
+                    friends: []
+                }
+            })
         }
 
         /**
@@ -53,31 +79,47 @@ export const AuthProvider = ({ children }) => {
 
             const { displayedName, email, profilePicture, friends } = response.data.data;
 
-            setUserData({
-                displayedName: displayedName,
-                email: email,
-                profilePicture: profilePicture,
-                friends: friends
+            setAuthState({
+                isAuthenticated: true,
+                userData: {
+                    displayedName: displayedName,
+                    email: email,
+                    profilePicture: profilePicture,
+                    friends: friends
+                }
             });
         }
-        navigate('./home')
-
     }
 
     const logout = () => {
 
-        setUserData({
-            displayedName: '',
-            email: '',
-            profilePicture: '',
-            friends: []
+        localStorage.removeItem('chatAppToken');
+
+        setAuthState({
+            isAuthenticated: false,
+            userData: {
+                displayedName: '',
+                email: '',
+                profilePicture: '',
+                friends: []
+            }
         });
 
-        navigate.push('./login')
     }
 
+    useEffect(() => {
+        console.log(authState.isAuthenticated);
+        if (authState.isAuthenticated) {
+            navigate('./home')
+        }
+        else {
+            navigate('./login')
+        }
+
+    }, [authState])
+
     return (
-        <authContext.Provider value={{ login, logout, userData }}>
+        <authContext.Provider value={{ login, logout, authState }}>
             {children}
         </authContext.Provider>
     )

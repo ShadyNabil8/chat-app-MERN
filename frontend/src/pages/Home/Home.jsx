@@ -17,7 +17,9 @@ const Home = () => {
   const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
   const inputRef = useRef(null);
   const scrollRef = useRef(null);
-  const { userData } = useAuth();
+  const { authState } = useAuth();
+
+  const userData = authState.userData;
 
   const handleEmojiClick = (emojiObject) => {
     const cursorPosition = inputRef.current.selectionStart;

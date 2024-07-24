@@ -14,8 +14,8 @@ const generateToken = (user) => {
 }
 
 const protect = asyncHandler(async (req, res, next) => {
-
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer')) {
+
         res.status(401).json({
             success: false,
             error: {
@@ -28,21 +28,22 @@ const protect = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
 
     try {
+        console.log(token);
 
         const decoded = jwt.verify(token, process.env.PRIVATE_KEY);
         req.user = decoded.id;
         next();
 
     } catch (error) {
-        // Check the documentation to extract the error message from error
+        
         res.status(401).json({
             success: false,
             error: {
-                cause: 'authorization',
-                data: 'Not authorized, token failed'
+                cause: error.name || 'authorization',
+                data: error.message || 'Not authorized, token failed'
             }
         })
     }
 })
 
-module.exports = { generateToken }
+module.exports = { generateToken, protect }

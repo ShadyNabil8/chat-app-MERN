@@ -5,7 +5,7 @@ const { body, validationResult } = require('express-validator');
 const { hashPassword, comparePassword } = require('../utils/password')
 const { sendVerificationCode } = require('../config/transporter')
 const crypto = require('crypto');
-const { generateToken } = require('../utils/authorization')
+const { generateToken } = require('../utils/auth')
 
 require('dotenv').config();
 
