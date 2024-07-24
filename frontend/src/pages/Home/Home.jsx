@@ -8,6 +8,8 @@ import { colorEmojiList, testMessages } from '../../assets/assets.js'
 import { useAuth } from '../../context/authContext';
 import { getFormattedDate } from '../../utils/date.js'
 import api from '../../api/api.jsx'
+import { IoIosNotifications } from "react-icons/io";
+
 import './Home.css'
 
 const Home = () => {
@@ -116,7 +118,7 @@ const Home = () => {
 
       }
     }
-    
+
     if (!authState.isAuthenticated) {
       fetchProfile();
     }
@@ -125,88 +127,111 @@ const Home = () => {
 
   return (
     <div style={{
-      display: 'flex'
+      display: 'flex',
+      flexDirection: 'column',
+      boxSizing: 'border-box',
+      height: '100vh',
+      gap: '20px',
+      backgroundColor: '#2B2D31'
     }}>
-      <div className="explore-container">
-        <div className="search-bar">
-          <input type='text' placeholder='Search for friends'></input>
+      <div className="header">
+        <div className="profile">
+          <img src={userData.profilePicture}></img>
         </div>
-        <div className="explore-elements-container">
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-          <ExploredUser></ExploredUser>
-
-        </div>
-      </div>
-      <div className="chat-container">
-        <div className='messages-container' ref={scrollRef} >
-          {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
-        </div>
-        <div className="input-container">
-          <input
-            className={isArabic(message) ? 'text-input-rtl text-container' : 'text-container'}
-            ref={inputRef}
-            type="text"
-            placeholder="Type your message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <img src={displayedEmoji.emoji}
-            alt="emoji"
-            className={displayedEmoji.focus ? "emoji-icon" : "emoji-icon emoji-icon-leave"}
-            onClick={toggleEmojiPicker}
-            onMouseEnter={emojiOnMouseEnter}
-            onMouseLeave={emojiOnMouseLeave}
-          ></img>
-          <div className='emoji-picker'>
-            <EmojiPicker
-              open={emojiPicker}
-              autoFocusSearch={false}
-              theme={'dark'}
-              emojiStyle={'facebook'}
-              onEmojiClick={handleEmojiClick}
-            />
+        <div className="notification">
+          <IoIosNotifications className='notification-icon' />
+          <div className="notification-dot">
+            5
           </div>
         </div>
+      </div>
+      <div style={{
+        display: 'flex',
+        flex: '1',
+        maxHeight: '100%',
+        boxSizing: 'border-box'
+      }}>
+        <div className="explore-container">
+          <div className="search-bar">
+            <input type='text' placeholder='Search for friends'></input>
+          </div>
+          <div className="explore-elements-container">
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
+            <ExploredUser></ExploredUser>
 
-      </div>
-      <div className='friends-container'>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "السﻻم عليكم السﻻم عليكم السﻻم عليكم السﻻم" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-      </div>
-    </div >
+          </div>
+        </div>
+        <div className="chat-container">
+          <div className='messages-container' ref={scrollRef} >
+            {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
+          </div>
+          <div className="input-container">
+            <input
+              className={isArabic(message) ? 'text-input-rtl text-container' : 'text-container'}
+              ref={inputRef}
+              type="text"
+              placeholder="Type your message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <img src={displayedEmoji.emoji}
+              alt="emoji"
+              className={displayedEmoji.focus ? "emoji-icon" : "emoji-icon emoji-icon-leave"}
+              onClick={toggleEmojiPicker}
+              onMouseEnter={emojiOnMouseEnter}
+              onMouseLeave={emojiOnMouseLeave}
+            ></img>
+            <div className='emoji-picker'>
+              <EmojiPicker
+                open={emojiPicker}
+                autoFocusSearch={false}
+                theme={'dark'}
+                emojiStyle={'facebook'}
+                onEmojiClick={handleEmojiClick}
+              />
+            </div>
+          </div>
+
+        </div>
+        <div className='friends-container'>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "السﻻم عليكم السﻻم عليكم السﻻم عليكم السﻻم" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
+        </div>
+      </div >
+    </div>
   )
 }
 
