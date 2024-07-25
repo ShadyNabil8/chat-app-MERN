@@ -254,4 +254,15 @@ const profile = asyncHandler(async (req, res, next) => {
     })
 })
 
-module.exports = { register, verifyEmail, login, profile }
+const search = asyncHandler(async (req, res) => {
+    console.log(req.query);
+    const { query } = req.query;
+
+    const users = await userModel
+        .find({ displayedName: { $regex: `^${query}`, $options: 'i' } })
+        .select('id displayedName profilePicture')
+
+    res.json(users)
+});
+
+module.exports = { register, verifyEmail, login, profile, search }

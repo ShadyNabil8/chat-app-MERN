@@ -10,21 +10,45 @@ import { useAuth } from '../../context/authContext';
 import { getFormattedDate } from '../../utils/date.js'
 import api from '../../api/api.jsx'
 import { IoIosNotifications } from "react-icons/io";
+import debounce from 'lodash.debounce';
 
 import './Home.css'
 
 const Home = () => {
-  console.log("HOME");
   const [message, setMessage] = useState('')
   const [messageList, setMessageList] = useState(testMessages);
   const [emojiPicker, setEmojiPicker] = useState(false)
   const [notificationBox, setNotificationBox] = useState(false)
   const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResult, setSearchResult] = useState([])
   const inputRef = useRef(null);
   const scrollRef = useRef(null);
   const { authState, setAuthState } = useAuth();
 
   const userData = authState.userData;
+
+  const debouncedSearch = debounce(async (query) => {
+    if (searchQuery) {
+      const url = '/user/search';
+
+      try {
+        const response = await api.get(url, { params: { query } })
+
+        if (response.data) {
+          setSearchResult(response.data)
+        }
+
+      } catch (error) {
+
+      }
+    }
+    else {
+      setSearchResult([])
+    }
+
+
+  }, 300);
 
   const handleEmojiClick = (emojiObject) => {
     const cursorPosition = inputRef.current.selectionStart;
@@ -131,6 +155,14 @@ const Home = () => {
 
   }, [] /* [setUserData] */);
 
+  useEffect(() => {
+    debouncedSearch(searchQuery);
+
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchQuery])
+
   return (
     <div style={{
       display: 'flex',
@@ -169,28 +201,14 @@ const Home = () => {
       }}>
         <div className="explore-container">
           <div className="search-bar">
-            <input type='text' placeholder='Search for friends'></input>
+            <input type='text' placeholder='Search for friends' onChange={(e) => setSearchQuery(e.target.value)}></input>
           </div>
           <div className="explore-elements-container">
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-            <ExploredUser></ExploredUser>
-
+            {
+              searchResult.map((res, index) => {
+                return <ExploredUser key={index} data={res}></ExploredUser>
+              })
+            }
           </div>
         </div>
         <div className="chat-container">
