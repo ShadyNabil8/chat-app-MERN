@@ -3,8 +3,9 @@ import EmojiPicker from 'emoji-picker-react';
 import Message from '../../components/Message/Message'
 import ExploredUser from '../../components/ExploredUser/ExploredUser'
 import Friend from '../../components/Friend/Friend'
+import FriendRequest from '../../components/FriendRequest/FriendRequest'
 import image1 from '../../assets/naruto.jpeg'
-import { colorEmojiList, testMessages } from '../../assets/assets.js'
+import { colorEmojiList, testMessages, friendRequests } from '../../assets/assets.js'
 import { useAuth } from '../../context/authContext';
 import { getFormattedDate } from '../../utils/date.js'
 import api from '../../api/api.jsx'
@@ -17,6 +18,7 @@ const Home = () => {
   const [message, setMessage] = useState('')
   const [messageList, setMessageList] = useState(testMessages);
   const [emojiPicker, setEmojiPicker] = useState(false)
+  const [notificationBox, setNotificationBox] = useState(false)
   const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
   const inputRef = useRef(null);
   const scrollRef = useRef(null);
@@ -88,6 +90,10 @@ const Home = () => {
     }
   };
 
+  const toggleNotificationBox = () => {
+    setNotificationBox((prev) => !prev)
+  }
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -139,10 +145,20 @@ const Home = () => {
           <img src={userData.profilePicture}></img>
         </div>
         <div className="notification">
-          <IoIosNotifications className='notification-icon' />
-          <div className="notification-dot">
-            5
-          </div>
+          <IoIosNotifications className='notification-icon' onClick={toggleNotificationBox} />
+          {
+            (friendRequests.length) && <div className="notification-dot">
+              {friendRequests.length}
+            </div>
+          }
+          {
+            (notificationBox) && <div className="notification-container">
+              <div className="title">
+                Friend requests
+              </div>
+              {friendRequests.map((req, index) => <FriendRequest key={index} data={{ image: req.image, name: req.name }}></FriendRequest>)}
+            </div>
+          }
         </div>
       </div>
       <div style={{

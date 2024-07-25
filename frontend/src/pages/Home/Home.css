@@ -47,6 +47,29 @@
     right: 37px;
 }
 
+.header .notification-container {
+    position: absolute;
+    height: 600px;
+    min-width: 350px;
+    background-color: #232425;
+    right: 50px;
+    z-index: 2;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow-y: auto;
+}
+
+.header .notification-container .title {
+    color: #ddd;
+    font-size: 20x;
+    font-weight: 500;
+    text-align: start;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
 .header .notification .notification-icon:hover {
     transform: scale(1.2);
 }

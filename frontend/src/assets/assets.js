@@ -75,3 +75,17 @@ export const testMessages = [
 ];
 
 export const darkEmojiList = [emojiLaughDark, emojiLoveDark]
+
+export const friendRequests = [
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+    { image: image1, name: 'Shady nabil' },
+]
