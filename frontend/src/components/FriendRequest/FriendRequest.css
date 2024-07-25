@@ -28,6 +28,7 @@
     height: 30px;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: 500;
     transition: all 0.3s;
 }
 
@@ -35,6 +36,12 @@
 .friend-req-item .confirm-btn {
     background-color: dodgerblue;
     color: white;
+
+}
+
+.friend-req-item .delete-btn {
+    background-color: rgb(255, 255, 255);
+    color: rgb(25, 26, 26);
 
 }
 
