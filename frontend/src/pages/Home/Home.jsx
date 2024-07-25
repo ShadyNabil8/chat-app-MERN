@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import EmojiPicker from 'emoji-picker-react';
 import Message from '../../components/Message/Message'
+import Explore from '../../components/Explore/Explore'
 import ExploredUser from '../../components/ExploredUser/ExploredUser'
 import Friend from '../../components/Friend/Friend'
 import FriendRequest from '../../components/FriendRequest/FriendRequest'
@@ -199,18 +200,13 @@ const Home = () => {
         maxHeight: '100%',
         boxSizing: 'border-box'
       }}>
-        <div className="explore-container">
-          <div className="search-bar">
-            <input type='text' placeholder='Search for friends' onChange={(e) => setSearchQuery(e.target.value)}></input>
-          </div>
-          <div className="explore-elements-container">
-            {
-              searchResult.map((res, index) => {
-                return <ExploredUser key={index} data={res}></ExploredUser>
-              })
-            }
-          </div>
-        </div>
+        <Explore handleOnChange={(value) => { setSearchQuery(value) }}>
+          {
+            searchResult.map((res, index) => {
+              return <ExploredUser key={index} data={res}></ExploredUser>
+            })
+          }
+        </Explore>
         <div className="chat-container">
           <div className='messages-container' ref={scrollRef} >
             {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
