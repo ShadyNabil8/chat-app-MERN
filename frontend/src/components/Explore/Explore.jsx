@@ -1,14 +1,55 @@
-import React from 'react'
+import { React, useEffect, useState } from 'react'
+import debounce from 'lodash.debounce';
+import api from '../../api/api.jsx'
+import ExploredUser from '../../components/ExploredUser/ExploredUser'
+
 import './Explore.css'
 
-const Explore = ({ children, handleOnChange }) => {
+const Explore = () => {
+    const [searchQuery, setSearchQuery] = useState('')
+    const [searchResult, setSearchResult] = useState([])
+
+    const debouncedSearch = debounce(async (query) => {
+        if (searchQuery) {
+            const url = '/user/search';
+
+            try {
+                const response = await api.get(url, { params: { query } })
+
+                if (response.data) {
+                    setSearchResult(response.data)
+                }
+
+            } catch (error) {
+
+            }
+        }
+        else {
+            setSearchResult([])
+        }
+
+
+    }, 300);
+
+    useEffect(() => {
+        debouncedSearch(searchQuery);
+
+        return () => {
+            debouncedSearch.cancel();
+        };
+    }, [searchQuery])
+
     return (
         <div className="explore-container">
             <div className="search-bar">
-                <input type='text' placeholder='Search for friends' onChange={(e) => handleOnChange(e.target.value)}></input>
+                <input type='text' placeholder='Search for friends' onChange={(e) => setSearchQuery(e.target.value)}></input>
             </div>
             <div className="explore-elements-container">
-                {children}
+                {
+                    searchResult.map((res, index) => {
+                        return <ExploredUser key={index} data={res}></ExploredUser>
+                    })
+                }
             </div>
         </div>
     )

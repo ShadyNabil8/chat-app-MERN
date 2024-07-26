@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import EmojiPicker from 'emoji-picker-react';
 import Message from '../../components/Message/Message'
+import Profile from '../../components/Profile/Profile'
 import Explore from '../../components/Explore/Explore'
-import ExploredUser from '../../components/ExploredUser/ExploredUser'
 import Friend from '../../components/Friend/Friend'
-import FriendRequest from '../../components/FriendRequest/FriendRequest'
+import Header from '../../components/Header/Header'
 import image1 from '../../assets/naruto.jpeg'
-import { colorEmojiList, testMessages, friendRequests } from '../../assets/assets.js'
+import { colorEmojiList, testMessages } from '../../assets/assets.js'
 import { useAuth } from '../../context/authContext';
 import { getFormattedDate } from '../../utils/date.js'
 import api from '../../api/api.jsx'
-import { IoIosNotifications } from "react-icons/io";
-import debounce from 'lodash.debounce';
 
 import './Home.css'
 
@@ -19,37 +17,13 @@ const Home = () => {
   const [message, setMessage] = useState('')
   const [messageList, setMessageList] = useState(testMessages);
   const [emojiPicker, setEmojiPicker] = useState(false)
-  const [notificationBox, setNotificationBox] = useState(false)
   const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchResult, setSearchResult] = useState([])
   const inputRef = useRef(null);
   const scrollRef = useRef(null);
   const { authState, setAuthState } = useAuth();
 
   const userData = authState.userData;
 
-  const debouncedSearch = debounce(async (query) => {
-    if (searchQuery) {
-      const url = '/user/search';
-
-      try {
-        const response = await api.get(url, { params: { query } })
-
-        if (response.data) {
-          setSearchResult(response.data)
-        }
-
-      } catch (error) {
-
-      }
-    }
-    else {
-      setSearchResult([])
-    }
-
-
-  }, 300);
 
   const handleEmojiClick = (emojiObject) => {
     const cursorPosition = inputRef.current.selectionStart;
@@ -115,10 +89,6 @@ const Home = () => {
     }
   };
 
-  const toggleNotificationBox = () => {
-    setNotificationBox((prev) => !prev)
-  }
-
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -156,13 +126,7 @@ const Home = () => {
 
   }, [] /* [setUserData] */);
 
-  useEffect(() => {
-    debouncedSearch(searchQuery);
-
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [searchQuery])
+  
 
   return (
     <div style={{
@@ -173,40 +137,19 @@ const Home = () => {
       gap: '20px',
       backgroundColor: '#2B2D31'
     }}>
-      <div className="header">
-        <div className="profile">
-          <img src={userData.profilePicture}></img>
-        </div>
-        <div className="notification">
-          <IoIosNotifications className='notification-icon' onClick={toggleNotificationBox} />
-          {
-            (friendRequests.length) && <div className="notification-dot">
-              {friendRequests.length}
-            </div>
-          }
-          {
-            (notificationBox) && <div className="notification-container">
-              <div className="title">
-                Friend requests
-              </div>
-              {friendRequests.map((req, index) => <FriendRequest key={index} data={{ image: req.image, name: req.name }}></FriendRequest>)}
-            </div>
-          }
-        </div>
-      </div>
+
+      <Header userData={userData}>
+      </Header>
+
       <div style={{
         display: 'flex',
         flex: '1',
         maxHeight: '100%',
         boxSizing: 'border-box'
       }}>
-        <Explore handleOnChange={(value) => { setSearchQuery(value) }}>
-          {
-            searchResult.map((res, index) => {
-              return <ExploredUser key={index} data={res}></ExploredUser>
-            })
-          }
-        </Explore>
+        {/* <Profile></Profile> */}
+        <Explore></Explore>
+
         <div className="chat-container">
           <div className='messages-container' ref={scrollRef} >
             {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
