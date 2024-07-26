@@ -218,7 +218,8 @@ const login = asyncHandler(async (req, res) => {
             email,
             displayedName,
             profilePicture,
-            friends
+            friends,
+            userId: userRecord._id
         },
         token,
     })
@@ -249,18 +250,20 @@ const profile = asyncHandler(async (req, res, next) => {
             email,
             displayedName,
             profilePicture,
-            friends
+            friends,
+            userId,
         },
     })
 })
 
 const search = asyncHandler(async (req, res) => {
-    console.log(req.query);
-    const { query } = req.query;
-
+    const { query, userId } = req.query;
     const users = await userModel
-        .find({ displayedName: { $regex: `^${query}`, $options: 'i' } })
-        .select('id displayedName profilePicture')
+        .find({
+            displayedName: { $regex: `^${query}`, $options: 'i' },
+            _id: { $ne: userId }
+        })
+        .select('id displayedName profilePicture email')
 
     res.json(users)
 });

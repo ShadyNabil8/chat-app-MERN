@@ -93,15 +93,16 @@ const Home = () => {
     const fetchProfile = async () => {
       try {
         const response = await api.get('user/profile');
-        const { displayedName, email, profilePicture, friends } = response.data.data;
+        const { displayedName, email, profilePicture, friends, userId } = response.data.data;
 
         setAuthState({
           isAuthenticated: true,
           userData: {
-            displayedName: displayedName,
-            email: email,
-            profilePicture: profilePicture,
-            friends: friends
+            displayedName,
+            email,
+            profilePicture,
+            friends,
+            userId
           }
         });
 
@@ -126,7 +127,7 @@ const Home = () => {
 
   }, [] /* [setUserData] */);
 
-  
+
 
   return (
     <div style={{

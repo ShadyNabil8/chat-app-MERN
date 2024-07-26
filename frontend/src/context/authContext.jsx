@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         console.log(response);
         if (response.data && response.data.success) {
 
-            const { displayedName, email, profilePicture, friends } = response.data.data;
+            const { displayedName, email, profilePicture, friends, userId } = response.data.data;
 
             setAuthState({
                 isAuthenticated: true,
@@ -36,7 +36,8 @@ export const AuthProvider = ({ children }) => {
                     displayedName: displayedName,
                     email: email,
                     profilePicture: profilePicture,
-                    friends: friends
+                    friends: friends,
+                    userId: userId 
                 }
             });
         }
