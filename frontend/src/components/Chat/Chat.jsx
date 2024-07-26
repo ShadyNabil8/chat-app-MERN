@@ -1,6 +1,6 @@
 import React from 'react'
-import './Friend.css'
-const Friend = ({ data }) => {
+import './Chat.css'
+const Chat = ({ data }) => {
     const isArabic = (text) => {
         const arabicPattern = /[\u0600-\u06FF]/;
         return arabicPattern.test(text);
@@ -22,4 +22,4 @@ const Friend = ({ data }) => {
     )
 }
 
-export default Friend
+export default Chat

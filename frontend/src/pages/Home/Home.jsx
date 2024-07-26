@@ -3,9 +3,8 @@ import EmojiPicker from 'emoji-picker-react';
 import Message from '../../components/Message/Message'
 import Profile from '../../components/Profile/Profile'
 import Explore from '../../components/Explore/Explore'
-import Friend from '../../components/Friend/Friend'
+import Chats from '../../components/Chats/Chats.jsx'
 import Header from '../../components/Header/Header'
-import image1 from '../../assets/naruto.jpeg'
 import { colorEmojiList, testMessages } from '../../assets/assets.js'
 import { useAuth } from '../../context/authContext';
 import { getFormattedDate } from '../../utils/date.js'
@@ -182,28 +181,8 @@ const Home = () => {
               />
             </div>
           </div>
-
         </div>
-        <div className='friends-container'>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "السﻻم عليكم السﻻم عليكم السﻻم عليكم السﻻم" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-          <Friend data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Friend>
-        </div>
+        <Chats></Chats>
       </div >
     </div>
   )

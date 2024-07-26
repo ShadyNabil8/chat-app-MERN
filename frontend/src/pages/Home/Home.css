@@ -9,15 +9,6 @@
 
 }
 
-.friends-container {
-    flex: 1;
-    background-color: #2B2D31;
-    padding: 0px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    overflow-y: auto;
-}
 
 .chat-container .input-container {
     width: 100%;
