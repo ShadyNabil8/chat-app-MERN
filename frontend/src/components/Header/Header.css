@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: var(--padding);
     background-color: #181C1F;
     flex: 0.1;
 }
@@ -69,12 +69,21 @@
 }
 
 .header .notification .notification-icon {
+    position: relative;
+}
+
+.header .icon {
     width: 40px;
     height: 40px;
     transition: all 0.3s;
     cursor: pointer;
     color: var(--icon-color);
-    position: relative;
+}
+
+.header .icons {
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
 }
 
 .header .notification-dot {
@@ -114,6 +123,6 @@
     padding: 10px;
 }
 
-.header .notification .notification-icon:hover {
+.header .icon:hover {
     transform: scale(1.2);
 }

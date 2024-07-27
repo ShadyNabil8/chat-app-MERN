@@ -1,6 +1,6 @@
 .chats-container {
     flex: 1;
-    background-color: var(--secondary-color)   ;
+    background-color: var(--secondary-color);
     padding: var(--padding);
     padding-left: 0px;
     display: flex;

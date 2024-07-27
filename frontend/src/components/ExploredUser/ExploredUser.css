@@ -13,8 +13,8 @@
 }
 
 .explored-user-container .image-container img {
-    width: 80px;
-    height: 80px;
+    width: var(--image-dim);
+    height: var(--image-dim);
     border-radius: 50%;
 }
 
@@ -43,7 +43,7 @@
 .explored-user-container .actions-container .send-message {
     width: 25px;
     height: 25px;
-    color: var( --icon-color);
+    color: var(--icon-color);
     cursor: pointer;
     transition: all 0.2s;
 }

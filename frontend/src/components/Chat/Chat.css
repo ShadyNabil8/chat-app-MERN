@@ -2,7 +2,7 @@
     display: flex;
     gap: 10px;
     cursor: pointer;
-    padding: 5px 15px 5px 5px;
+    padding: calc(var(--padding) / 2) calc(var(--padding)) calc(var(--padding) / 2) calc(var(--padding) *2);
 }
 
 .friend-container:hover {
@@ -19,8 +19,8 @@
 
 .friend-container .image-container img {
     border-radius: 50%;
-    width: 80px;
-    height: 80px;
+    width: var(--image-dim);
+    height: var(--image-dim);
 }
 
 .friend-container .name-container {

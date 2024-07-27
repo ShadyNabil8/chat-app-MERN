@@ -4,6 +4,7 @@ import { IoIosNotifications } from "react-icons/io";
 import { friendRequests } from '../../assets/assets.js'
 import { VscSignOut } from "react-icons/vsc";
 import { useAuth } from '../../context/authContext';
+import { MdOutlineExplore } from "react-icons/md";
 
 import './Header.css'
 
@@ -13,7 +14,7 @@ const Header = () => {
 
     const { authState, logout } = useAuth();
 
-    const { isAuthenticated, userData } = authState;
+    const { userData } = authState;
 
     const toggleNotificationBox = () => {
         setNotificationBox((prev) => !prev)
@@ -25,21 +26,24 @@ const Header = () => {
 
     return (
         <div className="header">
-            <div className="notification">
-                <IoIosNotifications className='notification-icon' onClick={toggleNotificationBox} />
-                {
-                    (friendRequests.length) && <div className="notification-dot">
-                        {friendRequests.length}
-                    </div>
-                }
-                {
-                    (notificationBox) && <div className="notification-container">
-                        <div className="title">
-                            Friend requests
+            <div className="icons">
+                <div className="notification">
+                    <IoIosNotifications className='notification-icon icon' onClick={toggleNotificationBox} />
+                    {
+                        (friendRequests.length) && <div className="notification-dot">
+                            {friendRequests.length}
                         </div>
-                        {friendRequests.map((req, index) => <FriendRequest key={index} data={{ image: req.image, name: req.name }}></FriendRequest>)}
-                    </div>
-                }
+                    }
+                    {
+                        (notificationBox) && <div className="notification-container">
+                            <div className="title">
+                                Friend requests
+                            </div>
+                            {friendRequests.map((req, index) => <FriendRequest key={index} data={{ image: req.image, name: req.name }}></FriendRequest>)}
+                        </div>
+                    }
+                </div>
+                <MdOutlineExplore className='explore-icon icon' />
             </div>
             <div className="options">
                 <img className='profile-picture' src={userData.profilePicture} onClick={() => { toggleOptionsBox() }}></img>
