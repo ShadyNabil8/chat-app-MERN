@@ -1,7 +1,7 @@
 .explore-container {
     flex: 1;
     background-color: var(--secondary-color);
-    padding: var(--padding);
+    padding: calc(var(--padding)*3) var(--padding);
     padding-right: 0px;
     display: flex;
     flex-direction: column;

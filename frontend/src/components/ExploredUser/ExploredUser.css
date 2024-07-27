@@ -1,7 +1,7 @@
 .explored-user-container {
     display: flex;
     height: fit-content;
-    padding: 5px 15px 5px 5px;
+    padding: calc(var(--padding) / 2) calc(var(--padding) *2) calc(var(--padding) / 2) calc(var(--padding));
     justify-content: space-between;
     cursor: pointer;
     transition: all 0.2s;
