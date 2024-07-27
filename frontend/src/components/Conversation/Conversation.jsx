@@ -5,6 +5,7 @@ import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../context/authContext';
 import { useMessages } from '../../context/messagesContext.jsx';
 import { getFormattedDate } from '../../utils/date.js'
+import image1 from '../../assets/naruto.jpeg'
 
 import './Conversation.css'
 
@@ -84,35 +85,45 @@ const Conversation = () => {
         }
     };
     return (
-        <div className="conversation-container">
-            <div className='conversation' ref={scrollRef} >
-                {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
-            </div>
-            <div className="input-container">
-                <input
-                    className={isArabic(message) ? 'text-input-rtl text-container' : 'text-container'}
-                    ref={inputRef}
-                    type="text"
-                    placeholder="Type your message..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                />
-                <img src={displayedEmoji.emoji}
-                    alt="emoji"
-                    className={displayedEmoji.focus ? "emoji-icon" : "emoji-icon emoji-icon-leave"}
-                    onClick={toggleEmojiPicker}
-                    onMouseEnter={emojiOnMouseEnter}
-                    onMouseLeave={emojiOnMouseLeave}
-                ></img>
-                <div className='emoji-picker'>
-                    <EmojiPicker
-                        open={emojiPicker}
-                        autoFocusSearch={false}
-                        theme={'dark'}
-                        emojiStyle={'facebook'}
-                        onEmojiClick={handleEmojiClick}
+        <div className="conversation-display">
+            {
+                (selectedChat) &&
+                <div className="conversation-header">
+                    <div className="info">
+                        <img src={image1}></img>
+                    </div>
+                </div>
+            }
+            <div className="conversation-container">
+                <div className='conversation' ref={scrollRef} >
+                    {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
+                </div>
+                <div className="input-container">
+                    <input
+                        className={isArabic(message) ? 'text-input-rtl text-container' : 'text-container'}
+                        ref={inputRef}
+                        type="text"
+                        placeholder="Type your message..."
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={handleKeyDown}
                     />
+                    <img src={displayedEmoji.emoji}
+                        alt="emoji"
+                        className={displayedEmoji.focus ? "emoji-icon" : "emoji-icon emoji-icon-leave"}
+                        onClick={toggleEmojiPicker}
+                        onMouseEnter={emojiOnMouseEnter}
+                        onMouseLeave={emojiOnMouseLeave}
+                    ></img>
+                    <div className='emoji-picker'>
+                        <EmojiPicker
+                            open={emojiPicker}
+                            autoFocusSearch={false}
+                            theme={'dark'}
+                            emojiStyle={'facebook'}
+                            onEmojiClick={handleEmojiClick}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

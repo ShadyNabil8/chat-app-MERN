@@ -1,5 +1,6 @@
 import image1 from './naruto.jpeg'
 import image2 from './Kakashi.webp'
+import image3 from './hunter.jpg'
 
 
 

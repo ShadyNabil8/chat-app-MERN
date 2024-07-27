@@ -1,5 +1,29 @@
-.conversation-container {
+.conversation-display {
     flex: 3.25;
+    display: flex;
+    flex-direction: column;
+    padding-top: calc(var(--padding) *8);
+    background-color: var(--primary-color);
+    position: relative;
+}
+
+.conversation-display .conversation-header {
+    width: 100%;
+    min-height: calc(var(--padding) *8);
+    background-color: var(--secondary-color);
+    position: absolute;
+    top: 0px;
+    padding: var(--padding);
+}
+
+.conversation-display .conversation-header .info img {
+    width: var(--image-dim);
+    height: var(--image-dim);
+    border-radius: 50%;
+}
+
+.conversation-container {
+    height: 100%;
     background-color: var(--primary-color);
     display: flex;
     flex-direction: column;
