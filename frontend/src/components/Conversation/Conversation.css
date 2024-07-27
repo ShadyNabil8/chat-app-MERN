@@ -1,0 +1,99 @@
+.conversation-container {
+    flex: 3.25;
+    background-color: #313338;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 15px 15px 0px 0px;
+
+}
+
+
+.conversation-container .input-container {
+    width: 100%;
+    padding: 0px 40px 30px;
+    position: relative;
+    flex: 0.25;
+}
+
+.conversation-container .input-container .text-container {
+    box-sizing: border-box;
+    width: 100%;
+    height: 55px;
+    padding: 0px 60px 0px 20px;
+    color: #B5BAC1;
+    border-radius: 10px;
+    background-color: #383A40;
+    border: 0;
+    font-size: 18px;
+}
+
+.conversation-container .input-container .text-input-rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+
+.conversation-container .emoji-icon {
+    position: absolute;
+    right: 60px;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+
+}
+
+.conversation-container .emoji-icon-leave {
+    opacity: 0.3;
+
+
+}
+
+.conversation-container .emoji-icon:hover {
+    transform: scale(1.2);
+}
+
+.conversation-container .emoji-picker {
+    position: absolute;
+    right: 5%;
+    bottom: 120%;
+}
+
+.conversation-container .messages-container {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    gap: 30px;
+    width: 100%;
+    padding: 40px;
+    flex: 10;
+    overflow-y: auto;
+}
+
+.conversation-container .messages-container::after {
+    content: '';
+    flex-shrink: 0;
+    height: 40px;
+    /* This should match your padding value */
+}
+.conversation {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    gap: 30px;
+    width: 100%;
+    padding: 40px;
+    flex: 10;
+    overflow-y: auto;
+}
+
+.conversation::after {
+    content: '';
+    flex-shrink: 0;
+    height: 40px;
+    /* This should match your padding value */
+}
