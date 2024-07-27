@@ -1,6 +1,4 @@
 .explore-container {
-    flex: 1;
-    background-color: var(--secondary-color);
     padding: calc(var(--padding)*3) var(--padding);
     padding-right: 0px;
     display: flex;
@@ -12,9 +10,7 @@
 .explore-container .explore-elements-container {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
 }
-
 
 .explore-container .search-bar input {
     display: flex;

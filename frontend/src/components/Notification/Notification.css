@@ -1,18 +1,7 @@
 .notification-container {
-    flex: 1;
-    background-color: var(--secondary-color);
+    padding: calc(var(--padding)*3) var(--padding);
+    padding-right: 0px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    overflow-y: auto;
     box-sizing: border-box;
-}
-
-.notification-container .title {
-    color: var(--font-color);
-    font-size: var(--text-font-size);
-    font-weight: 300;
-    text-align: start;
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
 }

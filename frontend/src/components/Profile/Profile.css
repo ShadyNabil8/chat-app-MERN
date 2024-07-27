@@ -1,12 +1,11 @@
 .profile {
-    flex: 1;
+    padding: calc(var(--padding)*3) var(--padding);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
     background-color: var(--secondary-color);
     box-sizing: border-box;
-
 }
 
 .profile .image-container {

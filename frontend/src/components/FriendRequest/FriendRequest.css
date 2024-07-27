@@ -1,14 +1,18 @@
 .friend-req-item {
     display: flex;
-    justify-content: flex-start;
+    align-items: center;
     gap: 5px;
-    padding: 5px 10px;
-    animation: smooth 0.2s linear 1 normal forwards;
+    padding: calc(var(--padding) / 2) calc(var(--padding) *2) calc(var(--padding)) calc(var(--padding));
+    cursor: pointer;
+}
+
+.friend-req-item:hover {
+    background-color: var(--primary-color);
 }
 
 .friend-req-item .image img {
-    height: 70px;
-    width: 70px;
+    width: var(--image-dim);
+    height: var(--image-dim);
     border-radius: 50%;
 }
 
@@ -26,10 +30,9 @@
     border: 0px;
     width: 100px;
     height: 30px;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     font-weight: 500;
-    transition: all 0.3s;
 }
 
 
@@ -41,14 +44,6 @@
 
 .friend-req-item .delete-btn {
     background-color: rgb(255, 255, 255);
-    color: rgb(25, 26, 26);
+    color: var(--secondary-color);
 
-}
-
-.friend-req-item .confirm-btn:hover {
-    background-color: rgb(25, 114, 204);
-}
-
-.friend-req-item .delete-btn:hover {
-    background-color: rgb(207, 207, 207);
 }

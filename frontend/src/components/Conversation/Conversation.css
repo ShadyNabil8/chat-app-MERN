@@ -4,6 +4,8 @@
     flex-direction: column;
     padding-top: calc(var(--padding) *8);
     background-color: var(--primary-color);
+    border-right: 1px #444444 solid;
+    border-left: 1px #444444 solid;
     position: relative;
 }
 

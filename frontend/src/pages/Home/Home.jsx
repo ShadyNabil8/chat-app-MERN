@@ -62,9 +62,11 @@ const Home = () => {
 
       <Chats></Chats>
       <Conversation></Conversation>
-      {(selectedNav == 'notification') && <Notification></Notification>}
-      {(selectedNav == 'explore') && <Explore></Explore>}
-      {(selectedNav == 'profile') && <Profile></Profile>}
+      <div className="nav-components">
+        {(selectedNav == 'notification') && <Notification></Notification>}
+        {(selectedNav == 'explore') && <Explore></Explore>}
+        {(selectedNav == 'profile') && <Profile></Profile>}
+      </div>
       <Header></Header>
     </div >
   )

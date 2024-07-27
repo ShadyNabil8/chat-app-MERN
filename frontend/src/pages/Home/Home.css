@@ -4,3 +4,9 @@
     height: 100vh;
     width: 100vw;
 }
+
+.home .nav-components{
+    flex: 1;
+    background-color: var(--secondary-color);
+    overflow-y: auto;
+}
