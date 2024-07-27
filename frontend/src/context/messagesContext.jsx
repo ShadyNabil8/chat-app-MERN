@@ -12,7 +12,7 @@ export const MessagesProvider = ({ children }) => {
         setMessages((prev) => {
             return {
                 ...prev,
-                chatId: [...(prev.chatId || []), message]
+                [chatId]: [...(prev[chatId] || []), message]
             }
         })
     }

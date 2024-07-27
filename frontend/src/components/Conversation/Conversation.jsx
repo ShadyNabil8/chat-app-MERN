@@ -9,23 +9,19 @@ import { getFormattedDate } from '../../utils/date.js'
 import './Conversation.css'
 
 const Conversation = () => {
-    const { messages, selectedChat } = useMessages();
+    const { messages, addMessage, selectedChat } = useMessages();
 
     const { authState } = useAuth();
     const userData = authState.userData;
 
     const [message, setMessage] = useState('')
-    const [messageList, setMessageList] = useState([]);
     const [emojiPicker, setEmojiPicker] = useState(false)
     const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
     const inputRef = useRef(null);
     const scrollRef = useRef(null);
 
-    
-    useEffect(() => {
-        console.log(messageList);
-        setMessageList(selectedChat ? messages[selectedChat] : [])
-    }, [selectedChat])
+    const messageList = selectedChat ? messages[selectedChat] : [];
+
 
     const isArabic = (text) => {
         const arabicPattern = /[\u0600-\u06FF]/;
@@ -69,18 +65,14 @@ const Conversation = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            setMessageList((prevMessageList) => {
-                return [
-                    ...prevMessageList,
-                    {
-                        sender: userData.displayedName,
-                        image: userData.profilePicture,
-                        date: getFormattedDate(),
-                        text: message,
-                        myMessage: true
-                    }
-                ]
-            })
+            addMessage({
+                sender: userData.displayedName,
+                image: userData.profilePicture,
+                date: getFormattedDate(),
+                text: message,
+                myMessage: true
+            }, selectedChat);
+
             setMessage('');
 
             if (scrollRef.current) {
