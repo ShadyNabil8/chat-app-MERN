@@ -7,11 +7,13 @@ import { useAuth } from '../../context/authContext';
 
 import './Header.css'
 
-const Header = ({ userData }) => {
+const Header = () => {
     const [notificationBox, setNotificationBox] = useState(false)
     const [options, setOptions] = useState(false)
 
-    const { logout } = useAuth();
+    const { authState, logout } = useAuth();
+
+    const { isAuthenticated, userData } = authState;
 
     const toggleNotificationBox = () => {
         setNotificationBox((prev) => !prev)

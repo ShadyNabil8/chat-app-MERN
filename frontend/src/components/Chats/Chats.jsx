@@ -5,8 +5,8 @@ import './Chats.css'
 const Chats = () => {
     return (
         <div className='chats-container'>
-            <Chat data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Chat>
-            <Chat data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?" }}></Chat>
+            <Chat data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you? My name is shady", id: 1 }}></Chat>
+            <Chat data={{ image: image1, name: 'Shady Nabil', lastMessage: "How are you?", id: 2 }}></Chat>
         </div>
     )
 }

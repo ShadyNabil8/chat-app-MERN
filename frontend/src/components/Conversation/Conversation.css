@@ -72,14 +72,7 @@
     overflow-y: auto;
 }
 
-.conversation-container .messages-container::after {
-    content: '';
-    flex-shrink: 0;
-    height: 40px;
-    /* This should match your padding value */
-}
-
-.conversation {
+.conversation-container .conversation {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -90,7 +83,7 @@
     overflow-y: auto;
 }
 
-.conversation::after {
+.conversation-container .conversation::after {
     content: '';
     flex-shrink: 0;
     height: 40px;

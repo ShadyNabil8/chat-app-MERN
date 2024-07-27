@@ -1,22 +1,31 @@
-import { React, useState, useRef } from 'react'
+import { React, useState, useRef, useEffect } from 'react'
 import Message from '../../components/Message/Message'
 import { colorEmojiList, testMessages } from '../../assets/assets.js'
 import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../context/authContext';
+import { useMessages } from '../../context/messagesContext.jsx';
 import { getFormattedDate } from '../../utils/date.js'
 
 import './Conversation.css'
 
 const Conversation = () => {
+    const { messages, selectedChat } = useMessages();
+
+    const { authState } = useAuth();
+    const userData = authState.userData;
+
     const [message, setMessage] = useState('')
-    const [messageList, setMessageList] = useState(testMessages);
+    const [messageList, setMessageList] = useState([]);
     const [emojiPicker, setEmojiPicker] = useState(false)
     const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
     const inputRef = useRef(null);
     const scrollRef = useRef(null);
 
-    const { authState, setAuthState } = useAuth();
-    const userData = authState.userData;
+    
+    useEffect(() => {
+        console.log(messageList);
+        setMessageList(selectedChat ? messages[selectedChat] : [])
+    }, [selectedChat])
 
     const isArabic = (text) => {
         const arabicPattern = /[\u0600-\u06FF]/;

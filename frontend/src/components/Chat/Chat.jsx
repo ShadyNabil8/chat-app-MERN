@@ -1,12 +1,17 @@
 import React from 'react'
+import { useMessages } from '../../context/messagesContext.jsx';
 import './Chat.css'
 const Chat = ({ data }) => {
+
+    const { setSelectedChat } = useMessages();
+
     const isArabic = (text) => {
         const arabicPattern = /[\u0600-\u06FF]/;
         return arabicPattern.test(text);
     };
+
     return (
-        <div className='friend-container'>
+        <div className='friend-container' onClick={() => setSelectedChat(data.id)}>
             <div className="image-container">
                 <img src={data.image}></img>
             </div>

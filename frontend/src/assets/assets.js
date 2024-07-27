@@ -31,48 +31,67 @@ export const colorEmojiList = [
     emojiLaugh,
 ]
 
-export const testMessages = [
-    {
-        sender: 'shady',
-        date: 'Today 15.30 AM',
-        text: 'السلام عليكم و رحمة الله و بركاته',
-        image: image1,
-        myMessage: true
-    }, {
-        sender: 'shady',
-        date: 'Today 15.30 AM',
-        text: 'السلام عليكم و رحمة الله و بركاته',
-        image: image2,
-        myMessage: false
-    },
-    {
-        sender: 'shady',
-        date: 'Today 15.30 AM',
-        text: 'Hello world!, My name is Shady. What is yours 😅?',
-        image: image1,
-        myMessage: true
-    },
-    {
-        sender: 'shady',
-        date: 'Today 15.30 AM',
-        text: 'Hello world!, My name is Shady. What is yours?',
-        image: image2,
-        myMessage: false
-    }, {
-        sender: 'shady',
-        date: 'Today 15.30 AM',
-        text: 'Hello world!, My name is Shady. What is yours?',
-        image: image1,
-        myMessage: true
-    }, {
-        sender: 'shady',
-        date: 'Today 15.30 AM',
-        text: 'Hello world!, My name is Shady. What is yours?',
-        image: image2,
-        myMessage: false
-    }
+export const testMessages =
+{
+    '1': [
+        {
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'السلام عليكم و رحمة الله و بركاته',
+            image: image1,
+            myMessage: true
+        }, {
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'السلام عليكم و رحمة الله و بركاته',
+            image: image2,
+            myMessage: false
+        },
+        {
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'Hello world!, My name is Shady. What is yours 😅?',
+            image: image1,
+            myMessage: true
+        },
+        {
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'Hello world!, My name is Shady. What is yours?',
+            image: image2,
+            myMessage: false
+        }, {
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'Hello world!, My name is Shady. What is yours?',
+            image: image1,
+            myMessage: true
+        }, {
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'Hello world!, My name is Shady. What is yours?',
+            image: image2,
+            myMessage: false
+        }
+    ],
+    '2': [
+        {
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'السلام عليكم و رحمة الله و بركاته',
+            image: image1,
+            myMessage: true
+        }, {
+            sender: 'shady',
+            date: 'Today 15.30 AM',
+            text: 'السلام عليكم و رحمة الله و بركاته',
+            image: image2,
+            myMessage: false
+        },
+    ]
+}
 
-];
+    ;
 
 export const darkEmojiList = [emojiLaughDark, emojiLoveDark]
 

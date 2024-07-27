@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Profile from '../../components/Profile/Profile'
 import Explore from '../../components/Explore/Explore'
 import Conversation from '../../components/Conversation/Conversation'
 import Chats from '../../components/Chats/Chats.jsx'
 import Header from '../../components/Header/Header'
 import { useAuth } from '../../context/authContext';
 import api from '../../api/api.jsx'
-
+import { MessagesProvider } from '../../context/messagesContext.jsx'
 import './Home.css'
 
 const Home = () => {
@@ -53,19 +52,13 @@ const Home = () => {
   }, [] /* [setUserData] */);
 
   return (
-    <div style={{
-      display: 'flex',
-      flex: '1',
-      maxHeight: '100%',
-      boxSizing: 'border-box',
-      height:'100vh'
-    }}>
-      {/* <Profile></Profile> */}
-      <Header userData={userData}></Header>
-      <Chats></Chats>
-      <Conversation></Conversation>
-      <Explore></Explore>
-      
+    <div className='home'>
+      <MessagesProvider>
+        <Chats></Chats>
+        <Conversation></Conversation>
+        <Explore></Explore>
+        <Header></Header>
+      </MessagesProvider>
     </div >
   )
 }
