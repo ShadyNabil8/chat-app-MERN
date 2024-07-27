@@ -1,17 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Explore from '../../components/Explore/Explore'
 import Conversation from '../../components/Conversation/Conversation'
+import Notification from '../../components/Notification/Notification'
+import Profile from '../../components/Profile/Profile'
 import Chats from '../../components/Chats/Chats.jsx'
 import Header from '../../components/Header/Header'
 import { useAuth } from '../../context/authContext';
+import { useGlobalState } from '../../context/GlobalStateContext.jsx'
+
 import api from '../../api/api.jsx'
-import { MessagesProvider } from '../../context/messagesContext.jsx'
+
 import './Home.css'
 
 const Home = () => {
-  const { authState, setAuthState } = useAuth();
 
-  const { isAuthenticated, userData } = authState;
+  const { authState, setAuthState } = useAuth();
+  const { isAuthenticated } = authState;
+
+  const { selectedNav } = useGlobalState();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -53,12 +59,13 @@ const Home = () => {
 
   return (
     <div className='home'>
-      <MessagesProvider>
-        <Chats></Chats>
-        <Conversation></Conversation>
-        <Explore></Explore>
-        <Header></Header>
-      </MessagesProvider>
+
+      <Chats></Chats>
+      <Conversation></Conversation>
+      {(selectedNav == 'notification') && <Notification></Notification>}
+      {(selectedNav == 'explore') && <Explore></Explore>}
+      {(selectedNav == 'profile') && <Profile></Profile>}
+      <Header></Header>
     </div >
   )
 }

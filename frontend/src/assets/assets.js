@@ -101,11 +101,5 @@ export const friendRequests = [
     { image: image1, name: 'Shady nabil' },
     { image: image1, name: 'Shady nabil' },
     { image: image1, name: 'Shady nabil' },
-    { image: image1, name: 'Shady nabil' },
-    { image: image1, name: 'Shady nabil' },
-    { image: image1, name: 'Shady nabil' },
-    { image: image1, name: 'Shady nabil' },
-    { image: image1, name: 'Shady nabil' },
-    { image: image1, name: 'Shady nabil' },
-    { image: image1, name: 'Shady nabil' },
+
 ]

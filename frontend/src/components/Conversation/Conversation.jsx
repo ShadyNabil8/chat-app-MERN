@@ -3,14 +3,14 @@ import Message from '../../components/Message/Message'
 import { colorEmojiList, testMessages } from '../../assets/assets.js'
 import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../context/authContext';
-import { useMessages } from '../../context/messagesContext.jsx';
+import { useGlobalState } from '../../context/GlobalStateContext.jsx';
 import { getFormattedDate } from '../../utils/date.js'
 import image1 from '../../assets/naruto.jpeg'
 
 import './Conversation.css'
 
 const Conversation = () => {
-    const { messages, addMessage, selectedChat } = useMessages();
+    const { messages, addMessage, selectedChat } = useGlobalState();
 
     const { authState } = useAuth();
     const userData = authState.userData;

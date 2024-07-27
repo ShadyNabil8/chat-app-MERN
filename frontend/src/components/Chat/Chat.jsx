@@ -1,9 +1,9 @@
 import React from 'react'
-import { useMessages } from '../../context/messagesContext.jsx';
+import { useGlobalState } from '../../context/GlobalStateContext.jsx';
 import './Chat.css'
 const Chat = ({ data }) => {
 
-    const { setSelectedChat } = useMessages();
+    const { setSelectedChat } = useGlobalState();
 
     const isArabic = (text) => {
         const arabicPattern = /[\u0600-\u06FF]/;

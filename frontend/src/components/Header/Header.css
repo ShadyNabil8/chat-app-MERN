@@ -4,6 +4,7 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--padding);
+    padding-top: calc(var(--padding) * 3);
     background-color: #181C1F;
     flex: 0.1;
 }
@@ -81,9 +82,9 @@
 }
 
 .header .icons {
-   display: flex;
-   flex-direction: column;
-   gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .header .notification-dot {
@@ -98,29 +99,6 @@
     color: var(--font-color);
     font-size: 14px;
     top: 5px;
-}
-
-.header .notification-container {
-    position: absolute;
-    height: 600px;
-    min-width: 350px;
-    background-color: #232425;
-    right: 50px;
-    z-index: 2;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    overflow-y: auto;
-}
-
-.header .notification-container .title {
-    color: #ddd;
-    font-size: 20x;
-    font-weight: 500;
-    text-align: start;
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
 }
 
 .header .icon:hover {

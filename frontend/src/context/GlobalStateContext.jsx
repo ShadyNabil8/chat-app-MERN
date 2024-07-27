@@ -2,11 +2,12 @@ import React, { createContext, useState, useEffect, useCallback, useContext } fr
 import { testMessages } from '../assets/assets'
 
 
-const messagesContext = createContext();
+const globalStateContext = createContext();
 
-export const MessagesProvider = ({ children }) => {
+export const GlobalStateProvider = ({ children }) => {
     const [messages, setMessages] = useState(testMessages);
     const [selectedChat, setSelectedChat] = useState('');
+    const [selectedNav, setSelectedNav] = useState('explore')
 
     const addMessage = (message, chatId) => {
         setMessages((prev) => {
@@ -18,13 +19,21 @@ export const MessagesProvider = ({ children }) => {
     }
 
     return (
-        <messagesContext.Provider value={{ messages, addMessage, selectedChat, setSelectedChat }}>
+        <globalStateContext.Provider value=
+            {{
+                messages,
+                addMessage,
+                selectedChat,
+                setSelectedChat,
+                selectedNav,
+                setSelectedNav
+            }}>
             {children}
-        </messagesContext.Provider>
+        </globalStateContext.Provider>
     )
 }
 
-export const useMessages = () => useContext(messagesContext)
+export const useGlobalState = () => useContext(globalStateContext)
 
 
 
