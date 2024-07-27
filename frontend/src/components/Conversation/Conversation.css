@@ -9,11 +9,12 @@
 
 .conversation-display .conversation-header {
     width: 100%;
-    min-height: calc(var(--padding) *8);
     background-color: var(--secondary-color);
     position: absolute;
     top: 0px;
-    padding: var(--padding);
+    padding: calc(var(--padding) /2) calc(var(--padding));
+    display: flex;
+    align-items: center;
 }
 
 .conversation-display .conversation-header .info img {

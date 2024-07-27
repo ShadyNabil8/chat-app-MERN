@@ -1,5 +1,6 @@
 .friend-container {
     display: flex;
+    align-items: center;
     gap: 10px;
     cursor: pointer;
     padding: calc(var(--padding) / 2) calc(var(--padding)) calc(var(--padding) / 2) calc(var(--padding) *2);
@@ -14,7 +15,12 @@
     padding: 10px 0px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+}
+
+.friend-container .info-container .name-time-container {
+    display: flex;
+    justify-content: space-between;
+    color: var(--last-msg-color);
 }
 
 .friend-container .image-container img {
@@ -24,20 +30,15 @@
 }
 
 .friend-container .name-container {
-    display: flex;
     width: 100%;
-    color: silver;
-    font-size: 20px;
-    font-weight: 500;
+    color: var(--font-color);
+    font-size: var(--text-font-size);
 }
 
 .friend-container .last-message-container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    color: rgb(131, 131, 131);
+    color: var(--last-msg-color);
     font-size: var(--text-font-size);
-    font-weight: 300;
+    padding-right: 30px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -50,14 +51,4 @@
 .friend-container .last-message-container-rtl {
     direction: rtl;
     text-align: right;
-}
-
-@keyframes smooth {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
 }

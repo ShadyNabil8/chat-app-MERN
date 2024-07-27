@@ -16,8 +16,13 @@ const Chat = ({ data }) => {
                 <img src={data.image}></img>
             </div>
             <div className="info-container">
-                <div className="name-container">
-                    {data.name}
+                <div className="name-time-container">
+                    <div className="name-container">
+                        {data.name}
+                    </div>
+                    <div className="time-container">
+                        {'1.52AM'}
+                    </div>
                 </div>
                 <div className={isArabic(data.lastMessage) ? "last-message-container last-message-container-rtl" : "last-message-container"}>
                     {data.lastMessage}

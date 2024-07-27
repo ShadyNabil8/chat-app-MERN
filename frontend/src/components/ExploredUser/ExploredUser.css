@@ -24,9 +24,8 @@
 }
 
 .explored-user-container .name {
-    color: silver;
+    color: var(--font-color);
     font-size: 20px;
-    font-weight: 500;
     padding-top: 10px;
 
 }
