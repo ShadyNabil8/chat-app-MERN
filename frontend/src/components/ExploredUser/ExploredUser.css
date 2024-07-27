@@ -1,16 +1,15 @@
 .explored-user-container {
     display: flex;
     height: fit-content;
-    padding: 5px 15px 5px 5px ;
-    background-color: #313338;
-    border-radius: 10px;
+    padding: 5px 15px 5px 5px;
     justify-content: space-between;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .explored-user-container:hover {
-    background: linear-gradient(to left, #c33764, #1d2671);
+    background-color: var(--primary-color);
+
 }
 
 .explored-user-container .image-container img {
@@ -44,7 +43,7 @@
 .explored-user-container .actions-container .send-message {
     width: 25px;
     height: 25px;
-    color: #B5BAC1;
+    color: var( --icon-color);
     cursor: pointer;
     transition: all 0.2s;
 }

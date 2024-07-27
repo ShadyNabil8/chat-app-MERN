@@ -1,15 +1,12 @@
 .friend-container {
     display: flex;
-    flex-direction: row-reverse;
     gap: 10px;
-    background-color: #313338;
-    border-radius: 10px;
     cursor: pointer;
-    padding: 5px;
+    padding: 5px 15px 5px 5px;
 }
 
 .friend-container:hover {
-    background: linear-gradient(to right, #c33764, #1d2671);
+    background-color: var(--primary-color);
 }
 
 .friend-container .info-container {
@@ -28,7 +25,6 @@
 
 .friend-container .name-container {
     display: flex;
-    justify-content: flex-end;
     width: 100%;
     color: silver;
     font-size: 20px;

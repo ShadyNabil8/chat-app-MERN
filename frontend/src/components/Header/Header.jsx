@@ -23,22 +23,6 @@ const Header = ({ userData }) => {
 
     return (
         <div className="header">
-            <div className="options">
-                <img className='profile-picture' src={userData.profilePicture} onClick={() => { toggleOptionsBox() }}></img>
-                {
-                    (options) &&
-                    <div className="options-container">
-                        <div className="view-profile-opt option">
-                            <img className='profile-picture' src={userData.profilePicture}></img>
-                            <p>{userData.displayedName}</p>
-                        </div>
-                        <div className="option logout-opt" onClick={() => { logout() }}>
-                            <VscSignOut className="icon" />
-                            <p>Logout</p>
-                        </div>
-                    </div>
-                }
-            </div>
             <div className="notification">
                 <IoIosNotifications className='notification-icon' onClick={toggleNotificationBox} />
                 {
@@ -52,6 +36,22 @@ const Header = ({ userData }) => {
                             Friend requests
                         </div>
                         {friendRequests.map((req, index) => <FriendRequest key={index} data={{ image: req.image, name: req.name }}></FriendRequest>)}
+                    </div>
+                }
+            </div>
+            <div className="options">
+                <img className='profile-picture' src={userData.profilePicture} onClick={() => { toggleOptionsBox() }}></img>
+                {
+                    (options) &&
+                    <div className="options-container">
+                        <div className="view-profile-opt option">
+                            <img className='profile-picture' src={userData.profilePicture}></img>
+                            <p>{userData.displayedName}</p>
+                        </div>
+                        <div className="option logout-opt" onClick={() => { logout() }}>
+                            <VscSignOut className="icon" />
+                            <p>Logout</p>
+                        </div>
                     </div>
                 }
             </div>

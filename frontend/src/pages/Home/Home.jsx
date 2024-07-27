@@ -55,25 +55,18 @@ const Home = () => {
   return (
     <div style={{
       display: 'flex',
-      flexDirection: 'column',
+      flex: '1',
+      maxHeight: '100%',
       boxSizing: 'border-box',
-      height: '100vh',
-      gap: '20px',
-      backgroundColor: '#2B2D31'
+      height:'100vh'
     }}>
+      {/* <Profile></Profile> */}
       <Header userData={userData}></Header>
-      <div style={{
-        display: 'flex',
-        flex: '1',
-        maxHeight: '100%',
-        boxSizing: 'border-box'
-      }}>
-        {/* <Profile></Profile> */}
-        <Explore></Explore>
-        <Conversation></Conversation>
-        <Chats></Chats>
-      </div >
-    </div>
+      <Chats></Chats>
+      <Conversation></Conversation>
+      <Explore></Explore>
+      
+    </div >
   )
 }
 
