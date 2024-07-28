@@ -2,7 +2,7 @@
     flex: 3.25;
     padding-top: calc(var(--padding) *8);
     background-color: var(--primary-color);
-    padding-bottom: calc(var(--msg-input-height) *1.5);
+    padding-bottom: 150px;
     border-right: 1px #444444 solid;
     border-left: 1px #444444 solid;
     position: relative;
@@ -26,8 +26,7 @@
 
 
 .conversation-display .conversation {
-    padding: calc(var(--padding) *2);
-    padding-bottom: 0;
+    padding: calc(var(--padding) *5) calc(var(--padding) *3);
     display: flex;
     flex-direction: column;
     gap: 50px;
@@ -40,10 +39,13 @@
 
 .conversation-display .input-container {
     position: absolute;
-    width: 90%;
+    width: 70%;
     bottom: calc(var(--msg-input-height) *0.25);
-    right: 40px;
+    left: 50%;
+    bottom: 4%;
+    transform: translate(-50%, -0%);
 }
+
 
 .conversation-display .input-container .text-container {
     box-sizing: border-box;
@@ -57,6 +59,20 @@
     font-size: var(--text-font-size);
 }
 
+.conversation-display .input-container .text-emoji {
+    position: relative;
+}
+
+.conversation-display .input-container .action-container {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--msg-input-height);
+    padding: var(--text-padding);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    background-color: #343C42;
+    border: 0;
+}
+
 .conversation-display .input-container .text-input-rtl {
     direction: rtl;
     text-align: right;
@@ -65,21 +81,17 @@
 
 .conversation-display .emoji-icon {
     position: absolute;
-    right: 60px;
-    top: 10px;
+    top: 50%;
+    right: 0%;
+    transform: translate(-50%, -50%);
     width: 30px;
     height: 30px;
     cursor: pointer;
     transition: all 0.3s;
-
 }
 
 .conversation-display .emoji-icon-leave {
     opacity: 0.3;
-}
-
-.conversation-display .emoji-icon:hover {
-    transform: scale(1.2);
 }
 
 .conversation-display .emoji-picker {

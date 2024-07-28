@@ -1,6 +1,7 @@
 .message-container {
     min-height: 30px;
     display: flex;
+    gap: 30px;
     width: fit-content;
     align-items: center;
     box-sizing: border-box;
@@ -22,18 +23,26 @@
     width: var(--image-dim);
     height: var(--image-dim);
     border-radius: 50%;
+    position: relative;
+    top: 30px;
+    left: 5px;
 }
 
 .message-container .message-body {
-    min-width: fit-content;
+    width: fit-content;
     max-width: 600px;
     word-wrap: break-word;
+    /* For legacy support */
+    overflow-wrap: break-word;
+    /* Standard property */
+    white-space: pre-wrap;    /* Ensures long strings break properly */
     color: var(--font-color);
     font-size: var(--text-font-size);
     font-weight: 400;
     padding: calc(var(--padding) *2);
     position: relative;
 }
+
 
 .message-container .message-body .message-date {
     color: var(--msg-time-color);
@@ -59,11 +68,11 @@
 .message-container.my-message .message-body {
     background: #7F00FF;
     /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #E100FF, #7F00FF);
+    background: -webkit-linear-gradient(to right, #8d059f, #7F00FF);
     /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #E100FF, #7F00FF);
+    background: linear-gradient(to right, #8d059f, #7F00FF);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    border-radius: calc(var(--border-radius) *2);
+    border-radius: calc(var(--border-radius) *3);
     border-bottom-right-radius: 0px;
 }
 
