@@ -67,7 +67,7 @@
     box-sizing: border-box;
     width: 100%;
     height: var(--msg-input-height);
-    padding: var(--text-padding);
+    padding: calc(var(--padding)*2);
     border-radius: 0 0 var(--border-radius) var(--border-radius);
     background-color: #343C42;
     border: 0;
@@ -98,4 +98,28 @@
     position: absolute;
     left: 50%;
     bottom: 100%;
+}
+
+.conversation-display .action-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.conversation-display .action-container .action-attach {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.conversation-display .action-container .icon {
+    width: 30px;
+    height: 30px;
+    transition: all 0.3s;
+    cursor: pointer;
+    color:gray;
+}
+
+.conversation-display .action-container .icon:hover {
+    color: var(--icon-color);
 }

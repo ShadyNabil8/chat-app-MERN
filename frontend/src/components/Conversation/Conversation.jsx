@@ -6,6 +6,9 @@ import { useAuth } from '../../context/authContext';
 import { useGlobalState } from '../../context/GlobalStateContext.jsx';
 import { getFormattedDate } from '../../utils/date.js'
 import image1 from '../../assets/naruto.jpeg'
+import { IoSend } from "react-icons/io5";
+import { MdOutlineAttachFile } from "react-icons/md";
+import { PiMicrophone } from "react-icons/pi";
 
 import './Conversation.css'
 
@@ -132,6 +135,13 @@ const Conversation = () => {
                     </div>
                 </div>
                 <div className="action-container">
+                    <div className="action-attach">
+                        <MdOutlineAttachFile className='icon' />
+                        <PiMicrophone className='icon' />
+                    </div>
+                    <div className="action-send">
+                        <IoSend className='icon' />
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,21 +149,3 @@ const Conversation = () => {
 }
 
 export default Conversation
-/**
- * <img src={displayedEmoji.emoji}
-                    alt="emoji"
-                    className={displayedEmoji.focus ? "emoji-icon" : "emoji-icon emoji-icon-leave"}
-                    onClick={toggleEmojiPicker}
-                    onMouseEnter={emojiOnMouseEnter}
-                    onMouseLeave={emojiOnMouseLeave}
-                ></img>
-                <div className='emoji-picker'>
-                    <EmojiPicker
-                        open={emojiPicker}
-                        autoFocusSearch={false}
-                        theme={'dark'}
-                        emojiStyle={'facebook'}
-                        onEmojiClick={handleEmojiClick}
-                    />
-                </div>
- */

@@ -39,7 +39,7 @@
     color: var(--font-color);
     font-size: var(--text-font-size);
     font-weight: 400;
-    padding: calc(var(--padding) *2);
+    padding: calc(var(--padding) *1.5);
     position: relative;
 }
 

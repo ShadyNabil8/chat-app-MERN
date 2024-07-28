@@ -75,8 +75,8 @@
 }
 
 .header .icon {
-    width: 40px;
-    height: 40px;
+    width: var(--icon-dim);
+    height: var(--icon-dim);
     transition: all 0.3s;
     cursor: pointer;
     color: var(--icon-color);
