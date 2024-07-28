@@ -50,7 +50,7 @@
 .conversation-display .input-container .text-container {
     box-sizing: border-box;
     width: 100%;
-    height: var(--msg-input-height);
+    min-height: var(--msg-input-height);
     padding: var(--text-padding);
     color: var(--font-color);
     border-radius: var(--border-radius);
@@ -96,6 +96,6 @@
 
 .conversation-display .emoji-picker {
     position: absolute;
-    right: 5%;
-    bottom: 120%;
+    left: 50%;
+    bottom: 100%;
 }
