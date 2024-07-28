@@ -75,15 +75,21 @@ const Conversation = () => {
             }, selectedChat);
 
             setMessage('');
-
-            if (scrollRef.current) {
-                scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-            }
         }
         else if (event.key === 'Escape') {
             setEmojiPicker(false);
         }
     };
+
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTo({
+                top: scrollRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    }, [messageList])
+
     return (
         <div className="conversation-display">
             {
