@@ -1,91 +1,74 @@
 .message-container {
+    min-height: 30px;
     display: flex;
-    gap: 25px;
-    align-items: flex-start;
-    justify-content: flex-start;
-    max-width: 500px;
-    height: fit-content;
+    width: fit-content;
+    align-items: center;
     box-sizing: border-box;
-    animation: smooth 0.3s linear 1 normal forwards;
+    flex-shrink: 0;
+    /* Prevent flex items from shrinking */
+
 }
 
-.my-message {
-    align-self: flex-start;
-    flex-direction: row;
-}
 
-.his-message {
+.message-container.my-message {
     align-self: flex-end;
-    flex-direction: row-reverse;
+}
+
+.message-container.his-message {
+    align-self: flex-start;
 }
 
 .message-container .image-container img {
-    width: 60px;
-    height: 60px;
+    width: var(--image-dim);
+    height: var(--image-dim);
     border-radius: 50%;
 }
 
-.message-container .text-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.my-message .text-container {
-    align-items: flex-start;
-
-}
-
-.his-message .text-container {
-    align-items: flex-end;
-}
-
-
-
-.message-container .text-container .message-metadata {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.my-message .message-metadata {
-    flex-direction: row;
-
-}
-
-.his-message .message-metadata {
-    flex-direction: row-reverse;
-}
-
-.message-container .sender-name {
-    font-size: 24px;
-    font-weight: 500;
-}
-
-.my-message .sender-name {
-
-    color: darkorange;
-}
-
-.his-message .sender-name {
-
-    color: silver;
-}
-
-
-.message-container .message-date {
-    font-size: 14px;
-    font-weight: 300;
-    color: rgb(162, 160, 159);
-}
-
 .message-container .message-body {
-    color: aliceblue;
-    font-size: 20px;
-    max-width: 50ch;
-    overflow-wrap: break-word;
+    min-width: fit-content;
+    max-width: 600px;
+    word-wrap: break-word;
+    color: var(--font-color);
+    font-size: var(--text-font-size);
+    font-weight: 400;
+    padding: calc(var(--padding) *2);
+    position: relative;
+}
+
+.message-container .message-body .message-date {
+    color: var(--msg-time-color);
+    font-size: 14px;
+    font-weight: 500;
+    position: absolute;
+    bottom: -20px;
+    min-width: 60px;
+}
+
+.message-container .message-body .my-message-date {
+    right: 2px;
+}
+
+.message-container .message-body .his-message-date {
+    left: 2px;
 }
 
 .message-container .message-body-rtl {
-    direction: rtl;
-    text-align: right;
+    text-align: end;
+}
+
+.message-container.my-message .message-body {
+    background: #7F00FF;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #E100FF, #7F00FF);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #E100FF, #7F00FF);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border-radius: calc(var(--border-radius) *2);
+    border-bottom-right-radius: 0px;
+}
+
+.message-container.his-message .message-body {
+    background-color: #4A545C;
+    border-radius: calc(var(--border-radius) *2);
+    border-bottom-left-radius: 0px;
 }

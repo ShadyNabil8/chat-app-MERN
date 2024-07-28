@@ -7,7 +7,7 @@ const generateToken = (user) => {
         throw new Error('Error in generation token')
     }
     const token = jwt.sign({ id: user._id }, process.env.PRIVATE_KEY, {
-        expiresIn: '1h',
+        expiresIn: '1w',
     });
 
     return token

@@ -11,8 +11,8 @@ export const getFormattedDate = () => {
 
     const formattedTime = `${hours}:${minutes} ${ampm}`;
 
-    const today = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(now);
+    // const today = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(now);
 
-    return `${today} ${formattedTime}`
+    return `${formattedTime}`
 
 }

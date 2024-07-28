@@ -94,7 +94,6 @@ const Conversation = () => {
                     </div>
                 </div>
             }
-            <div className="conversation-container">
                 <div className='conversation' ref={scrollRef} >
                     {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
                 </div>
@@ -125,7 +124,6 @@ const Conversation = () => {
                         />
                     </div>
                 </div>
-            </div>
         </div>
     )
 }

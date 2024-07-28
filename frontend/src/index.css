@@ -12,6 +12,9 @@
   --padding: 10px;
   --image-dim: 50px;
   --last-msg-color: rgb(131, 131, 131);
+  --msg-time-color: #a6a6a7;
+  --msg-input-height: 55px;
+  --msg-margin: 30px;
 }
 
 * {
