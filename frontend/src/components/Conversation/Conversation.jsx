@@ -106,44 +106,48 @@ const Conversation = () => {
             <div className='conversation' ref={scrollRef} >
                 {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
             </div>
-            <div className="input-container">
-                <div className="text-emoji">
-                    <input
-                        className={isArabic(message) ? 'text-input-rtl text-container' : 'text-container'}
-                        ref={inputRef}
-                        type="text"
-                        placeholder="Type your message..."
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        onKeyDown={handleKeyDown}>
-                    </input>
-                    <img src={displayedEmoji.emoji}
-                        alt="emoji"
-                        className={displayedEmoji.focus ? "emoji-icon" : "emoji-icon emoji-icon-leave"}
-                        onClick={toggleEmojiPicker}
-                        onMouseEnter={emojiOnMouseEnter}
-                        onMouseLeave={emojiOnMouseLeave}
-                    ></img>
-                    <div className='emoji-picker'>
-                        <EmojiPicker
-                            open={emojiPicker}
-                            autoFocusSearch={false}
-                            theme={'dark'}
-                            emojiStyle={'facebook'}
-                            onEmojiClick={handleEmojiClick}
-                        />
+            {
+                (selectedChat) &&
+                <div className="input-container">
+                    <div className="text-emoji">
+                        <input
+                            className={isArabic(message) ? 'text-input-rtl text-container' : 'text-container'}
+                            ref={inputRef}
+                            type="text"
+                            placeholder="Type your message..."
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            onKeyDown={handleKeyDown}>
+                        </input>
+                        <img src={displayedEmoji.emoji}
+                            alt="emoji"
+                            className={displayedEmoji.focus ? "emoji-icon" : "emoji-icon emoji-icon-leave"}
+                            onClick={toggleEmojiPicker}
+                            onMouseEnter={emojiOnMouseEnter}
+                            onMouseLeave={emojiOnMouseLeave}
+                        ></img>
+                        <div className='emoji-picker'>
+                            <EmojiPicker
+                                open={emojiPicker}
+                                autoFocusSearch={false}
+                                theme={'dark'}
+                                emojiStyle={'facebook'}
+                                onEmojiClick={handleEmojiClick}
+                            />
+                        </div>
+                    </div>
+                    <div className="action-container">
+                        <div className="action-attach">
+                            <MdOutlineAttachFile className='icon' />
+                            <PiMicrophone className='icon' />
+                        </div>
+                        <div className="action-send">
+                            <IoSend className='icon' />
+                        </div>
                     </div>
                 </div>
-                <div className="action-container">
-                    <div className="action-attach">
-                        <MdOutlineAttachFile className='icon' />
-                        <PiMicrophone className='icon' />
-                    </div>
-                    <div className="action-send">
-                        <IoSend className='icon' />
-                    </div>
-                </div>
-            </div>
+
+            }
         </div>
     )
 }
