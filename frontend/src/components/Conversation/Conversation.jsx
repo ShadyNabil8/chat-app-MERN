@@ -114,10 +114,6 @@ const Conversation = () => {
         }
     }, [messageList])
 
-    useEffect(() => {
-        // console.log(`Cur msg is ${curMessageObj[selectedChat]}`);
-    })
-
     return (
         <div className="conversation-display">
             {
