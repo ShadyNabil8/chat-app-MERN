@@ -13,6 +13,7 @@ import api from '../../api/api.jsx'
 import './Home.css'
 
 const Home = () => {
+  console.log("------------> Home");
 
   const { authState, setAuthState } = useAuth();
   const { isAuthenticated } = authState;

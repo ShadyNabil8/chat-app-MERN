@@ -13,18 +13,23 @@ import { PiMicrophone } from "react-icons/pi";
 import './Conversation.css'
 
 const Conversation = () => {
-    const { messages, addMessage, selectedChat } = useGlobalState();
+    console.log("------------> Conversation");
+
+    const { selectedChat } = useGlobalState();
+
+    const [messages, setMessages] = useState(testMessages);
 
     const { authState } = useAuth();
     const userData = authState.userData;
 
-    const [message, setMessage] = useState('')
+    const [curMessageObj, setCurMessageObj] = useState({})
     const [emojiPicker, setEmojiPicker] = useState(false)
     const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
     const inputRef = useRef(null);
     const scrollRef = useRef(null);
 
-    const messageList = selectedChat ? messages[selectedChat] : [];
+    const messageList = selectedChat ? messages[selectedChat] ? messages[selectedChat] : [] : [];
+    const curMessage = selectedChat ? curMessageObj[selectedChat] ? curMessageObj[selectedChat] : '' : ''
 
 
     const isArabic = (text) => {
@@ -59,8 +64,13 @@ const Conversation = () => {
 
     const handleEmojiClick = (emojiObject) => {
         const cursorPosition = inputRef.current.selectionStart;
-        setMessage((prevInput) => prevInput.slice(0, cursorPosition) + emojiObject.emoji + prevInput.slice(cursorPosition));
-
+        const messageWithEmoji = (prevInput) => prevInput.slice(0, cursorPosition) + emojiObject.emoji + prevInput.slice(cursorPosition);
+        setCurMessageObj((prev) => {
+            return {
+                ...prev,
+                [selectedChat]: messageWithEmoji,
+            }
+        })
         setTimeout(() => {
             inputRef.current.focus();
             inputRef.current.setSelectionRange(cursorPosition + emojiObject.emoji.length, cursorPosition + emojiObject.emoji.length);
@@ -69,15 +79,26 @@ const Conversation = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-            addMessage({
+            const newMessage = {
                 sender: userData.displayedName,
                 image: userData.profilePicture,
                 date: getFormattedDate(),
-                text: message,
+                text: curMessage,
                 myMessage: true
-            }, selectedChat);
+            }
+            setMessages((prev) => {
+                return {
+                    ...prev,
+                    [selectedChat]: [...(prev[selectedChat] || []), newMessage]
+                }
+            })
 
-            setMessage('');
+            setCurMessageObj((prev) => {
+                return {
+                    ...prev,
+                    [selectedChat]: ''
+                }
+            })
         }
         else if (event.key === 'Escape') {
             setEmojiPicker(false);
@@ -92,6 +113,10 @@ const Conversation = () => {
             });
         }
     }, [messageList])
+
+    useEffect(() => {
+        // console.log(`Cur msg is ${curMessageObj[selectedChat]}`);
+    })
 
     return (
         <div className="conversation-display">
@@ -111,12 +136,17 @@ const Conversation = () => {
                 <div className="input-container">
                     <div className="text-emoji">
                         <input
-                            className={isArabic(message) ? 'text-input-rtl text-container' : 'text-container'}
+                            className={isArabic(curMessage) ? 'text-input-rtl text-container' : 'text-container'}
                             ref={inputRef}
                             type="text"
                             placeholder="Type your message..."
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                            value={curMessage}
+                            onChange={(e) => setCurMessageObj((prev) => {
+                                return {
+                                    ...prev,
+                                    [selectedChat]: e.target.value
+                                }
+                            })}
                             onKeyDown={handleKeyDown}>
                         </input>
                         <img src={displayedEmoji.emoji}
