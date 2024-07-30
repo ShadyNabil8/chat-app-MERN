@@ -13,9 +13,21 @@
     background-color: var(--secondary-color);
     position: absolute;
     top: 0px;
-    padding: calc(var(--padding) /2) calc(var(--padding));
+    padding: calc(var(--padding) /2) calc(var(--padding) *2);
     display: flex;
     align-items: center;
+}
+
+.conversation-display .conversation-header .info{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.conversation-display .conversation-header .info .name{
+    font-size: var(--text-font-size);
+    color: var(--font-color);
+    font-weight: 500;
 }
 
 .conversation-display .conversation-header .info img {
@@ -44,6 +56,8 @@
     left: 50%;
     bottom: 4%;
     transform: translate(-50%, -0%);
+    border-radius: var(--border-radius);
+    border: 1px #ffffff69 solid;
 }
 
 

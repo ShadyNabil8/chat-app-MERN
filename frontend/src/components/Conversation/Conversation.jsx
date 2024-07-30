@@ -15,7 +15,7 @@ import './Conversation.css'
 const Conversation = () => {
     console.log("------------> Conversation");
 
-    const { selectedChat } = useGlobalState();
+    const { selectedChatData } = useGlobalState();
 
     const [messages, setMessages] = useState(testMessages);
 
@@ -28,8 +28,8 @@ const Conversation = () => {
     const inputRef = useRef(null);
     const scrollRef = useRef(null);
 
-    const messageList = selectedChat ? messages[selectedChat] ? messages[selectedChat] : [] : [];
-    const curMessage = selectedChat ? curMessageObj[selectedChat] ? curMessageObj[selectedChat] : '' : ''
+    const messageList = selectedChatData.id ? messages[selectedChatData.id] ? messages[selectedChatData.id] : [] : [];
+    const curMessage = selectedChatData.id ? curMessageObj[selectedChatData.id] ? curMessageObj[selectedChatData.id] : '' : ''
 
 
     const isArabic = (text) => {
@@ -68,7 +68,7 @@ const Conversation = () => {
         setCurMessageObj((prev) => {
             return {
                 ...prev,
-                [selectedChat]: messageWithEmoji,
+                [selectedChatData.id]: messageWithEmoji,
             }
         })
         setTimeout(() => {
@@ -77,8 +77,8 @@ const Conversation = () => {
         }, 0);
     };
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
+    const sendMessage = () => {
+        if (curMessage) {
             const newMessage = {
                 sender: userData.displayedName,
                 image: userData.profilePicture,
@@ -89,16 +89,22 @@ const Conversation = () => {
             setMessages((prev) => {
                 return {
                     ...prev,
-                    [selectedChat]: [...(prev[selectedChat] || []), newMessage]
+                    [selectedChatData.id]: [...(prev[selectedChatData.id] || []), newMessage]
                 }
             })
 
             setCurMessageObj((prev) => {
                 return {
                     ...prev,
-                    [selectedChat]: ''
+                    [selectedChatData.id]: ''
                 }
             })
+        }
+    }
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            sendMessage();
         }
         else if (event.key === 'Escape') {
             setEmojiPicker(false);
@@ -117,10 +123,11 @@ const Conversation = () => {
     return (
         <div className="conversation-display">
             {
-                (selectedChat) &&
+                (selectedChatData.id) &&
                 <div className="conversation-header">
                     <div className="info">
-                        <img src={image1}></img>
+                        <img src={selectedChatData.image}></img>
+                        <p className='name'>{selectedChatData.name}</p>
                     </div>
                 </div>
             }
@@ -128,7 +135,7 @@ const Conversation = () => {
                 {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
             </div>
             {
-                (selectedChat) &&
+                (selectedChatData.id) &&
                 <div className="input-container">
                     <div className="text-emoji">
                         <input
@@ -140,7 +147,7 @@ const Conversation = () => {
                             onChange={(e) => setCurMessageObj((prev) => {
                                 return {
                                     ...prev,
-                                    [selectedChat]: e.target.value
+                                    [selectedChatData.id]: e.target.value
                                 }
                             })}
                             onKeyDown={handleKeyDown}>
@@ -168,7 +175,7 @@ const Conversation = () => {
                             <PiMicrophone className='icon' />
                         </div>
                         <div className="action-send">
-                            <IoSend className='icon' />
+                            <IoSend className='icon' onClick={() => sendMessage()} />
                         </div>
                     </div>
                 </div>

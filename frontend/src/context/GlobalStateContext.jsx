@@ -3,14 +3,18 @@ import React, { createContext, useState, useEffect, useCallback, useContext } fr
 const globalStateContext = createContext();
 
 export const GlobalStateProvider = ({ children }) => {
-    const [selectedChat, setSelectedChat] = useState('');
+    const [selectedChatData, setSelectedChatData] = useState({
+        id: '',
+        image: '',
+        name: ''
+    });
     const [selectedNav, setSelectedNav] = useState('explore')
 
     return (
         <globalStateContext.Provider value=
             {{
-                selectedChat,
-                setSelectedChat,
+                selectedChatData,
+                setSelectedChatData,
                 selectedNav,
                 setSelectedNav
             }}>

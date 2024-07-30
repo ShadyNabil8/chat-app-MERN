@@ -3,7 +3,7 @@ import { useGlobalState } from '../../context/GlobalStateContext.jsx';
 import './Chat.css'
 const Chat = ({ data }) => {
 
-    const { setSelectedChat } = useGlobalState();
+    const { setSelectedChatData } = useGlobalState();
 
     const isArabic = (text) => {
         const arabicPattern = /[\u0600-\u06FF]/;
@@ -11,7 +11,7 @@ const Chat = ({ data }) => {
     };
 
     return (
-        <div className='friend-container' onClick={() => setSelectedChat(data.id)}>
+        <div className='friend-container' onClick={() => setSelectedChatData({ id: data.id, image: data.image, name: data.name })}>
             <div className="image-container">
                 <img src={data.image}></img>
             </div>

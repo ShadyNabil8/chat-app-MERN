@@ -17,11 +17,6 @@ const Header = () => {
 
     const { setSelectedNav } = useGlobalState();
 
-
-    const toggleNotificationBox = () => {
-        setNotificationBox((prev) => !prev)
-    }
-
     const toggleOptionsBox = () => {
         setOptions((prev) => !prev)
     }

@@ -55,26 +55,6 @@ const Explore = () => {
                         return <ExploredUser key={index} data={res}></ExploredUser>
                     })
                 }
-                {
-                    searchResult.map((res, index) => {
-                        return <ExploredUser key={index} data={res}></ExploredUser>
-                    })
-                }
-                {
-                    searchResult.map((res, index) => {
-                        return <ExploredUser key={index} data={res}></ExploredUser>
-                    })
-                }
-                {
-                    searchResult.map((res, index) => {
-                        return <ExploredUser key={index} data={res}></ExploredUser>
-                    })
-                }
-                {
-                    searchResult.map((res, index) => {
-                        return <ExploredUser key={index} data={res}></ExploredUser>
-                    })
-                }
             </div>
         </div>
     )
