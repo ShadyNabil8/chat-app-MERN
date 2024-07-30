@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Link, redirect } from "react-router-dom";
 import api from '../../api/api';
 import MessageBox from '../../components/MessageBox/MessageBox'
+import LoadingDots from '../../components/LoadingDots/LoadingDots'
 import './Register.css'
 
 const Register = () => {
@@ -9,8 +11,14 @@ const Register = () => {
   const [responseError, setResponseError] = useState({});
   const [responseMessage, setResponseMessage] = useState({ title: '', body: '' })
   const [messageBox, setMessageBox] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
+    setIsLoading(true);
+
     event.preventDefault();
 
     let newError = {};
@@ -29,7 +37,7 @@ const Register = () => {
         body: response.data.data
       })
 
-      setRegistrationData({ email: '', displayedName: '', password: '' });
+      // setRegistrationData({ email: '', displayedName: '', password: '' });
 
       setMessageBox(true);
 
@@ -64,9 +72,16 @@ const Register = () => {
 
 
     } finally {
+      setIsLoading(false);
       setResponseError(newError);
     }
   };
+
+  useEffect(() => {
+    if (isRegistered) {
+      navigate('/login')
+    }
+  }, [responseMessage])
 
   return (
     <div className="register-page">
@@ -74,7 +89,8 @@ const Register = () => {
       {(messageBox) && <MessageBox
         responseMessage={responseMessage}
         setResponseMessage={setResponseMessage}
-        setMessageBox={setMessageBox}>
+        setMessageBox={setMessageBox}
+        setIsRegistered={setIsRegistered}>
       </MessageBox>}
 
       <div className='register-div' style={(messageBox) ? { pointerEvents: 'none' } : {}}>
@@ -86,7 +102,6 @@ const Register = () => {
           alignItems: 'center',
           gap: '5px'
         }}>
-
           <p style={
             {
               fontSize: '24px',
@@ -97,63 +112,69 @@ const Register = () => {
             Create an account
           </p>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-            <div className='label-input-div'>
-              <label className="dot-label" htmlFor="email">
-                EMAIL
-              </label>
-              {(responseError.email) &&
-                <div className='error-container'>
-                  {responseError.email}
+        {
+          (isLoading) ?
+            <LoadingDots></LoadingDots>
+            : (
+              <form onSubmit={handleSubmit}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+                  <div className='label-input-div'>
+                    <label className="dot-label" htmlFor="email">
+                      EMAIL
+                    </label>
+                    {(responseError.email) &&
+                      <div className='error-container'>
+                        {responseError.email}
+                      </div>
+                    }
+                    <input
+                      className={(responseError.email) && 'invalid-input'}
+                      type="text"
+                      id="email"
+                      value={registrationData.email}
+                      onChange={(e) => setRegistrationData((prev) => { return { ...prev, email: e.target.value } })}
+                    />
+                  </div>
+                  <div className='label-input-div'>
+                    <label className="dot-label" htmlFor="displayedName">
+                      DISPLAYED NAME
+                    </label>
+                    {(responseError.displayedName) &&
+                      <div className='error-container'>
+                        {responseError.displayedName}
+                      </div>
+                    }
+                    <input
+                      className={(responseError.displayedName) && 'invalid-input'}
+                      type="text"
+                      id="displayedName"
+                      value={registrationData.displayedName}
+                      onChange={(e) => setRegistrationData((prev) => { return { ...prev, displayedName: e.target.value } })}
+                    />
+                  </div>
+                  <div className='label-input-div'>
+                    <label className="dot-label" htmlFor="password">
+                      PASSWORD
+                    </label>
+                    {(responseError.password) &&
+                      <div className='error-container'>
+                        {responseError.password}
+                      </div>
+                    }
+                    <input
+                      className={(responseError.password) && 'invalid-input'}
+                      type="password"
+                      id="password"
+                      value={registrationData.password}
+                      onChange={(e) => setRegistrationData((prev) => { return { ...prev, password: e.target.value } })}
+                    />
+                  </div>
                 </div>
-              }
-              <input
-                className={(responseError.email) && 'invalid-input'}
-                type="text"
-                id="email"
-                value={registrationData.email}
-                onChange={(e) => setRegistrationData((prev) => { return { ...prev, email: e.target.value } })}
-              />
-            </div>
-            <div className='label-input-div'>
-              <label className="dot-label" htmlFor="displayedName">
-                DISPLAYED NAME
-              </label>
-              {(responseError.displayedName) &&
-                <div className='error-container'>
-                  {responseError.displayedName}
-                </div>
-              }
-              <input
-                className={(responseError.displayedName) && 'invalid-input'}
-                type="text"
-                id="displayedName"
-                value={registrationData.displayedName}
-                onChange={(e) => setRegistrationData((prev) => { return { ...prev, displayedName: e.target.value } })}
-              />
-            </div>
-            <div className='label-input-div'>
-              <label className="dot-label" htmlFor="password">
-                PASSWORD
-              </label>
-              {(responseError.password) &&
-                <div className='error-container'>
-                  {responseError.password}
-                </div>
-              }
-              <input
-                className={(responseError.password) && 'invalid-input'}
-                type="password"
-                id="password"
-                value={registrationData.password}
-                onChange={(e) => setRegistrationData((prev) => { return { ...prev, password: e.target.value } })}
-              />
-            </div>
-          </div>
-          <button type="submit">Continue</button>
-          <Link style={{ color: '#44C2F8', fontSize: '14px', textDecoration: 'none' }} to='/login'>Already have an account?</Link>
-        </form>
+                <button type="submit">Continue</button>
+                <Link style={{ color: '#44C2F8', fontSize: '14px', textDecoration: 'none' }} to='/login'>Already have an account?</Link>
+              </form>
+            )
+        }
       </div>
     </div>
   )

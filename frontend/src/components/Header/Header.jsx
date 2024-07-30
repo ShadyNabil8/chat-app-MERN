@@ -27,7 +27,7 @@ const Header = () => {
     }
 
     return (
-        <div className="header">
+        <div className="nav-bar">
             <div className="icons">
                 <div className="notification">
                     <IoIosNotifications className='notification-icon icon' onClick={() => setSelectedNav('notification')} />

@@ -1,4 +1,4 @@
-.header {
+.nav-bar {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -9,17 +9,17 @@
     flex: 0.1;
 }
 
-.header .options .profile-picture {
+.nav-bar .options .profile-picture {
     width: 50px;
     height: 50px;
     cursor: pointer;
 }
 
-.header .options {
+.nav-bar .options {
     position: relative;
 }
 
-.header .options .options-container {
+.nav-bar .options .options-container {
     width: 300px;
     background-color: var(--primary-color);
     border-radius: var(--border-radius);
@@ -33,7 +33,7 @@
     right: 20px;
 }
 
-.header .options .option {
+.nav-bar .options .option {
     padding: 10px;
     display: flex;
     gap: 15px;
@@ -44,37 +44,37 @@
     cursor: pointer;
 }
 
-.header .options .view-profile-opt {
+.nav-bar .options .view-profile-opt {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.header .options .option:hover {
+.nav-bar .options .option:hover {
     background-color: var(--secondary-color);
 }
 
-.header .options .option p {
+.nav-bar .options .option p {
     color: white;
     font-size: 20px;
     font-weight: 500;
 }
 
-.header .options .option .icon {
+.nav-bar .options .option .icon {
     width: 30px;
     height: 30px;
     color: var(--icon-color);
 }
 
-.header .options img {
+.nav-bar .options img {
     width: 50px;
     height: 50px;
     cursor: pointer;
 }
 
-.header .notification .notification-icon {
+.nav-bar .notification .notification-icon {
     position: relative;
 }
 
-.header .icon {
+.nav-bar .icon {
     width: var(--icon-dim);
     height: var(--icon-dim);
     transition: all 0.3s;
@@ -82,13 +82,13 @@
     color: var(--icon-color);
 }
 
-.header .icons {
+.nav-bar .icons {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.header .notification-dot {
+.nav-bar .notification-dot {
     position: absolute;
     height: 20px;
     width: 20px;
@@ -102,6 +102,6 @@
     top: 5px;
 }
 
-.header .icon:hover {
+.nav-bar .icon:hover {
     transform: scale(1.2);
 }
