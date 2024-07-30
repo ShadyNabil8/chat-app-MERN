@@ -5,18 +5,18 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    senderId: {
+    sender: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         required: true
     },
-    chatId: {
+    chat: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'chat',
         required: true
     },
     readBy: {
-        userId: {
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'user'
         },
