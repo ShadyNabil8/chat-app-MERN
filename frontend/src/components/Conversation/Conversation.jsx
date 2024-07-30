@@ -64,7 +64,7 @@ const Conversation = () => {
 
     const handleEmojiClick = (emojiObject) => {
         const cursorPosition = inputRef.current.selectionStart;
-        const messageWithEmoji = (prevInput) => prevInput.slice(0, cursorPosition) + emojiObject.emoji + prevInput.slice(cursorPosition);
+        const messageWithEmoji = curMessage.slice(0, cursorPosition) + emojiObject.emoji + curMessage.slice(cursorPosition);
         setCurMessageObj((prev) => {
             return {
                 ...prev,
