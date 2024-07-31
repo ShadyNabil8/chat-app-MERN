@@ -8,12 +8,13 @@ import { getFormattedDate } from '../../utils/date.js'
 import { IoSend } from "react-icons/io5";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { PiMicrophone } from "react-icons/pi";
-import {useSocket} from '../../context/SocketContext.jsx'
+import { useSocket } from '../../context/SocketContext.jsx'
+import useSocketEvent from '../../hooks/useSocket.js'
 
 import './Conversation.css'
 
 const Conversation = () => {
-    console.log("------------> Conversation");
+    // console.log("------------> Conversation");
 
     const { selectedChatData } = useGlobalState();
 
@@ -22,7 +23,7 @@ const Conversation = () => {
     const { authState } = useAuth();
     const userData = authState.userData;
 
-    const {emitEvent} = useSocket();
+    const { emitEvent } = useSocket();
 
     const [curMessageObj, setCurMessageObj] = useState({})
     const [emojiPicker, setEmojiPicker] = useState(false)
@@ -33,6 +34,9 @@ const Conversation = () => {
     const messageList = selectedChatData.id ? messages[selectedChatData.id] ? messages[selectedChatData.id] : [] : [];
     const curMessage = selectedChatData.id ? curMessageObj[selectedChatData.id] ? curMessageObj[selectedChatData.id] : '' : ''
 
+    useSocketEvent('private-message', (data) => {
+        console.log(data)
+    })
 
     const isArabic = (text) => {
         const arabicPattern = /[\u0600-\u06FF]/;
@@ -94,7 +98,13 @@ const Conversation = () => {
                     [selectedChatData.id]: [...(prev[selectedChatData.id] || []), newMessage]
                 }
             })
-            emitEvent('chat message',newMessage.text);
+            emitEvent('private-message', {
+                senderId: userData.email,
+                message: newMessage.text,
+                chatId: selectedChatData.id,
+            }, (response) => {
+                console.log(response.message);
+            });
             setCurMessageObj((prev) => {
                 return {
                     ...prev,

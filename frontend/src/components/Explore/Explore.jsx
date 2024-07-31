@@ -7,7 +7,7 @@ import { useAuth } from '../../context/authContext';
 import './Explore.css'
 
 const Explore = () => {
-    console.log("------------> Explore");
+    // console.log("------------> Explore");
 
     const [searchQuery, setSearchQuery] = useState('')
     const [searchResult, setSearchResult] = useState([])

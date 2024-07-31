@@ -5,7 +5,7 @@ import { IoPersonAdd } from "react-icons/io5";
 import { MdMessage } from "react-icons/md";
 
 const Profile = () => {
-    console.log("------------> Profile");
+    // console.log("------------> Profile");
 
     return (
         <div className='profile'>

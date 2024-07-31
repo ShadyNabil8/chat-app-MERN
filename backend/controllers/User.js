@@ -263,7 +263,7 @@ const search = asyncHandler(async (req, res) => {
             displayedName: { $regex: `^${query}`, $options: 'i' },
             _id: { $ne: userId }
         })
-        .select('id displayedName profilePicture email')
+        .select('_id displayedName profilePicture email')
 
     res.json(users)
 });

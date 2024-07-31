@@ -1,15 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import socket from '.././services/socket';
+import { useAuth } from '../context/authContext';
 
 const SocketContext = createContext();
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }) => {
     const [isConnected, setIsConnected] = useState(socket.connected);
+    const { authState } = useAuth();
 
     useEffect(() => {
         socket.on('connect', () => {
             console.log("Socket connected");
+            socket.emit('join-rooms', { chatRooms: ['room1', 'room2'] }, (response) => {
+                console.log(response.message);
+            })
             setIsConnected(true);
         });
 
@@ -24,12 +29,21 @@ export const SocketProvider = ({ children }) => {
         };
     }, []);
 
-    const emitEvent = (event, data) => {
+    useEffect(() => {
+        if (socket && isConnected && authState.isAuthenticated) {
+            socket.emit('identify', authState.userData.userId, (response) => {
+                console.log(response.message);
+            });
+        }
+    }, [socket, authState, isConnected]);
+
+    const emitEvent = (event, data, callback) => {
         if (socket) {
-            console.log('Im am here');
-            socket.emit(event, data, (callback) => {
-                console.log(callback);
-            })
+            socket.emit(event, data, (response) => {
+                if (callback) {
+                    callback(response);
+                }
+            });
         }
     };
 

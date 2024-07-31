@@ -50,7 +50,8 @@
     font-weight: 500;
     position: absolute;
     bottom: -20px;
-    min-width: 60px;
+    min-width: 70px;
+    text-align: right;
 }
 
 .message-container .message-body .my-message-date {

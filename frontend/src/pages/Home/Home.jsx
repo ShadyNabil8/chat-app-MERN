@@ -12,7 +12,7 @@ import { SocketProvider } from '../../context/SocketContext.jsx'
 import './Home.css'
 
 const Home = () => {
-  console.log("------------> Home");
+  // console.log("------------> Home");
 
   const { authState, setAuthState } = useAuth();
   const { isAuthenticated } = authState;
@@ -44,7 +44,8 @@ const Home = () => {
             displayedName: '',
             email: '',
             profilePicture: '',
-            friends: []
+            friends: [],
+            userId:''
           }
         });
 

@@ -11,7 +11,8 @@ export const AuthProvider = ({ children }) => {
             displayedName: '',
             email: '',
             profilePicture: '',
-            friends: []
+            friends: [],
+            userId: ''
         }
     })
 
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }) => {
                     email: email,
                     profilePicture: profilePicture,
                     friends: friends,
-                    userId: userId 
+                    userId: userId
                 }
             });
         }
@@ -53,7 +54,8 @@ export const AuthProvider = ({ children }) => {
                 displayedName: '',
                 email: '',
                 profilePicture: '',
-                friends: []
+                friends: [],
+                userId: ''
             }
         });
 

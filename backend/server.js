@@ -42,16 +42,35 @@ app.use('/user', userRoute);
 
 
 // socket
-// io.on('connection', socketController.onSocketConnect);
-// io.on('disconnect', socketController.onSocketDisconnect);
-// // io.on('m', socketController.onSocketMessage);
-// io.on("news", (data) => {
-//   console.log(data);
-// });
+
+// Mock function to get chat rooms for a user
+let users = {};
+
 io.on('connection', (socket) => {
   console.log("User Connected");
-  socket.on('chat message', socketController.onSocketMessage);
-  socket.on('disconnect', socketController.onSocketDisconnect);
+  socket.emit('welcome', { message: 'Welcome to the chat!' });
+
+  socket.on('identify', (userId, callback) => {
+    socketController.onSocketIdentify(socket, userId, callback);
+  });
+
+  socket.on('join-rooms', (payload, callback) => {
+    socketController.onSocketJoinRooms(socket, payload, callback);
+
+  });
+
+  socket.on('notification', (payload, callback) => {
+    socketController.onSocketNotification(socket, payload, callback);
+
+  })
+
+  socket.on('private-message', (payload, callback) => {
+    socketController.onSocketPrivateMessage(socket, payload, callback);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
 });
 
 // Custom error handler

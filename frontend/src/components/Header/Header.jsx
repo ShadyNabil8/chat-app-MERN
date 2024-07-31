@@ -8,7 +8,7 @@ import { useGlobalState } from '../../context/GlobalStateContext.jsx'
 import './Header.css'
 
 const Header = () => {
-    console.log("------------> Header");
+    // console.log("------------> Header");
 
     const [options, setOptions] = useState(false)
 

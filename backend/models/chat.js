@@ -6,6 +6,14 @@ const schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     }],
+    isGroup: {
+        type: Boolean,
+        default: false
+    },
+    groupName: {
+        type: String,
+        required: false
+    },
     lastMeaagse: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'message'

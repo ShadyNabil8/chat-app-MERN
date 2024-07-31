@@ -6,7 +6,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
     (config) => {
-        console.log('in REQ');
+        // console.log('in REQ');
         const token = localStorage.getItem('chatAppToken');
 
         if (token) {
@@ -23,7 +23,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(function (response) {
 
     // Any status code that lie within the range of 2xx cause this function to trigger
-    console.log('in RES');
+    // console.log('in RES');
     if (response.data.token) {
         localStorage.setItem('chatAppToken', response.data.token);
     }
