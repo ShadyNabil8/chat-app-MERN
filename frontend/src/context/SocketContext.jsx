@@ -4,7 +4,7 @@ import socket from '.././services/socket';
 const SocketContext = createContext();
 export const useSocket = () => useContext(SocketContext);
 
-export const SocketProvider = ({children}) => {
+export const SocketProvider = ({ children }) => {
     const [isConnected, setIsConnected] = useState(socket.connected);
 
     useEffect(() => {
@@ -14,6 +14,7 @@ export const SocketProvider = ({children}) => {
         });
 
         socket.on('disconnect', () => {
+            console.log("************* Socket disconnected");
             setIsConnected(false);
         });
 
@@ -23,11 +24,21 @@ export const SocketProvider = ({children}) => {
         };
     }, []);
 
+    const emitEvent = (event, data) => {
+        if (socket) {
+            console.log('Im am here');
+            socket.emit(event, data, (callback) => {
+                console.log(callback);
+            })
+        }
+    };
+
     const contextValue = {
         socket,
         isConnected,
+        emitEvent
     }
-    
+
     return (
         <SocketContext.Provider value={contextValue}>
             {children}

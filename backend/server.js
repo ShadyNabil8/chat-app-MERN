@@ -42,8 +42,15 @@ app.use('/user', userRoute);
 
 
 // socket
+// io.on('connection', socketController.onSocketConnect);
+// io.on('disconnect', socketController.onSocketDisconnect);
+// // io.on('m', socketController.onSocketMessage);
+// io.on("news", (data) => {
+//   console.log(data);
+// });
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log("User Connected");
+  socket.on('chat message', socketController.onSocketMessage);
   socket.on('disconnect', socketController.onSocketDisconnect);
 });
 

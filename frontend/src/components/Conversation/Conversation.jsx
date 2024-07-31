@@ -5,10 +5,10 @@ import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../context/authContext';
 import { useGlobalState } from '../../context/GlobalStateContext.jsx';
 import { getFormattedDate } from '../../utils/date.js'
-import image1 from '../../assets/naruto.jpeg'
 import { IoSend } from "react-icons/io5";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { PiMicrophone } from "react-icons/pi";
+import {useSocket} from '../../context/SocketContext.jsx'
 
 import './Conversation.css'
 
@@ -21,6 +21,8 @@ const Conversation = () => {
 
     const { authState } = useAuth();
     const userData = authState.userData;
+
+    const {emitEvent} = useSocket();
 
     const [curMessageObj, setCurMessageObj] = useState({})
     const [emojiPicker, setEmojiPicker] = useState(false)
@@ -92,7 +94,7 @@ const Conversation = () => {
                     [selectedChatData.id]: [...(prev[selectedChatData.id] || []), newMessage]
                 }
             })
-
+            emitEvent('chat message',newMessage.text);
             setCurMessageObj((prev) => {
                 return {
                     ...prev,

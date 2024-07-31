@@ -1,6 +1,8 @@
 const onSocketDisconnect = (socket) => {
-    console.log('user disconnected');
+    console.log('User disconnected');
+}
+const onSocketMessage = (msg) => {
+    console.log('message: ' + msg);
 }
 
-
-module.exports = {onSocketDisconnect}
+module.exports = { onSocketMessage, onSocketDisconnect }
