@@ -7,9 +7,8 @@ import Chats from '../../components/Chats/Chats.jsx'
 import Header from '../../components/Header/Header'
 import { useAuth } from '../../context/authContext';
 import { useGlobalState } from '../../context/GlobalStateContext.jsx'
-
 import api from '../../api/api.jsx'
-
+import { SocketProvider } from '../../context/SocketContext.jsx'
 import './Home.css'
 
 const Home = () => {
@@ -59,17 +58,18 @@ const Home = () => {
   }, [] /* [setUserData] */);
 
   return (
-    <div className='home'>
-
-      <Chats></Chats>
-      <Conversation></Conversation>
-      <div className="nav-components">
-        {(selectedNav == 'notification') && <Notification></Notification>}
-        {(selectedNav == 'explore') && <Explore></Explore>}
-        {(selectedNav == 'profile') && <Profile></Profile>}
-      </div>
-      <Header></Header>
-    </div >
+    <SocketProvider>
+      <div className='home'>
+        <Chats></Chats>
+        <Conversation></Conversation>
+        <div className="nav-components">
+          {(selectedNav == 'notification') && <Notification></Notification>}
+          {(selectedNav == 'explore') && <Explore></Explore>}
+          {(selectedNav == 'profile') && <Profile></Profile>}
+        </div>
+        <Header></Header>
+      </div >
+    </SocketProvider>
   )
 }
 
