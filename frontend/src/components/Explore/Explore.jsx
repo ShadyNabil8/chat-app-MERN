@@ -3,6 +3,7 @@ import debounce from 'lodash.debounce';
 import api from '../../api/api.jsx'
 import ExploredUser from '../../components/ExploredUser/ExploredUser'
 import { useAuth } from '../../context/authContext';
+import LoadingDots from '../../components/LoadingDots/LoadingDots'
 
 import './Explore.css'
 
@@ -11,7 +12,7 @@ const Explore = () => {
 
     const [searchQuery, setSearchQuery] = useState('')
     const [searchResult, setSearchResult] = useState([])
-
+    const [isLoading, setIsLoading] = useState(false);
     const { authState } = useAuth();
     const userData = authState.userData;
 
@@ -32,11 +33,13 @@ const Explore = () => {
         else {
             setSearchResult([])
         }
-
-
+        setIsLoading(false);
     }, 300);
 
     useEffect(() => {
+
+        setIsLoading(true);
+
         debouncedSearch(searchQuery);
 
         return () => {
@@ -49,13 +52,18 @@ const Explore = () => {
             <div className="search-bar">
                 <input type='text' placeholder='Search for friends' onChange={(e) => setSearchQuery(e.target.value)}></input>
             </div>
-            <div className="explore-elements-container">
-                {
-                    searchResult.map((res, index) => {
-                        return <ExploredUser key={index} data={res}></ExploredUser>
-                    })
-                }
-            </div>
+            {
+                (isLoading) ?
+                    <LoadingDots></LoadingDots>
+                    :
+                    <div className="explore-elements-container">
+                        {
+                            searchResult.map((res, index) => {
+                                return <ExploredUser key={index} data={res}></ExploredUser>
+                            })
+                        }
+                    </div>
+            }
         </div>
     )
 }
