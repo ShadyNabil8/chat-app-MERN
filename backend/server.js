@@ -40,12 +40,11 @@ app.use('/upload', uploadRoutes);
 const userRoute = require('./routes/User');
 app.use('/user', userRoute);
 
+const notificationRoute = require('./routes/notification');
+app.use('/notification', notificationRoute);
+
 
 // socket
-
-// Mock function to get chat rooms for a user
-let users = {};
-
 io.on('connection', (socket) => {
   console.log("User Connected");
   socket.emit('welcome', { message: 'Welcome to the chat!' });

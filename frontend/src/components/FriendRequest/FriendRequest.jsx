@@ -10,7 +10,9 @@ const FriendRequest = ({ data }) => {
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '5px',
+                alignItems:'flex-start',
+                justifyContent:'center',
+                gap: '7px',
                 flex: '1',
             }}>
                 <div className="name">

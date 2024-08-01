@@ -1,8 +1,28 @@
+const notificationModel = require('../models/notification');
+
 let users = {};
 
-const onSocketNotification = (socket, { senderId, receriverId, notification }, callback) => {
-    socket.to(users[receriverId]).emit('private-message', notification);
-    callback({ status: 'ok', message: 'Notification has been successfully sent' })
+const onSocketNotification = async (socket, { senderId, receriverId, notification, type }, callback) => {
+    try {
+        const notificationRecord = notificationModel({
+            receiver: receriverId,
+            type: type,
+            content: {
+                title: '',
+                message: ''
+            },
+            requester: senderId
+        })
+
+        await notificationRecord.save();
+
+        console.log(notificationRecord);
+        socket.to(users[receriverId]).emit('private-message', type);
+        callback({ status: 'ok', message: 'Notification has been successfully sent' })
+
+    } catch (error) {
+        console.log(`Error while sending notification: ${error}`);
+    }
 }
 
 const onSocketIdentify = (socket, userId, callback) => {

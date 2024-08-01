@@ -15,7 +15,8 @@ const ExploredUser = ({ data }) => {
     const notification = {
       senderId: authState.userData.userId,
       receriverId: data._id,
-      notification: 'Friend req'
+      notification: '',
+      type:'friend_request'
     }
     emitEvent('notification', notification, (response) => {
       console.log(response.message);

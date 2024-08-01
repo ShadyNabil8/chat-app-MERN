@@ -15,19 +15,17 @@ const schema = new mongoose.Schema({
     content: {
         title: {
             type: String,
-            required: true
+            required: false
         },
         message: {
             type: String,
-            required: true
+            required: false
         }
     },
-    metadata: {
-        requester: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
-            required: true
-        },
+    requester: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
     },
     read: {
         type: Boolean,
