@@ -17,25 +17,26 @@ const Explore = () => {
     const userData = authState.userData;
 
     const debouncedSearch = debounce(async (query) => {
-        if (searchQuery) {
-            setIsLoading(true);
-
-            const url = '/user/search';
-            try {
+        const url = '/user/search';
+        try {
+            if (searchQuery) {
+                setIsLoading(true);
                 const response = await api.get(url, { params: { query, userId: userData.userId } })
 
                 if (response.data) {
                     setSearchResult(response.data)
                 }
-
-            } catch (error) {
-
             }
+            else {
+                setSearchResult([])
+            }
+
+        } catch (error) {
+
         }
-        else {
-            setSearchResult([])
+        finally {
+            setIsLoading(false);
         }
-        setIsLoading(false);
     }, 300);
 
     useEffect(() => {

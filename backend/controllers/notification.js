@@ -14,9 +14,7 @@ const list = asynchandler(async (req, res) => {
         })
     }
 
-    const notifications = await notificationModel.find({ receiver: userId }).populate('requester','displayedName profilePicture')
-
-    console.log(notifications);
+    const notifications = await notificationModel.find({ receiver: userId }).populate('requester', 'displayedName profilePicture')
 
     res.status(200).json({
         success: true,
@@ -25,4 +23,39 @@ const list = asynchandler(async (req, res) => {
 
 })
 
-module.exports = { list }
+const action = asynchandler(async (req, res) => {
+    const { notificationId, action } = req.body;
+
+    console.log(notificationId);
+    console.log(action);
+
+    if (!notificationId || !action) {
+        res.status(400).json({
+            success: false,
+            error: {
+                cause: 'Wrong parameters',
+                data: `Notification ID or action isn't valid`
+            }
+        })
+    }
+
+    const notificationRecord = await notificationModel.findById(notificationId)
+
+    if (!notificationRecord) {
+        res.status(400).json({
+            success: false,
+            error: {
+                cause: 'Wrong parameters',
+                data: `Notification ID or action isn't valid`
+            }
+        })
+    }
+
+    if (action === 'confirm') {
+        console.log(notificationRecord.requester._id);
+        
+    }
+
+})
+
+module.exports = { list, action }

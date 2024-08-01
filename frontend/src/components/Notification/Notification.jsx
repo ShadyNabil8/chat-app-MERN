@@ -27,7 +27,7 @@ const Notification = () => {
 
     return (
         <div className="notification-container">
-            {notifications.map((req, index) => <FriendRequest key={index} data={{ image: req.requester.profilePicture, name: req.requester.displayedName, }}></FriendRequest>)}
+            {notifications.map((req, index) => <FriendRequest key={index} data={req}></FriendRequest>)}
         </div>
     )
 }

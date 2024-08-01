@@ -3,7 +3,6 @@
     align-items: center;
     gap: 15px;
     padding: calc(var(--padding) / 2) calc(var(--padding) *2) calc(var(--padding)) calc(var(--padding));
-    cursor: pointer;
 }
 
 .friend-req-item:hover {
