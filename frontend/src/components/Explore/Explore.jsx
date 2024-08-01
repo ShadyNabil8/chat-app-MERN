@@ -18,6 +18,8 @@ const Explore = () => {
 
     const debouncedSearch = debounce(async (query) => {
         if (searchQuery) {
+            setIsLoading(true);
+
             const url = '/user/search';
             try {
                 const response = await api.get(url, { params: { query, userId: userData.userId } })
@@ -37,9 +39,6 @@ const Explore = () => {
     }, 300);
 
     useEffect(() => {
-
-        setIsLoading(true);
-
         debouncedSearch(searchQuery);
 
         return () => {
