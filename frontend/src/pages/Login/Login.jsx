@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import MessageBox from '../../components/MessageBox/MessageBox'
 import { useAuth } from '../../context/authContext';
+import LoadingDots from '../../components/LoadingDots/LoadingDots'
 
 import './Login.css'
 
@@ -11,8 +12,11 @@ const Login = () => {
   const [responseMessage, setResponseMessage] = useState({ title: '', body: '' })
   const [messageBox, setMessageBox] = useState(false);
   const { login, setAuthState, authState } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
+    setIsLoading(true);
+
     event.preventDefault();
 
     let newError = {};
@@ -81,6 +85,7 @@ const Login = () => {
       }
     } finally {
       setResponseError(newError);
+      setIsLoading(false);
     }
 
   };
@@ -159,7 +164,7 @@ const Login = () => {
             </div>
           </div>
           <Link style={{ color: '#44C2F8', border: '0px', textDecoration: 'none' }}>Forget your password?</Link>
-          <button type="submit">Login</button>
+          <button type="submit"  style={(isLoading) ? { pointerEvents: 'none' } : {}}>{(isLoading) ? <LoadingDots></LoadingDots> : "Login"}</button>
           <div style={{ display: 'flex', gap: '5px' }}>
             <p style={{ color: '#B5BAC1', fontSize: '14px' }}>Need an account?</p>
             <Link style={{ color: '#44C2F8', fontSize: '14px', textDecoration: 'none' }} to='/register'>register</Link>
