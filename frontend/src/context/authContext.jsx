@@ -18,30 +18,15 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
-    const login = async (email, password) => {
-
+    const login = async (userEmail, userPassword) => {
         const url = 'user/login'
 
         const response = await api.post(url, {
-            email: email,
-            password: password
+            email: userEmail,
+            password: userPassword
         });
         console.log(response);
-        if (response.data && response.data.success) {
-
-            const { displayedName, email, profilePicture, friends, userId } = response.data.data;
-
-            setAuthState({
-                isAuthenticated: true,
-                userData: {
-                    displayedName: displayedName,
-                    email: email,
-                    profilePicture: profilePicture,
-                    friends: friends,
-                    userId: userId
-                }
-            });
-        }
+        await fetchProfile();
     }
 
     const logout = () => {
@@ -61,15 +46,33 @@ export const AuthProvider = ({ children }) => {
 
     }
 
-    useEffect(() => {
-        if (authState.isAuthenticated) {
-            navigate('./home') // Will this make re-render?
-        }
-        else {
+    const fetchProfile = async () => {
+        try {
+            const response = await api.get('user/profile');
+            const { displayedName, email, profilePicture, friends, userId } = response.data.data;
+
+            setAuthState({
+                isAuthenticated: true,
+                userData: {
+                    displayedName,
+                    email,
+                    profilePicture,
+                    friends,
+                    userId
+                }
+            });
+            navigate('./home')
+        } catch (error) {
+            console.log(error);
             navigate('./login')
         }
+    }
 
-    }, [authState])
+    useEffect(() => {
+        if (!authState.isAuthenticated) {
+            fetchProfile();
+        }
+    }, [authState]);
 
     return (
         <authContext.Provider value={{ login, logout, authState, setAuthState }}>

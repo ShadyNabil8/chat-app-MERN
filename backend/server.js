@@ -43,6 +43,9 @@ app.use('/user', userRoute);
 const notificationRoute = require('./routes/notification');
 app.use('/notification', notificationRoute);
 
+const friendsRoute = require('./routes/friends');
+app.use('/friends', friendsRoute);
+
 
 // socket
 io.on('connection', (socket) => {

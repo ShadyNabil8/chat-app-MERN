@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import MessageBox from '../../components/MessageBox/MessageBox'
 import { useAuth } from '../../context/authContext';
-import LoadingDots from '../../components/LoadingDots/LoadingDots'
 
 import './Login.css'
 
@@ -11,8 +10,8 @@ const Login = () => {
   const [responseError, setResponseError] = useState({});
   const [responseMessage, setResponseMessage] = useState({ title: '', body: '' })
   const [messageBox, setMessageBox] = useState(false);
-  const { login, setAuthState } = useAuth();
-  
+  const { login, setAuthState, authState } = useAuth();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -25,17 +24,15 @@ const Login = () => {
 
     } catch (err) {
 
-      if (err.response && err.response.status === 401) {
-        setAuthState({
-          isAuthenticated: false,
-          userData: {
-            displayedName: '',
-            email: '',
-            profilePicture: '',
-            friends: []
-          }
-        })
-      }
+      setAuthState({
+        isAuthenticated: false,
+        userData: {
+          displayedName: '',
+          email: '',
+          profilePicture: '',
+          friends: []
+        }
+      })
 
       if (err.response && err.response.data && !err.response.data.success) {
         const { cause, data } = err.response.data.error;
@@ -87,6 +84,7 @@ const Login = () => {
     }
 
   };
+
   return (
     <div className="login-page">
 

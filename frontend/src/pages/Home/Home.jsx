@@ -14,49 +14,7 @@ import './Home.css'
 const Home = () => {
   // console.log("------------> Home");
 
-  const { authState, setAuthState } = useAuth();
-  const { isAuthenticated } = authState;
-
   const { selectedNav } = useGlobalState();
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await api.get('user/profile');
-        const { displayedName, email, profilePicture, friends, userId } = response.data.data;
-
-        setAuthState({
-          isAuthenticated: true,
-          userData: {
-            displayedName,
-            email,
-            profilePicture,
-            friends,
-            userId
-          }
-        });
-
-      } catch (error) {
-        console.log(error);
-        setAuthState({
-          isAuthenticated: false,
-          userData: {
-            displayedName: '',
-            email: '',
-            profilePicture: '',
-            friends: [],
-            userId:''
-          }
-        });
-
-      }
-    }
-
-    if (!isAuthenticated) {
-      fetchProfile();
-    }
-
-  }, [] /* [setUserData] */);
 
   return (
     <SocketProvider>

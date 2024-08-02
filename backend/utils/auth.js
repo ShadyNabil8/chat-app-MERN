@@ -16,7 +16,7 @@ const generateToken = (user) => {
 const protect = asyncHandler(async (req, res, next) => {
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer')) {
 
-        res.status(401).json({
+        return res.status(401).json({
             success: false,
             error: {
                 cause: 'authorization',
@@ -34,7 +34,7 @@ const protect = asyncHandler(async (req, res, next) => {
         next();
 
     } catch (error) {
-        res.status(401).json({
+        return res.status(401).json({
             success: false,
             error: {
                 cause: error.name || 'authorization',

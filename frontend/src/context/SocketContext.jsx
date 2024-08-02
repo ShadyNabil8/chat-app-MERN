@@ -15,6 +15,9 @@ export const SocketProvider = ({ children }) => {
             socket.emit('join-rooms', { chatRooms: ['room1', 'room2'] }, (response) => {
                 console.log(response.message);
             })
+            socket.emit('identify', authState.userData.userId, (response) => {
+                console.log(response.message);
+            });
             setIsConnected(true);
         });
 
@@ -29,13 +32,13 @@ export const SocketProvider = ({ children }) => {
         };
     }, []);
 
-    useEffect(() => {
-        if (socket && isConnected && authState.isAuthenticated) {
-            socket.emit('identify', authState.userData.userId, (response) => {
-                console.log(response.message);
-            });
-        }
-    }, [socket, authState, isConnected]);
+    // useEffect(() => {
+    //     if (socket && isConnected && authState.isAuthenticated) {
+    //         socket.emit('identify', authState.userData.userId, (response) => {
+    //             console.log(response.message);
+    //         });
+    //     }
+    // }, [socket, authState, isConnected]);
 
     const emitEvent = (event, data, callback) => {
         if (socket) {
