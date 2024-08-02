@@ -80,7 +80,7 @@ const register = [
         await sendVerificationCode(email, verificationCode)
 
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             data: 'Registration successful. Please check your email to verify your account.'
         });
@@ -125,7 +125,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
     await verificationCodeModel.deleteOne({ _id: verificationCodeRecord._id });
 
-    res.status(200).json({
+    return res.status(200).json({
         success: true,
         data: 'Email verified successfully!'
     });
@@ -229,7 +229,7 @@ const login = asyncHandler(async (req, res) => {
 
 const profile = asyncHandler(async (req, res, next) => {
     if (!req.user) {
-        res.status(401).json({
+        return res.status(401).json({
             success: false,
             error: {
                 cause: 'authorization',

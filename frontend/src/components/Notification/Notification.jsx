@@ -9,6 +9,7 @@ const Notification = () => {
     // console.log("------------> Notification");
     const [notifications, setNotifications] = useState([])
     const { authState } = useAuth();
+
     const userData = authState.userData;
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -27,7 +28,7 @@ const Notification = () => {
 
     return (
         <div className="notification-container">
-            {notifications.map((req, index) => <FriendRequest key={index} data={req}></FriendRequest>)}
+            {notifications.map((req, index) => <FriendRequest key={index} data={req} setNotifications={setNotifications}></FriendRequest>)}
         </div>
     )
 }

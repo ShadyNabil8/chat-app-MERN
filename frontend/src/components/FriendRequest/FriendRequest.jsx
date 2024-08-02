@@ -4,14 +4,12 @@ import { notificationRoute } from '../../routes/routes.js'
 import LoadingDots from '../../components/LoadingDots/LoadingDots'
 
 import './FriendRequest.css'
-const FriendRequest = ({ data }) => {
+const FriendRequest = ({ data, setNotifications }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleFriendRequest = async (action) => {
         try {
             setIsLoading(true)
-            console.log(notificationRoute.action);
-
             const response = await api.post(notificationRoute.action,
                 {
                     notificationId: data._id,
@@ -19,7 +17,10 @@ const FriendRequest = ({ data }) => {
                 }
             )
 
-            console.log(response);
+            setNotifications((prev) => {
+                return prev.filter((req) => req._id != data._id)
+            })
+            
         } catch (error) {
             console.log(error);
 
