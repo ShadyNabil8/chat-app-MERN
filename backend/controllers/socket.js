@@ -1,6 +1,11 @@
 const notificationModel = require('../models/notification');
 
-let users = {};
+let sockets = {};
+
+const onSocketConnection = (socket) => {
+    console.log("User Connected");
+    console.log(socket.id);
+}
 
 const onSocketNotification = async (socket, { senderId, receriverId, notification, type }, callback) => {
     try {
@@ -17,7 +22,7 @@ const onSocketNotification = async (socket, { senderId, receriverId, notificatio
         await notificationRecord.save();
 
         console.log(notificationRecord);
-        socket.to(users[receriverId]).emit('private-message', type);
+        socket.to(sockets[receriverId]).emit('private-message', type);
         callback({ status: 'ok', message: 'Notification has been successfully sent' })
 
     } catch (error) {
@@ -27,8 +32,9 @@ const onSocketNotification = async (socket, { senderId, receriverId, notificatio
 
 const onSocketIdentify = (socket, userId, callback) => {
     console.log(`User ${userId} is identified with socket ID ${socket.id}`);
-    users[userId] = socket.id;
+    sockets[userId] = socket.id;
     callback({ status: 'ok', message: 'You successfully identified' })
+    console.log(sockets);
 }
 
 const onSocketJoinRooms = (socket, { chatRooms }, callback) => {
@@ -37,13 +43,24 @@ const onSocketJoinRooms = (socket, { chatRooms }, callback) => {
     callback({ status: 'ok', message: 'You successfully joined the rooms' })
 }
 
-const onSocketPrivateMessage = (socket, { chatId, message }, callback) => {
+const onSocketPrivateMessage = (socket, { receiverId, senderId, message }, callback) => {
     console.log('private-message: ' + message);
-    console.log('chatId: ' + chatId);
+    console.log('receiverId: ' + receiverId);
 
-    socket.to(chatId).emit('private-message', message);
-
-    callback({ status: 'ok', message: 'Messagse sent successfully' })
+    socket.timeout(10000).to(sockets[receiverId]).emit('private-message', message, (err, responses) => {
+        if (err) {
+            // some clients did not acknowledge the event in the given delay
+        } else {
+            console.log(responses); // one response per client
+            callback({ status: responses[0], message: message })
+        }
+    });
 }
 
-module.exports = { onSocketIdentify, onSocketNotification, onSocketJoinRooms, onSocketPrivateMessage }
+module.exports = {
+    onSocketIdentify,
+    onSocketNotification,
+    onSocketJoinRooms,
+    onSocketPrivateMessage,
+    onSocketConnection
+}

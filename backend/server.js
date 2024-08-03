@@ -46,11 +46,14 @@ app.use('/notification', notificationRoute);
 const friendsRoute = require('./routes/friends');
 app.use('/friends', friendsRoute);
 
+const chatRoute = require('./routes/chat');
+app.use('/chat', chatRoute);
+
 
 // socket
 io.on('connection', (socket) => {
-  console.log("User Connected");
-  socket.emit('welcome', { message: 'Welcome to the chat!' });
+  socketController.onSocketConnection(socket);
+  // socket.emit('welcome', { message: 'Welcome to the chat!' });
 
   socket.on('identify', (userId, callback) => {
     socketController.onSocketIdentify(socket, userId, callback);

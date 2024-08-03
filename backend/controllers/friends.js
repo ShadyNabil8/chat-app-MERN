@@ -15,7 +15,6 @@ const list = asynchandler(async (req, res) => {
     }
 
     const { friends } = await userModel.findById(user).select('friends').populate('friends', 'displayedName profilePicture email');
-    console.log(friends);
     
     if (!friends) {
         return res.status(404).json({

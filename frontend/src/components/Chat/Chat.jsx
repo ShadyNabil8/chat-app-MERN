@@ -11,7 +11,13 @@ const Chat = ({ data }) => {
     };
 
     return (
-        <div className='friend-container' onClick={() => setSelectedChatData({ id: data.id, image: data.image, name: data.name })}>
+        <div className='friend-container' onClick={() => setSelectedChatData({
+            type: 'new-chat',
+            chatId: data.receiverId,
+            receiverId: data.receiverId,
+            image: data.image,
+            name: data.name
+        })}>
             <div className="image-container">
                 <img src={data.image}></img>
             </div>
@@ -21,7 +27,7 @@ const Chat = ({ data }) => {
                         {data.name}
                     </div>
                     <div className="time-container">
-                        {'1.52AM'}
+                        {data.lastMessageDate}
                     </div>
                 </div>
                 <div className={isArabic(data.lastMessage) ? "last-message-container last-message-container-rtl" : "last-message-container"}>

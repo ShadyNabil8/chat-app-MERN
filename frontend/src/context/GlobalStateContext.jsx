@@ -4,9 +4,11 @@ const globalStateContext = createContext();
 
 export const GlobalStateProvider = ({ children }) => {
     const [selectedChatData, setSelectedChatData] = useState({
-        id: '',
+        type: '',
+        chatId: '',
         image: '',
-        name: ''
+        name: '',
+        receiverId: ''
     });
     const [selectedNav, setSelectedNav] = useState('explore')
 

@@ -1,19 +1,19 @@
 import { React, useEffect, useState } from 'react'
 import Chat from '../Chat/Chat'
-import image1 from '../../assets/naruto.jpeg'
-import image2 from '../../assets/Kakashi.webp'
 import api from '../../api/api.jsx'
 import { friendsRoute } from '../../routes/routes.js'
+import { useAuth } from '../../context/authContext';
 
 import './Chats.css'
 const Chats = () => {
-    console.log("------------> Chats");
-    const [chats, setChats] = useState([]);
+    // console.log("------------> Chats");
+    const { authState } = useAuth();
+    const [friends, setFriends] = useState([]);
 
     const fetchChats = async () => {
         try {
             const response = await api.get(friendsRoute.list)
-            setChats(response.data.data)
+            setFriends(response.data.data)
         } catch (error) {
             console.log(error);
         }
@@ -25,7 +25,14 @@ const Chats = () => {
     return (
         <div className='chats-container'>
             {
-                chats.map((chat, index) => <Chat key={index} data={{ image: chat.profilePicture, name: chat.displayedName, lastMessage: "How are you? My name is shady", id: 'room1' }}></Chat>)
+                friends.map((friend, index) => <Chat key={index} data={{
+                    image: friend.profilePicture,
+                    name: friend.displayedName,
+                    lastMessage: "",
+                    lastMessageDate: '',
+                    receiverId: friend._id,
+                }}>
+                </Chat>)
             }
         </div>
     )

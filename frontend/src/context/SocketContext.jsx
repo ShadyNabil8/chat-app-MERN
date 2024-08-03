@@ -10,35 +10,35 @@ export const SocketProvider = ({ children }) => {
     const { authState } = useAuth();
 
     useEffect(() => {
-        socket.on('connect', () => {
-            console.log("Socket connected");
-            socket.emit('join-rooms', { chatRooms: ['room1', 'room2'] }, (response) => {
-                console.log(response.message);
-            })
-            socket.emit('identify', authState.userData.userId, (response) => {
-                console.log(response.message);
+        console.log(authState.isAuthenticated);
+        if (authState.isAuthenticated) {
+            socket.on('connect', () => {
+                console.log("Socket connected");
+                socket.emit('identify', authState.userData.userId, (response) => {
+                    console.log(response.message);
+                });
+                setIsConnected(true);
             });
-            setIsConnected(true);
-        });
 
-        socket.on('disconnect', () => {
-            console.log("************* Socket disconnected");
-            setIsConnected(false);
-        });
+            socket.on('disconnect', () => {
+                console.log("************* Socket disconnected");
+                setIsConnected(false);
+            });
+        }
 
         return () => {
             socket.off('connect');
             socket.off('disconnect');
         };
-    }, []);
+    }, [authState]);
 
-    // useEffect(() => {
-    //     if (socket && isConnected && authState.isAuthenticated) {
-    //         socket.emit('identify', authState.userData.userId, (response) => {
-    //             console.log(response.message);
-    //         });
-    //     }
-    // }, [socket, authState, isConnected]);
+    useEffect(() => {
+        if (authState.isAuthenticated) {
+            socket.emit('identify', authState.userData.userId, (response) => {
+                console.log(response.message);
+            });
+        }
+    }, [authState]);
 
     const emitEvent = (event, data, callback) => {
         if (socket) {

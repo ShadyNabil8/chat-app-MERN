@@ -31,11 +31,12 @@ const Conversation = () => {
     const inputRef = useRef(null);
     const scrollRef = useRef(null);
 
-    const messageList = selectedChatData.id ? messages[selectedChatData.id] ? messages[selectedChatData.id] : [] : [];
-    const curMessage = selectedChatData.id ? curMessageObj[selectedChatData.id] ? curMessageObj[selectedChatData.id] : '' : ''
+    const messageList = selectedChatData.chatId ? messages[selectedChatData.chatId] ? messages[selectedChatData.chatId] : [] : [];
+    const curMessage = selectedChatData.chatId ? curMessageObj[selectedChatData.chatId] ? curMessageObj[selectedChatData.chatId] : '' : ''
 
-    useSocketEvent('private-message', (data) => {
-        console.log(data)
+    useSocketEvent('private-message', (data, callback) => {
+        console.log(data);
+        callback('GYM'); // Got Your Message
     })
 
     const isArabic = (text) => {
@@ -74,7 +75,7 @@ const Conversation = () => {
         setCurMessageObj((prev) => {
             return {
                 ...prev,
-                [selectedChatData.id]: messageWithEmoji,
+                [selectedChatData.chatId]: messageWithEmoji,
             }
         })
         setTimeout(() => {
@@ -95,20 +96,23 @@ const Conversation = () => {
             setMessages((prev) => {
                 return {
                     ...prev,
-                    [selectedChatData.id]: [...(prev[selectedChatData.id] || []), newMessage]
+                    [selectedChatData.chatId]: [...(prev[selectedChatData.chatId] || []), newMessage]
                 }
             })
             emitEvent('private-message', {
-                senderId: userData.email,
+                senderId: userData.userId,
                 message: newMessage.text,
-                chatId: selectedChatData.id,
+                receiverId: selectedChatData.receiverId,
             }, (response) => {
-                console.log(response.message);
+                if(response.status === 'GYM'){
+                    console.log(response.message);
+                    
+                }
             });
             setCurMessageObj((prev) => {
                 return {
                     ...prev,
-                    [selectedChatData.id]: ''
+                    [selectedChatData.chatId]: ''
                 }
             })
         }
@@ -116,6 +120,10 @@ const Conversation = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
+            if (selectedChatData.type === 'new-chat') {
+                console.log('yes');
+
+            }
             sendMessage();
         }
         else if (event.key === 'Escape') {
@@ -135,7 +143,7 @@ const Conversation = () => {
     return (
         <div className="conversation-display">
             {
-                (selectedChatData.id) &&
+                (selectedChatData.chatId) &&
                 <div className="conversation-header">
                     <div className="info">
                         <img src={selectedChatData.image}></img>
@@ -147,7 +155,7 @@ const Conversation = () => {
                 {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
             </div>
             {
-                (selectedChatData.id) &&
+                (selectedChatData.chatId || selectedChatData.type === 'new-chat') &&
                 <div className="input-container">
                     <div className="text-emoji">
                         <input
@@ -159,7 +167,7 @@ const Conversation = () => {
                             onChange={(e) => setCurMessageObj((prev) => {
                                 return {
                                     ...prev,
-                                    [selectedChatData.id]: e.target.value
+                                    [selectedChatData.chatId]: e.target.value
                                 }
                             })}
                             onKeyDown={handleKeyDown}>
