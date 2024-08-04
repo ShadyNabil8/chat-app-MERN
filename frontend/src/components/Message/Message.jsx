@@ -13,11 +13,11 @@ function Message({ data }) {
             {
                 (!data.myMessage) &&
                 <div className="image-container">
-                    <img src={data.image}></img>
+                    <img src={data.senderProfilePicture}></img>
                 </div>
             }
-            <div className={isArabic(data.text) ? "message-body message-body-rtl" : "message-body"}>
-                {data.text}
+            <div className={isArabic(data.message) ? "message-body message-body-rtl" : "message-body"}>
+                {data.message}
                 <div className={data.myMessage ? 'message-date my-message-date' : 'message-date his-message-date'}>
                     {data.date}
                 </div>

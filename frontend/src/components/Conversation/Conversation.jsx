@@ -37,16 +37,11 @@ const Conversation = ({ fetchChats }) => {
     const curMessage = selectedChatData.chatId ? curMessageObj[selectedChatData.chatId] ? curMessageObj[selectedChatData.chatId] : '' : ''
 
     useSocketEvent('private-message', (payload, callback) => {
-        const newMessage = {
-            image: payload.senderProfilePicture,
-            date: getFormattedDate(),
-            text: payload.message,
-            myMessage: false
-        }
+        payload.myMessage = false;
         setMessages((prev) => {
             return {
                 ...prev,
-                [payload.chatId]: [...(prev[payload.chatId] || []), newMessage]
+                [payload.chatId]: [...(prev[payload.chatId] || []), payload]
             }
         })
         callback('GYM'); // Got Your Message
@@ -109,18 +104,11 @@ const Conversation = ({ fetchChats }) => {
             }, ({ status, payload }) => {
                 if (status === 'GYM') { // Got Your Message
                     console.log(payload);
-
-                    const newMessage = {
-                        image: userData.profilePicture,
-                        date: getFormattedDate(),
-                        text: payload.message,
-                        myMessage: true
-                    }
-
+                    payload.myMessage= true;
                     setMessages((prev) => {
                         return {
                             ...prev,
-                            [payload.chatId]: [...(prev[payload.chatId] || []), newMessage]
+                            [payload.chatId]: [...(prev[payload.chatId] || []), payload]
                         }
                     })
                 }
