@@ -15,10 +15,10 @@ import { chatRoute } from '../../routes/routes.js'
 
 import './Conversation.css'
 
-const Conversation = ({ fetchChats }) => {
+const Conversation = () => {
     // console.log("------------> Conversation");
 
-    const { selectedChatData, setSelectedChatData } = useGlobalState();
+    const { selectedChatData, setSelectedChatData,fetchChats } = useGlobalState();
 
     const [messages, setMessages] = useState({});
 
