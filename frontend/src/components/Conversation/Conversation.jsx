@@ -18,9 +18,9 @@ import './Conversation.css'
 const Conversation = ({ fetchChats }) => {
     // console.log("------------> Conversation");
 
-    const { selectedChatData } = useGlobalState();
+    const { selectedChatData, setSelectedChatData } = useGlobalState();
 
-    const [messages, setMessages] = useState(testMessages);
+    const [messages, setMessages] = useState({});
 
     const { authState } = useAuth();
     const userData = authState.userData;
@@ -36,8 +36,19 @@ const Conversation = ({ fetchChats }) => {
     const messageList = selectedChatData.chatId ? messages[selectedChatData.chatId] ? messages[selectedChatData.chatId] : [] : [];
     const curMessage = selectedChatData.chatId ? curMessageObj[selectedChatData.chatId] ? curMessageObj[selectedChatData.chatId] : '' : ''
 
-    useSocketEvent('private-message', (data, callback) => {
-        console.log(data);
+    useSocketEvent('private-message', (payload, callback) => {
+        const newMessage = {
+            image: payload.senderProfilePicture,
+            date: getFormattedDate(),
+            text: payload.message,
+            myMessage: false
+        }
+        setMessages((prev) => {
+            return {
+                ...prev,
+                [payload.chatId]: [...(prev[payload.chatId] || []), newMessage]
+            }
+        })
         callback('GYM'); // Got Your Message
     })
 
@@ -88,27 +99,30 @@ const Conversation = ({ fetchChats }) => {
 
     const sendMessage = () => {
         if (curMessage) {
-            const newMessage = {
-                sender: userData.displayedName,
-                image: userData.profilePicture,
-                date: getFormattedDate(),
-                text: curMessage,
-                myMessage: true
-            }
-            setMessages((prev) => {
-                return {
-                    ...prev,
-                    [selectedChatData.chatId]: [...(prev[selectedChatData.chatId] || []), newMessage]
-                }
-            })
+
             emitEvent('private-message', {
                 senderId: userData.userId,
-                message: newMessage.text,
+                senderProfilePicture: userData.profilePicture,
+                message: curMessageObj[selectedChatData.chatId],
                 receiverId: selectedChatData.receiverId,
-            }, (response) => {
-                if (response.status === 'GYM') { // Got Your Message
-                    console.log(response.message);
+                chatId: selectedChatData.chatId
+            }, ({ status, payload }) => {
+                if (status === 'GYM') { // Got Your Message
+                    console.log(payload);
 
+                    const newMessage = {
+                        image: userData.profilePicture,
+                        date: getFormattedDate(),
+                        text: payload.message,
+                        myMessage: true
+                    }
+
+                    setMessages((prev) => {
+                        return {
+                            ...prev,
+                            [payload.chatId]: [...(prev[payload.chatId] || []), newMessage]
+                        }
+                    })
                 }
             });
             setCurMessageObj((prev) => {
@@ -119,10 +133,17 @@ const Conversation = ({ fetchChats }) => {
             })
         }
     }
+    useEffect(() => {
+        console.log(messages);
 
+    }, [messages])
     const handleKeyDown = async (event) => {
         if (event.key === 'Enter') {
-            if (selectedChatData.chatType === 'new-chat') {
+            if (selectedChatData.chatType === 'existed-chat') {
+                sendMessage();
+
+            }
+            else if (selectedChatData.chatType === 'new-chat') {
                 const response = await api.post(chatRoute.create, {
                     receiverId: selectedChatData.receiverId,
                     body: curMessage,
@@ -130,8 +151,15 @@ const Conversation = ({ fetchChats }) => {
                 const { createdChatId, lastMeaagse } = response.data.data;
 
                 fetchChats();
+
+                selectedChatData({
+                    chatType: '',
+                    chatId: '',
+                    image: '',
+                    name: '',
+                    receiverId: ''
+                })
             }
-            sendMessage();
         }
         else if (event.key === 'Escape') {
             setEmojiPicker(false);

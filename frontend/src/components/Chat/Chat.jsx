@@ -1,8 +1,7 @@
 import React from 'react'
 import { useGlobalState } from '../../context/GlobalStateContext.jsx';
 import './Chat.css'
-const Chat = ({ chat }) => {
-
+const Chat = ({ chat }) => {    
     const { setSelectedChatData } = useGlobalState();
 
     const isArabic = (text) => {
@@ -11,9 +10,9 @@ const Chat = ({ chat }) => {
     };
 
     return (
-        <div className='friend-container' onClick={() => setSelectedChatData({
-            ...chat
-        })}>
+        <div className='friend-container' onClick={() => {
+            setSelectedChatData({...chat})
+        }}>
             <div className="image-container">
                 <img src={chat.profilePicture}></img>
             </div>

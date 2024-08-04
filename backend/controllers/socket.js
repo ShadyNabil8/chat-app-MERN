@@ -43,16 +43,13 @@ const onSocketJoinRooms = (socket, { chatRooms }, callback) => {
     callback({ status: 'ok', message: 'You successfully joined the rooms' })
 }
 
-const onSocketPrivateMessage = (socket, { receiverId, senderId, message }, callback) => {
-    console.log('private-message: ' + message);
-    console.log('receiverId: ' + receiverId);
-
-    socket.timeout(10000).to(sockets[receiverId]).emit('private-message', message, (err, responses) => {
+const onSocketPrivateMessage = (socket, payload, callback) => {
+    socket.timeout(10000).to(sockets[payload.receiverId]).emit('private-message', payload, (err, responses) => {
         if (err) {
             // some clients did not acknowledge the event in the given delay
         } else {
             console.log(responses); // one response per client
-            callback({ status: responses[0], message: message })
+            callback({ status: responses[0], payload: payload })
         }
     });
 }
