@@ -30,8 +30,12 @@
 }
 
 .friend-container .name-container {
-    width: 100%;
     color: var(--font-color);
+    font-size: var(--text-font-size);
+}
+
+.friend-container .time-container {
+    color: var(--last-msg-color);
     font-size: var(--text-font-size);
 }
 

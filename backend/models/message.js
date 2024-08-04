@@ -24,7 +24,11 @@ const schema = new mongoose.Schema({
             type: Date,
         },
     },
+    sentAt: {
+        type: Date,
+        default: Date.now
+    }
 
-}, { timestamps: true })
+})
 
 module.exports = mongoose.model('message', schema)

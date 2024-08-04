@@ -12,6 +12,7 @@ import { useSocket } from '../../context/SocketContext.jsx'
 import useSocketEvent from '../../hooks/useSocket.js'
 import api from '../../api/api.jsx'
 import { chatRoute } from '../../routes/routes.js'
+import moment from 'moment';
 
 import './Conversation.css'
 
@@ -51,7 +52,7 @@ const Conversation = () => {
         setChats((prev) => {
             return prev.map((chat) => {
                 return (chat.chatId === payload.chatId)
-                    ? { ...chat, lastMessage: payload.message, lastMessageDate: '16.30' }
+                    ? { ...chat, lastMessage: payload.message, lastMessageDate: moment(payload.lastMessageDate).format('LT') }
                     : chat
             })
         })

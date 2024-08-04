@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useCallback, useContext } fr
 import api from '../api/api.jsx'
 import { chatRoute } from '../routes/routes.js'
 import { friendsRoute } from '../routes/routes.js'
+import moment from 'moment';
 
 const globalStateContext = createContext();
 
@@ -39,6 +40,7 @@ export const GlobalStateProvider = ({ children }) => {
             })
 
             const existedChats = chatsRecord.map((chat) => {
+                const dateFormat = (moment(chat.lastMessage.sentAt).isAfter(moment().subtract(1, 'days'))) ? 'LT' : 'L'
                 return {
                     chatType: 'existed-chat',
                     chatId: chat._id,
@@ -46,7 +48,7 @@ export const GlobalStateProvider = ({ children }) => {
                     displayedName: chat.participants[0].displayedName,
                     profilePicture: chat.participants[0].profilePicture,
                     lastMessage: chat.lastMessage.body,
-                    lastMessageDate:'15.30AM'
+                    lastMessageDate: moment(chat.lastMessage.sentAt).format(dateFormat)
                 }
             })
 

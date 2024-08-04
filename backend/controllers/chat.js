@@ -52,7 +52,7 @@ const list = asynchandler(async (req, res) => {
             select: 'displayedName profilePicture',
             match: { _id: { $ne: req.user } }
         })
-        .populate('lastMessage', 'body');
+        .populate('lastMessage', 'body sentAt');
 
     console.log(chatsRecord);
 

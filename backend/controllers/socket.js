@@ -1,4 +1,6 @@
 const notificationModel = require('../models/notification');
+const messageModel = require('../models/message');
+const chatModel = require('../models/chat');
 
 let sockets = {};
 
@@ -44,7 +46,25 @@ const onSocketJoinRooms = (socket, { chatRooms }, callback) => {
 }
 
 const onSocketPrivateMessage = (socket, payload, callback) => {
-    socket.timeout(10000).to(sockets[payload.receiverId]).emit('private-message', payload, (err, responses) => {
+
+    const { senderId, message, receiverId, chatId } = payload;
+    console.log(chatId);
+
+    const messageRecord = messageModel({
+        body: message,
+        sender: senderId,
+        chat: chatId,
+    })
+
+    Promise.all([
+        messageRecord.save(),
+        chatModel.findByIdAndUpdate(chatId, { lastMessage: messageRecord._id })
+
+    ])
+
+    payload.lastMessageDate = messageRecord.sentAt;
+
+    socket.timeout(10000).to(sockets[receiverId]).emit('private-message', payload, (err, responses) => {
         if (err) {
             // some clients did not acknowledge the event in the given delay
         } else {
