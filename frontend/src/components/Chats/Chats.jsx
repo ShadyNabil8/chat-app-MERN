@@ -12,8 +12,11 @@ const Chats = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        fetchChats();
-        setIsLoading(false)
+        // This time out is just for fun!
+        setTimeout(() => {
+            fetchChats();
+            setIsLoading(false)
+        }, 1000)
     }, [])
 
     return (
