@@ -1,6 +1,5 @@
 .explore-container {
-    padding: calc(var(--padding)*3) var(--padding);
-    padding-right: 0px;
+    padding: calc(var(--padding)*3) 0px;
     display: flex;
     flex-direction: column;
     gap: 30px;

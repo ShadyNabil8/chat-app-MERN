@@ -1,5 +1,5 @@
 .conversation-display {
-    flex: 3.25;
+    flex: 3;
     padding-top: calc(var(--padding) *8);
     background-color: var(--primary-color);
     padding-bottom: 150px;

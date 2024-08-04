@@ -34,7 +34,6 @@ const ExploredUser = ({ data }) => {
       </div>
       <div className="actions-container">
         <IoPersonAdd className='add-friend' onClick={handleAddFriend} />
-        <MdMessage className='send-message' />
       </div>
     </div>
   )

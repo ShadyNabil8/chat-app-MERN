@@ -1,8 +1,7 @@
 .chats-container {
-    flex: 1;
+    flex: 1.25;
     background-color: var(--secondary-color);
-    padding: var(--padding);
-    padding-left: 0px;
+    padding: calc(var(--padding)*3) 0px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
