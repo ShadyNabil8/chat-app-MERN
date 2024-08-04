@@ -10,10 +10,12 @@ import { MdOutlineAttachFile } from "react-icons/md";
 import { PiMicrophone } from "react-icons/pi";
 import { useSocket } from '../../context/SocketContext.jsx'
 import useSocketEvent from '../../hooks/useSocket.js'
+import api from '../../api/api.jsx'
+import { chatRoute } from '../../routes/routes.js'
 
 import './Conversation.css'
 
-const Conversation = () => {
+const Conversation = ({ fetchChats }) => {
     // console.log("------------> Conversation");
 
     const { selectedChatData } = useGlobalState();
@@ -104,9 +106,9 @@ const Conversation = () => {
                 message: newMessage.text,
                 receiverId: selectedChatData.receiverId,
             }, (response) => {
-                if(response.status === 'GYM'){
+                if (response.status === 'GYM') { // Got Your Message
                     console.log(response.message);
-                    
+
                 }
             });
             setCurMessageObj((prev) => {
@@ -118,11 +120,16 @@ const Conversation = () => {
         }
     }
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = async (event) => {
         if (event.key === 'Enter') {
-            if (selectedChatData.type === 'new-chat') {
-                console.log('yes');
+            if (selectedChatData.chatType === 'new-chat') {
+                const response = await api.post(chatRoute.create, {
+                    receiverId: selectedChatData.receiverId,
+                    body: curMessage,
+                })
+                const { createdChatId, lastMeaagse } = response.data.data;
 
+                fetchChats();
             }
             sendMessage();
         }
@@ -146,8 +153,8 @@ const Conversation = () => {
                 (selectedChatData.chatId) &&
                 <div className="conversation-header">
                     <div className="info">
-                        <img src={selectedChatData.image}></img>
-                        <p className='name'>{selectedChatData.name}</p>
+                        <img src={selectedChatData.profilePicture}></img>
+                        <p className='name'>{selectedChatData.displayedName}</p>
                     </div>
                 </div>
             }
@@ -155,7 +162,7 @@ const Conversation = () => {
                 {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
             </div>
             {
-                (selectedChatData.chatId || selectedChatData.type === 'new-chat') &&
+                (selectedChatData.chatId) &&
                 <div className="input-container">
                     <div className="text-emoji">
                         <input

@@ -4,3 +4,7 @@ export const notificationRoute = {
 export const friendsRoute = {
     list: 'friends/list',
 }
+export const chatRoute = {
+    create: 'chat/create',
+    list: 'chat/list',
+}

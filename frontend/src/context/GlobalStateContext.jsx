@@ -4,7 +4,7 @@ const globalStateContext = createContext();
 
 export const GlobalStateProvider = ({ children }) => {
     const [selectedChatData, setSelectedChatData] = useState({
-        type: '',
+        chatType: '',
         chatId: '',
         image: '',
         name: '',
