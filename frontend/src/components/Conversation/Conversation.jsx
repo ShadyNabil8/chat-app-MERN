@@ -35,7 +35,8 @@ const Conversation = ({ fetchChats }) => {
 
     const messageList = selectedChatData.chatId ? messages[selectedChatData.chatId] ? messages[selectedChatData.chatId] : [] : [];
     const curMessage = selectedChatData.chatId ? curMessageObj[selectedChatData.chatId] ? curMessageObj[selectedChatData.chatId] : '' : ''
-
+    console.log(`Cur msg: ${curMessage}`);
+    
     useSocketEvent('private-message', (payload, callback) => {
         payload.myMessage = false;
         setMessages((prev) => {
@@ -78,12 +79,14 @@ const Conversation = ({ fetchChats }) => {
     }
 
     const handleEmojiClick = (emojiObject) => {
+        console.log(emojiObject.emoji);
+        
         const cursorPosition = inputRef.current.selectionStart;
-        const messageWithEmoji = curMessage.slice(0, cursorPosition) + emojiObject.emoji + curMessage.slice(cursorPosition);
         setCurMessageObj((prev) => {
+            const typingMessage = prev[selectedChatData.chatId] || ''
             return {
                 ...prev,
-                [selectedChatData.chatId]: messageWithEmoji,
+                [selectedChatData.chatId]: typingMessage.slice(0, cursorPosition) + emojiObject.emoji + typingMessage.slice(cursorPosition),
             }
         })
         setTimeout(() => {
@@ -132,15 +135,12 @@ const Conversation = ({ fetchChats }) => {
 
             }
             else if (selectedChatData.chatType === 'new-chat') {
-                const response = await api.post(chatRoute.create, {
+                await api.post(chatRoute.create, {
                     receiverId: selectedChatData.receiverId,
                     body: curMessage,
                 })
-                const { createdChatId, lastMeaagse } = response.data.data;
-
                 fetchChats();
-
-                selectedChatData({
+                setSelectedChatData({
                     chatType: '',
                     chatId: '',
                     image: '',
@@ -209,6 +209,7 @@ const Conversation = ({ fetchChats }) => {
                                 theme={'dark'}
                                 emojiStyle={'facebook'}
                                 onEmojiClick={handleEmojiClick}
+                                searchDisabled={true}
                             />
                         </div>
                     </div>
