@@ -36,15 +36,18 @@ const Conversation = () => {
     const messageList = selectedChatData.chatId ? messages[selectedChatData.chatId] ? messages[selectedChatData.chatId] : [] : [];
     const curMessage = selectedChatData.chatId ? curMessageObj[selectedChatData.chatId] ? curMessageObj[selectedChatData.chatId] : '' : ''
 
-    useSocketEvent('private-message', (payload, callback) => {
-        console.log(payload);
-        payload.myMessage = false;
+
+    // This function adds a message to a its chat message container.
+    const addMessage = (payload) => {
         setMessages((prev) => {
             return {
                 ...prev,
                 [payload.chatId]: [...(prev[payload.chatId] || []), payload]
             }
         })
+    }
+    // This function shoe last message on chat.
+    const updateChat = (payload) => {
         setChats((prev) => {
             return prev.map((chat) => {
                 return (chat.chatId === payload.chatId)
@@ -52,6 +55,13 @@ const Conversation = () => {
                     : chat
             })
         })
+    }
+
+    useSocketEvent('private-message', (payload, callback) => {
+        console.log(payload);
+        payload.myMessage = false;
+        addMessage(payload);
+        updateChat(payload);
         callback('GYM'); // Got Your Message
     })
 
@@ -115,19 +125,8 @@ const Conversation = () => {
                 if (status === 'GYM') { // Got Your Message
                     console.log(payload);
                     payload.myMessage = true;
-                    setMessages((prev) => {
-                        return {
-                            ...prev,
-                            [payload.chatId]: [...(prev[payload.chatId] || []), payload]
-                        }
-                    })
-                    setChats((prev) => {
-                        return prev.map((chat) => {
-                            return (chat.chatId === payload.chatId)
-                                ? { ...chat, lastMessage: payload.message, lastMessageDate: '16.30' }
-                                : chat
-                        })
-                    })
+                    addMessage(payload);
+                    updateChat(payload);
                 }
             });
             setCurMessageObj((prev) => {
