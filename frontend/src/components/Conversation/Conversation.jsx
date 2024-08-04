@@ -18,7 +18,7 @@ import './Conversation.css'
 const Conversation = () => {
     // console.log("------------> Conversation");
 
-    const { selectedChatData, setSelectedChatData,fetchChats } = useGlobalState();
+    const { selectedChatData, setSelectedChatData, fetchChats, setChats } = useGlobalState();
 
     const [messages, setMessages] = useState({});
 
@@ -35,15 +35,22 @@ const Conversation = () => {
 
     const messageList = selectedChatData.chatId ? messages[selectedChatData.chatId] ? messages[selectedChatData.chatId] : [] : [];
     const curMessage = selectedChatData.chatId ? curMessageObj[selectedChatData.chatId] ? curMessageObj[selectedChatData.chatId] : '' : ''
-    console.log(`Cur msg: ${curMessage}`);
-    
+
     useSocketEvent('private-message', (payload, callback) => {
+        console.log(payload);
         payload.myMessage = false;
         setMessages((prev) => {
             return {
                 ...prev,
                 [payload.chatId]: [...(prev[payload.chatId] || []), payload]
             }
+        })
+        setChats((prev) => {
+            return prev.map((chat) => {
+                return (chat.chatId === payload.chatId)
+                    ? { ...chat, lastMessage: payload.message, lastMessageDate: '16.30' }
+                    : chat
+            })
         })
         callback('GYM'); // Got Your Message
     })
@@ -80,7 +87,7 @@ const Conversation = () => {
 
     const handleEmojiClick = (emojiObject) => {
         console.log(emojiObject.emoji);
-        
+
         const cursorPosition = inputRef.current.selectionStart;
         setCurMessageObj((prev) => {
             const typingMessage = prev[selectedChatData.chatId] || ''
@@ -107,12 +114,19 @@ const Conversation = () => {
             }, ({ status, payload }) => {
                 if (status === 'GYM') { // Got Your Message
                     console.log(payload);
-                    payload.myMessage= true;
+                    payload.myMessage = true;
                     setMessages((prev) => {
                         return {
                             ...prev,
                             [payload.chatId]: [...(prev[payload.chatId] || []), payload]
                         }
+                    })
+                    setChats((prev) => {
+                        return prev.map((chat) => {
+                            return (chat.chatId === payload.chatId)
+                                ? { ...chat, lastMessage: payload.message, lastMessageDate: '16.30' }
+                                : chat
+                        })
                     })
                 }
             });
@@ -122,6 +136,7 @@ const Conversation = () => {
                     [selectedChatData.chatId]: ''
                 }
             })
+
         }
     }
     useEffect(() => {

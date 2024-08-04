@@ -45,7 +45,8 @@ export const GlobalStateProvider = ({ children }) => {
                     receiverId: chat.participants[0]._id,
                     displayedName: chat.participants[0].displayedName,
                     profilePicture: chat.participants[0].profilePicture,
-                    lastMessage: chat.lastMessage.body
+                    lastMessage: chat.lastMessage.body,
+                    lastMessageDate:'15.30AM'
                 }
             })
 
