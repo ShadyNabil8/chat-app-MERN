@@ -1,6 +1,7 @@
 import React from 'react'
 import './Message.css'
 import moment from 'moment';
+import { BsCheck2All,BsCheck2 } from "react-icons/bs";
 
 
 function Message({ data }) {
@@ -19,8 +20,11 @@ function Message({ data }) {
             }
             <div className={isArabic(data.message) ? "message-body message-body-rtl" : "message-body"}>
                 {data.message}
+                {
+                    (data.myMessage) && ((data.received) ? <BsCheck2All className='check-icon'/> : <BsCheck2 className='check-icon'/>)
+                }
                 <div className={data.myMessage ? 'message-date my-message-date' : 'message-date his-message-date'}>
-                    {moment(data.lastMessageDate).format('LT')}
+                    {moment(data.sentAt).format('LT')}
                 </div>
             </div>
         </div>

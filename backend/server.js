@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('private-message', (payload, callback) => {
-    socketController.onSocketPrivateMessage(socket, payload, callback);
+    socketController.onSocketPrivateMessage(io, payload, callback);
   });
 
   socket.on('disconnect', () => {

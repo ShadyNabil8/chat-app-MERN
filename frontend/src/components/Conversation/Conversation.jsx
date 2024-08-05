@@ -64,7 +64,7 @@ const Conversation = () => {
         payload.myMessage = false;
         addMessage(payload);
         updateChat(payload);
-        callback('GYM'); // Got Your Message
+        callback({ status: 'received' });
     })
 
     const isArabic = (text) => {
@@ -117,19 +117,25 @@ const Conversation = () => {
     const sendMessage = () => {
         if (curMessage) {
 
-            emitEvent('private-message', {
+            let payload = {
                 senderId: userData.userId,
                 senderProfilePicture: userData.profilePicture,
                 message: curMessageObj[selectedChatData.chatId],
                 receiverId: selectedChatData.receiverId,
-                chatId: selectedChatData.chatId
-            }, ({ status, payload }) => {
-                if (status === 'GYM') { // Got Your Message
-                    console.log(payload);
-                    payload.myMessage = true;
-                    addMessage(payload);
-                    updateChat(payload);
+                chatId: selectedChatData.chatId,
+                sentAt: new Date()
+            }
+
+            emitEvent('private-message', payload, ({ status }) => {
+                payload['myMessage'] = true;
+                if (status === 'received') {
+                    payload['received'] = true;
                 }
+                else if (status === 'not-received') {
+                    payload['received'] = false;
+                }
+                addMessage(payload);
+                updateChat(payload);
             });
             setCurMessageObj((prev) => {
                 return {
@@ -140,10 +146,10 @@ const Conversation = () => {
 
         }
     }
-    useEffect(() => {
-        console.log(messages);
+    // useEffect(() => {
+    //     console.log(messages);
 
-    }, [messages])
+    // }, [messages])
     const handleKeyDown = async (event) => {
         if (event.key === 'Enter') {
             if (selectedChatData.chatType === 'existed-chat') {

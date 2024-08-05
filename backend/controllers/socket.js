@@ -45,15 +45,15 @@ const onSocketJoinRooms = (socket, { chatRooms }, callback) => {
     callback({ status: 'ok', message: 'You successfully joined the rooms' })
 }
 
-const onSocketPrivateMessage = (socket, payload, callback) => {
+const onSocketPrivateMessage = (io, payload, callback) => {
 
-    const { senderId, message, receiverId, chatId } = payload;
-    console.log(chatId);
+    const { senderId, message, receiverId, chatId, sentAt } = payload;
 
     const messageRecord = messageModel({
         body: message,
         sender: senderId,
         chat: chatId,
+        sentAt
     })
 
     Promise.all([
@@ -62,15 +62,21 @@ const onSocketPrivateMessage = (socket, payload, callback) => {
 
     ])
 
-    payload.lastMessageDate = messageRecord.sentAt;
+    payload.sentAt = messageRecord.sentAt;
 
-    socket.timeout(100).to(sockets[receiverId]).emit('private-message', payload, (err, responses) => {
-        if (err) {
-            console.log('hi');
-            // some clients did not acknowledge the event in the given delay
-        } else {
-            console.log(responses); // one response per client
-            callback({ status: responses[0], payload: payload })
+    io.timeout(200).to(sockets[receiverId]).emit('private-message', payload, (error, responses) => {
+        if (error) {
+            console.log("Error in sending message");
+        }
+        else {
+            if (responses.length) {
+                // Receiver is online
+                callback(responses[0])
+            }
+            else {
+                // Receiver is ofline
+                callback({ status: 'not-received' })
+            }
         }
     });
 }
