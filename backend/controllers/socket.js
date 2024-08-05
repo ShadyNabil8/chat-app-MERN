@@ -64,8 +64,9 @@ const onSocketPrivateMessage = (socket, payload, callback) => {
 
     payload.lastMessageDate = messageRecord.sentAt;
 
-    socket.timeout(10000).to(sockets[receiverId]).emit('private-message', payload, (err, responses) => {
+    socket.timeout(100).to(sockets[receiverId]).emit('private-message', payload, (err, responses) => {
         if (err) {
+            console.log('hi');
             // some clients did not acknowledge the event in the given delay
         } else {
             console.log(responses); // one response per client

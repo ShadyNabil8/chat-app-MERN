@@ -1,5 +1,6 @@
 import React from 'react'
 import './Message.css'
+import moment from 'moment';
 
 
 function Message({ data }) {
@@ -19,7 +20,7 @@ function Message({ data }) {
             <div className={isArabic(data.message) ? "message-body message-body-rtl" : "message-body"}>
                 {data.message}
                 <div className={data.myMessage ? 'message-date my-message-date' : 'message-date his-message-date'}>
-                    {data.date}
+                    {moment(data.lastMessageDate).format('LT')}
                 </div>
             </div>
         </div>

@@ -42,7 +42,6 @@
 .friend-container .last-message-container {
     color: var(--last-msg-color);
     font-size: var(--text-font-size);
-    /* padding-right: 30px; */
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -50,6 +49,7 @@
     line-clamp: inherit;
     -webkit-box-orient: vertical;
     white-space: pre-wrap;
+    word-break: break-all;
 }
 
 .friend-container .last-message-container-rtl {

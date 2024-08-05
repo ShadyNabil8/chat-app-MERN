@@ -21,11 +21,16 @@ const Chats = () => {
 
     return (
         <div className='chats-container'>
-            {
-                (!isLoading) ?
-                    chats.map((chat, index) => <Chat key={index} chat={chat}></Chat>)
-                    : <LoadingDots></LoadingDots>
-            }
+            <div className="search-bar">
+                <input type='text' placeholder='Search for friends' onChange={(e) => setSearchQuery(e.target.value)}></input>
+            </div>
+            <div className="chats">
+                {
+                    (!isLoading) ?
+                        chats.map((chat, index) => <Chat key={index} chat={chat}></Chat>)
+                        : <LoadingDots></LoadingDots>
+                }
+            </div>
         </div>
     )
 }

@@ -50,7 +50,7 @@ const Explore = () => {
     return (
         <div className="explore-container">
             <div className="search-bar">
-                <input type='text' placeholder='Search for friends' onChange={(e) => setSearchQuery(e.target.value)}></input>
+                <input type='text' placeholder='Search for new friends' onChange={(e) => setSearchQuery(e.target.value)}></input>
             </div>
             {
                 (isLoading) ?

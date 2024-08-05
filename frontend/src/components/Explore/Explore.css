@@ -18,9 +18,6 @@
     background-color: var(--primary-color);
     color: var(--font-color);
     border: 0px;
-    border-radius: var(--border-radius);
-    border-bottom-right-radius: 0px;
-    border-top-right-radius: 0px;
     padding: var(--text-padding);
     font-size: var(--text-font-size);
 }

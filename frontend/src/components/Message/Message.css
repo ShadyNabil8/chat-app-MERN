@@ -7,7 +7,6 @@
     box-sizing: border-box;
     flex-shrink: 0;
     /* Prevent flex items from shrinking */
-
 }
 
 
@@ -35,7 +34,8 @@
     /* For legacy support */
     overflow-wrap: break-word;
     /* Standard property */
-    white-space: pre-wrap;    /* Ensures long strings break properly */
+    white-space: pre-wrap;
+    /* Ensures long strings break properly */
     color: var(--font-color);
     font-size: var(--text-font-size);
     font-weight: 400;
@@ -55,11 +55,11 @@
 }
 
 .message-container .message-body .my-message-date {
-    right: 2px;
+    right: 0px;
 }
 
 .message-container .message-body .his-message-date {
-    left: 2px;
+    left: -10px
 }
 
 .message-container .message-body-rtl {

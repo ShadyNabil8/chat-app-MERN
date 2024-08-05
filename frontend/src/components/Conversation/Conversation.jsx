@@ -40,6 +40,7 @@ const Conversation = () => {
 
     // This function adds a message to a its chat message container.
     const addMessage = (payload) => {
+        console.log(payload);
         setMessages((prev) => {
             return {
                 ...prev,
