@@ -21,6 +21,7 @@ const Conversation = () => {
     const {
         selectedChatData,
         setSelectedChatData,
+        chats,
         setChats,
         messages,
         setMessages
@@ -71,9 +72,25 @@ const Conversation = () => {
     }
 
     useSocketEvent('private-message', (payload, callback) => {
+        const existedChat = chats.find((chat) => chat.chatId === payload.chatId)
+        console.log(payload);
+        if (!existedChat) {
+            const newChat = {
+                chatType: 'existed-chat',
+                chatId: payload.chatId,
+                receiverId: payload.senderId,
+                displayedName: payload.displayedName,
+                profilePicture: payload.senderProfilePicture,
+                lastMessage: payload.body,
+                lastMessageDate: moment(payload.lastMessageDate).format('LT')
+            }
+            setChats((prev) => [newChat, ...prev])
+        }
+        else {
+            updateChat(payload);
+        }
         payload.myMessage = false;
         addMessage(payload);
-        updateChat(payload);
         callback({ status: 'received' });
     })
 
@@ -123,6 +140,16 @@ const Conversation = () => {
     };
 
     const sendMessage = (payload) => {
+        console.log(payload);
+        // {
+        //     "senderId": "669ebb96de33ed94c2f901cf",
+        //     "senderProfilePicture": "https://api.multiavatar.com/1721678742320-Shady_2.png",
+        //     "receiverId": "669ebba9de33ed94c2f901d7",
+        //     "body": "sssssss",
+        //     "chatId": "66b1cb3455e8d872e05efc77",
+        //     "sentAt": "2024-08-06T07:06:31.637Z",
+        //     "received": true
+        // }
         if (curMessage) {
             emitEvent('private-message', payload, ({ status }) => {
                 if (status === 'received') {
@@ -152,7 +179,7 @@ const Conversation = () => {
             if (selectedChatData.chatType === 'existed-chat') {
                 const payload = {
                     senderId: userData.userId,
-                    senderProfilePicture: selectedChatData.profilePicture,
+                    senderProfilePicture: userData.profilePicture,
                     receiverId: selectedChatData.receiverId,
                     body: curMessageObj[selectedChatData.chatId],
                     chatId: selectedChatData.chatId,
@@ -171,7 +198,8 @@ const Conversation = () => {
 
                     const payload = {
                         senderId: userData.userId,
-                        senderProfilePicture: selectedChatData.profilePicture,
+                        displayedName: userData.displayedName,
+                        senderProfilePicture: userData.profilePicture,
                         receiverId: selectedChatData.receiverId,
                         body: curMessageObj[selectedChatData.chatId],
                         sentAt: new Date(),
@@ -199,8 +227,7 @@ const Conversation = () => {
                         profilePicture: receiverRecord.profilePicture,
                     })
                 } catch (error) {
-                    console.log(error);
-                    
+
                 }
 
 

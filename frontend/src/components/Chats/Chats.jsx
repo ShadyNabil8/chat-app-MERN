@@ -55,8 +55,6 @@ const Chats = () => {
 
                     const friendsRecord = response.data.data;
 
-                    console.log(friendsRecord);
-
                     const friends = friendsRecord.map((friend) => {
                         return {
                             chatId: friend._id,

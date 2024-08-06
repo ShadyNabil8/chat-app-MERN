@@ -65,7 +65,7 @@ console.log(payload);
 
     payload.sentAt = messageRecord.sentAt;
 
-    io.timeout(200).to(sockets[receiverId]).emit('private-message', payload, (error, responses) => {
+    io.timeout(10000).to(sockets[receiverId]).emit('private-message', payload, (error, responses) => {
         if (error) {
             console.log("Error in sending message");
         }
