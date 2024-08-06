@@ -59,11 +59,6 @@ io.on('connection', (socket) => {
     socketController.onSocketIdentify(socket, userId, callback);
   });
 
-  socket.on('join-rooms', (payload, callback) => {
-    socketController.onSocketJoinRooms(socket, payload, callback);
-
-  });
-
   socket.on('notification', (payload, callback) => {
     socketController.onSocketNotification(socket, payload, callback);
 
@@ -74,7 +69,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('User disconnected');
+    socketController.onSocketDisconnection(socket)
   });
 });
 

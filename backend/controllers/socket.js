@@ -2,11 +2,28 @@ const notificationModel = require('../models/notification');
 const messageModel = require('../models/message');
 const chatModel = require('../models/chat');
 
-let sockets = {};
+// This map will carry the userId to socket ID mapping. We should use a very fast database instade here.
+let sockets = new Map();
+
+const deleteSocket = (targetSocketId) => {
+    for (const [userId, socketId] of sockets.entries()) {
+        if (socketId === targetSocketId) {
+            sockets.delete(userId)
+            console.log(`Socket: ${socketId} deleted`);
+            console.log(sockets);
+            break;
+        }
+    }
+}
 
 const onSocketConnection = (socket) => {
-    console.log("User Connected");
-    console.log(socket.id);
+    console.log(`Socket: ${socket.id} connected`);
+    console.log(sockets);
+}
+
+const onSocketDisconnection = (socket) => {
+    console.log(`Socket: ${socket.id} disconnected`);
+    deleteSocket(socket.id);
 }
 
 const onSocketNotification = async (socket, { senderId, receriverId, notification, type }, callback) => {
@@ -23,10 +40,17 @@ const onSocketNotification = async (socket, { senderId, receriverId, notificatio
 
         await notificationRecord.save();
 
-        console.log(notificationRecord);
-        socket.to(sockets[receriverId]).emit('private-message', type);
-        callback({ status: 'ok', message: 'Notification has been successfully sent' })
+        const receiverSocket = sockets.get(receriverId);
 
+        if (receiverSocket) {
+            socket.to(receiverSocket).emit('private-notification', type);
+            callback({ status: 'OK', message: 'Notification has been successfully sent' })
+        }
+        else {
+            // Handle the case where the receiver is offline or not connected
+            console.log("Receiver is offline or not connected");
+            callback({ status: 'NOK' });
+        }
     } catch (error) {
         console.log(`Error while sending notification: ${error}`);
     }
@@ -34,58 +58,67 @@ const onSocketNotification = async (socket, { senderId, receriverId, notificatio
 
 const onSocketIdentify = (socket, userId, callback) => {
     console.log(`User ${userId} is identified with socket ID ${socket.id}`);
-    sockets[userId] = socket.id;
-    callback({ status: 'ok', message: 'You successfully identified' })
+    sockets.set(userId, socket.id);
+    callback({ status: 'OK', message: 'You successfully identified' })
     console.log(sockets);
 }
 
-const onSocketJoinRooms = (socket, { chatRooms }, callback) => {
-    console.log(chatRooms);
-    chatRooms.forEach(room => socket.join(room));
-    callback({ status: 'ok', message: 'You successfully joined the rooms' })
-}
-
 const onSocketPrivateMessage = (io, payload, callback) => {
-console.log(payload);
 
-    const { senderId, body, receiverId, chatId, sentAt } = payload;
+    try {
+        const { senderId, body, receiverId, chatId, sentAt } = payload;
 
-    const messageRecord = messageModel({
-        body,
-        senderId,
-        chatId,
-        sentAt
-    })
+        const messageRecord = messageModel({
+            body,
+            senderId,
+            chatId,
+            sentAt
+        })
 
-    Promise.all([
-        messageRecord.save(),
-        chatModel.findByIdAndUpdate(chatId, { lastMessage: messageRecord._id })
+        // No need to use async/await
+        Promise.all([
+            messageRecord.save(),
+            chatModel.findByIdAndUpdate(chatId, { lastMessage: messageRecord._id })
 
-    ])
+        ])
 
-    payload.sentAt = messageRecord.sentAt;
+        payload.sentAt = messageRecord.sentAt;
 
-    io.timeout(10000).to(sockets[receiverId]).emit('private-message', payload, (error, responses) => {
-        if (error) {
-            console.log("Error in sending message");
+        const receiverSocket = sockets.get(receiverId);
+
+        if (receiverSocket) {
+            // Socket.io docs says that I must use io instade of socket here!!!
+            io.timeout(1000).to(receiverSocket).emit('private-message', payload, (error, responses) => {
+                if (error) {
+                    console.log("Error in sending message:", error);
+                }
+                else {
+                    if (responses.length) {
+                        // Receiver is online
+                        callback(responses[0])
+                    }
+                    else {
+                        // Receiver is ofline
+                        callback({ status: 'not-received' })
+                    }
+                }
+            });
         }
         else {
-            if (responses.length) {
-                // Receiver is online
-                callback(responses[0])
-            }
-            else {
-                // Receiver is ofline
-                callback({ status: 'not-received' })
-            }
+            // Handle the case where the receiver is offline or not connected
+            console.log("Receiver is offline or not connected");
+            callback({ status: 'not-received' });
         }
-    });
+    } catch (error) {
+        console.log(`Error in sending message or saving it: ${error}`);
+        
+    }
 }
 
 module.exports = {
     onSocketIdentify,
     onSocketNotification,
-    onSocketJoinRooms,
     onSocketPrivateMessage,
-    onSocketConnection
+    onSocketConnection,
+    onSocketDisconnection
 }

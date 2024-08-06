@@ -35,7 +35,6 @@ const create = asynchandler(async (req, res) => {
     ]);
 
     const receiverRecord = await userModel.findById(receiverId, 'displayedName profilePicture')
-    console.log(chatRecord._id);
     
     return res.status(200).json({
         success: true,
