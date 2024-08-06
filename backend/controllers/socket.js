@@ -46,13 +46,14 @@ const onSocketJoinRooms = (socket, { chatRooms }, callback) => {
 }
 
 const onSocketPrivateMessage = (io, payload, callback) => {
+console.log(payload);
 
-    const { senderId, message, receiverId, chatId, sentAt } = payload;
+    const { senderId, body, receiverId, chatId, sentAt } = payload;
 
     const messageRecord = messageModel({
-        body: message,
-        sender: senderId,
-        chat: chatId,
+        body,
+        senderId,
+        chatId,
         sentAt
     })
 

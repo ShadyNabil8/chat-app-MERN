@@ -18,8 +18,8 @@ function Message({ data }) {
                     <img src={data.senderProfilePicture}></img>
                 </div>
             }
-            <div className={isArabic(data.message) ? "message-body message-body-rtl" : "message-body"}>
-                {data.message}
+            <div className={isArabic(data.body) ? "message-body message-body-rtl" : "message-body"}>
+                {data.body}
                 {
                     (data.myMessage) && ((data.received) ? <BsCheck2All className='check-icon'/> : <BsCheck2 className='check-icon'/>)
                 }

@@ -1,17 +1,17 @@
 import React from 'react'
 import { useGlobalState } from '../../context/GlobalStateContext.jsx';
 import './Chat.css'
-const Chat = ({ chat }) => {    
+const Chat = ({ chat }) => {
     const { setSelectedChatData } = useGlobalState();
-
+    
     const isArabic = (text) => {
         const arabicPattern = /[\u0600-\u06FF]/;
         return arabicPattern.test(text);
-    };
+    };    
 
     return (
-        <div className='friend-container' onClick={() => {
-            setSelectedChatData({...chat})
+        <div className='chat-container' onClick={() => {
+            setSelectedChatData({ chatType:'existed-chat', ...chat })
         }}>
             <div className="image-container">
                 <img src={chat.profilePicture}></img>
@@ -21,19 +21,15 @@ const Chat = ({ chat }) => {
                     <div className="name-container">
                         {chat.displayedName}
                     </div>
-                    {
-                        (chat.chatType === 'existed-chat') &&
-                        <div className="time-container">
-                            {chat.lastMessageDate}
-                        </div>
-                    }
-                </div>
-                {
-                    (chat.chatType === 'existed-chat') &&
-                    <div className={isArabic(chat.lastMessage) ? "last-message-container last-message-container-rtl" : "last-message-container"}>
-                        {chat.lastMessage}
+
+                    <div className="time-container">
+                        {chat.lastMessageDate}
                     </div>
-                }
+
+                </div>
+                <div className={isArabic(chat.lastMessage) ? "last-message-container last-message-container-rtl" : "last-message-container"}>
+                    {chat.lastMessage}
+                </div>
             </div>
         </div>
     )

@@ -1,10 +1,9 @@
 import { React, useState, useRef, useEffect } from 'react'
 import Message from '../../components/Message/Message'
-import { colorEmojiList, testMessages } from '../../assets/assets.js'
+import { colorEmojiList } from '../../assets/assets.js'
 import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../context/authContext';
 import { useGlobalState } from '../../context/GlobalStateContext.jsx';
-import { getFormattedDate } from '../../utils/date.js'
 import { IoSend } from "react-icons/io5";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { PiMicrophone } from "react-icons/pi";
@@ -19,7 +18,7 @@ import './Conversation.css'
 const Conversation = () => {
     // console.log("------------> Conversation");
 
-    const { selectedChatData, setSelectedChatData, fetchChats, setChats } = useGlobalState();
+    const { selectedChatData, setSelectedChatData, setChats, chats } = useGlobalState();
 
     const [messages, setMessages] = useState({});
 
@@ -40,11 +39,18 @@ const Conversation = () => {
 
     // This function adds a message to a its chat message container.
     const addMessage = (payload) => {
-        console.log(payload);
+        const newMessage = {
+            body: payload.body,
+            myMessage: payload.myMessage,
+            received: payload.received,
+            senderProfilePicture: payload.senderProfilePicture,
+            sentAt: payload.sentAt
+        }
+
         setMessages((prev) => {
             return {
                 ...prev,
-                [payload.chatId]: [...(prev[payload.chatId] || []), payload]
+                [payload.chatId]: [...(prev[payload.chatId] || []), newMessage]
             }
         })
     }
@@ -53,14 +59,13 @@ const Conversation = () => {
         setChats((prev) => {
             return prev.map((chat) => {
                 return (chat.chatId === payload.chatId)
-                    ? { ...chat, lastMessage: payload.message, lastMessageDate: moment(payload.lastMessageDate).format('LT') }
+                    ? { ...chat, lastMessage: payload.body, lastMessageDate: moment(payload.sentAt).format('LT') }
                     : chat
             })
         })
     }
 
     useSocketEvent('private-message', (payload, callback) => {
-        console.log(payload);
         payload.myMessage = false;
         addMessage(payload);
         updateChat(payload);
@@ -98,8 +103,6 @@ const Conversation = () => {
     }
 
     const handleEmojiClick = (emojiObject) => {
-        console.log(emojiObject.emoji);
-
         const cursorPosition = inputRef.current.selectionStart;
         setCurMessageObj((prev) => {
             const typingMessage = prev[selectedChatData.chatId] || ''
@@ -114,27 +117,19 @@ const Conversation = () => {
         }, 0);
     };
 
-    const sendMessage = () => {
+    const sendMessage = (payload) => {
         if (curMessage) {
-
-            let payload = {
-                senderId: userData.userId,
-                senderProfilePicture: userData.profilePicture,
-                message: curMessageObj[selectedChatData.chatId],
-                receiverId: selectedChatData.receiverId,
-                chatId: selectedChatData.chatId,
-                sentAt: new Date()
-            }
-
             emitEvent('private-message', payload, ({ status }) => {
-                payload['myMessage'] = true;
                 if (status === 'received') {
                     payload['received'] = true;
                 }
                 else if (status === 'not-received') {
                     payload['received'] = false;
                 }
-                addMessage(payload);
+                addMessage({
+                    ...payload,
+                    myMessage: true,
+                });
                 updateChat(payload);
             });
             setCurMessageObj((prev) => {
@@ -146,29 +141,59 @@ const Conversation = () => {
 
         }
     }
-    // useEffect(() => {
-    //     console.log(messages);
 
-    // }, [messages])
     const handleKeyDown = async (event) => {
         if (event.key === 'Enter') {
             if (selectedChatData.chatType === 'existed-chat') {
-                sendMessage();
-
+                const payload = {
+                    senderId: userData.userId,
+                    senderProfilePicture: selectedChatData.profilePicture,
+                    receiverId: selectedChatData.receiverId,
+                    body: curMessageObj[selectedChatData.chatId],
+                    chatId: selectedChatData.chatId,
+                    sentAt: new Date(),
+                }
+                sendMessage(payload);
             }
             else if (selectedChatData.chatType === 'new-chat') {
-                await api.post(chatRoute.create, {
+                // try catch
+                const response = await api.post(chatRoute.create, {
                     receiverId: selectedChatData.receiverId,
                     body: curMessage,
                 })
-                fetchChats();
+
+                const { chatId, receiverRecord, lastMessageRecord } = response.data.data
+
+                const payload = {
+                    senderId: userData.userId,
+                    senderProfilePicture: selectedChatData.profilePicture,
+                    receiverId: selectedChatData.receiverId,
+                    body: curMessageObj[selectedChatData.chatId],
+                    sentAt: new Date(),
+                    chatId,
+                }
+
+                sendMessage(payload);
+
+                const newChat = {
+                    chatType: 'existed-chat',
+                    chatId,
+                    receiverId: receiverRecord._id,
+                    displayedName: receiverRecord.displayedName,
+                    profilePicture: receiverRecord.profilePicture,
+                    lastMessage: lastMessageRecord.body,
+                    lastMessageDate: moment(lastMessageRecord.sentAt).format('LT')
+                }
+                setChats((prev) => [newChat, ...prev])
+
                 setSelectedChatData({
-                    chatType: '',
-                    chatId: '',
-                    image: '',
-                    name: '',
-                    receiverId: ''
+                    chatType: newChat.chatType,
+                    chatId,
+                    receiverId: receiverRecord._id,
+                    displayedName: receiverRecord.displayedName,
+                    profilePicture: receiverRecord.profilePicture,
                 })
+
             }
         }
         else if (event.key === 'Escape') {
@@ -183,7 +208,7 @@ const Conversation = () => {
                 behavior: 'smooth'
             });
         }
-    }, [messageList])
+    }, [messages])
 
     return (
         <div className="conversation-display">

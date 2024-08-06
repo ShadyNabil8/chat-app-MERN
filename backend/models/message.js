@@ -5,12 +5,12 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    sender: {
+    senderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         required: true
     },
-    chat: {
+    chatId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'chat',
         required: true

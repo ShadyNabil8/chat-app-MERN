@@ -1,5 +1,6 @@
 const asynchandler = require('express-async-handler')
 const chatModel = require('../models/chat')
+const userModel = require('../models/User')
 const messageModel = require('../models/message')
 
 const create = asynchandler(async (req, res) => {
@@ -19,9 +20,10 @@ const create = asynchandler(async (req, res) => {
     const chatRecord = chatModel({})
 
     const messageRecord = messageModel({
-        sender: senderId,
-        chat: chatRecord._id,
-        body
+        senderId: senderId,
+        chatId: chatRecord._id,
+        body,
+        sentAt: new Date()
     })
 
     chatRecord.participants = [receiverId, senderId];
@@ -32,14 +34,15 @@ const create = asynchandler(async (req, res) => {
         messageRecord.save(),
     ]);
 
-    // console.log(chatRecord);
-    // console.log(messageRecord);
-
+    const receiverRecord = await userModel.findById(receiverId, 'displayedName profilePicture')
+    console.log(chatRecord._id);
+    
     return res.status(200).json({
         success: true,
         data: {
-            createdChat: chatRecord._id,
-            lastMeaagse: messageRecord.body
+            chatId: chatRecord._id,
+            receiverRecord,
+            lastMessageRecord: messageRecord
         }
     })
 })
@@ -53,8 +56,6 @@ const list = asynchandler(async (req, res) => {
             match: { _id: { $ne: req.user } }
         })
         .populate('lastMessage', 'body sentAt');
-
-    console.log(chatsRecord);
 
     return res.status(200).json({
         success: true,

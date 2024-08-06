@@ -1,0 +1,35 @@
+.friend-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: calc(var(--padding) / 2) calc(var(--padding) * 5) calc(var(--padding) / 2) calc(var(--padding) *2);
+}
+
+.friend-container:hover {
+    background-color: var(--primary-color);
+}
+
+.friend-container .info-container {
+    flex: 1;
+    padding: 10px 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.friend-container .info-container .name-time-container {
+    display: flex;
+    justify-content: space-between;
+    color: var(--last-msg-color);
+}
+
+.friend-container .image-container img {
+    border-radius: 50%;
+    width: var(--image-dim);
+    height: var(--image-dim);
+}
+
+.friend-container .name-container {
+    color: var(--font-color);
+    font-size: var(--text-font-size);
+}

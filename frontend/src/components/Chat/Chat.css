@@ -1,4 +1,4 @@
-.friend-container {
+.chat-container {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -6,40 +6,40 @@
     padding: calc(var(--padding) / 2) calc(var(--padding) * 5) calc(var(--padding) / 2) calc(var(--padding) *2);
 }
 
-.friend-container:hover {
+.chat-container:hover {
     background-color: var(--primary-color);
 }
 
-.friend-container .info-container {
+.chat-container .info-container {
     flex: 1;
     padding: 10px 0px;
     display: flex;
     flex-direction: column;
 }
 
-.friend-container .info-container .name-time-container {
+.chat-container .info-container .name-time-container {
     display: flex;
     justify-content: space-between;
     color: var(--last-msg-color);
 }
 
-.friend-container .image-container img {
+.chat-container .image-container img {
     border-radius: 50%;
     width: var(--image-dim);
     height: var(--image-dim);
 }
 
-.friend-container .name-container {
+.chat-container .name-container {
     color: var(--font-color);
     font-size: var(--text-font-size);
 }
 
-.friend-container .time-container {
+.chat-container .time-container {
     color: var(--last-msg-color);
     font-size: var(--text-font-size);
 }
 
-.friend-container .last-message-container {
+.chat-container .last-message-container {
     color: var(--last-msg-color);
     font-size: var(--text-font-size);
     overflow: hidden;
@@ -52,7 +52,7 @@
     word-break: break-all;
 }
 
-.friend-container .last-message-container-rtl {
+.chat-container .last-message-container-rtl {
     direction: rtl;
     text-align: right;
 }
