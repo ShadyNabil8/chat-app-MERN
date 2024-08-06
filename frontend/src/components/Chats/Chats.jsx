@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from 'react'
 import Chat from '../Chat/Chat'
+import { useAuth } from '../../context/authContext';
 import Friend from '../Friend/Friend'
 import api from '../../api/api.jsx'
 import { useGlobalState } from '../../context/GlobalStateContext.jsx'
@@ -17,6 +18,7 @@ const Chats = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [dataDiaplayed, setDataDisplayed] = useState('chats')
     const [friends, setFriends] = useState([]);
+    const { clearUserData } = useAuth();
 
     useEffect(() => {
         const fetchChats = async () => {
@@ -41,7 +43,9 @@ const Chats = () => {
                 setIsLoading(false)
 
             } catch (error) {
-                console.log(error);
+                if (error.response.data.error.cause === 'authorization') {
+                    clearUserData();
+                }
             }
         }
         fetchChats();
@@ -67,7 +71,9 @@ const Chats = () => {
                     setFriends(friends);
                     setIsLoading(false)
                 } catch (error) {
-                    console.log(error);
+                    if (error.response.data.error.cause === 'authorization') {
+                        clearUserData();
+                    }
                 }
             }
             fetchFriends();
