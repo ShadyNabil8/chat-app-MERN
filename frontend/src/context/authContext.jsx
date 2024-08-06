@@ -18,6 +18,19 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
+    const clearUserData = () => {
+        setAuthState({
+            isAuthenticated: false,
+            userData: {
+                displayedName: '',
+                email: '',
+                profilePicture: '',
+                friends: [],
+                userId: ''
+            }
+        });
+    }
+
     const login = async (userEmail, userPassword) => {
         const url = 'user/login'
 
@@ -32,18 +45,7 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
 
         localStorage.removeItem('chatAppToken');
-
-        setAuthState({
-            isAuthenticated: false,
-            userData: {
-                displayedName: '',
-                email: '',
-                profilePicture: '',
-                friends: [],
-                userId: ''
-            }
-        });
-
+        clearUserData();
     }
 
     const fetchProfile = async () => {
@@ -75,7 +77,7 @@ export const AuthProvider = ({ children }) => {
     }, [authState]);
 
     return (
-        <authContext.Provider value={{ login, logout, authState, setAuthState }}>
+        <authContext.Provider value={{ login, logout, authState, setAuthState, clearUserData }}>
             {children}
         </authContext.Provider>
     )

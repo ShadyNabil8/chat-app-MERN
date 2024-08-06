@@ -8,7 +8,7 @@ import { useAuth } from '../../context/authContext';
 const Notification = () => {
     // console.log("------------> Notification");
     const [notifications, setNotifications] = useState([])
-    const { authState } = useAuth();
+    const { authState, clearUserData } = useAuth();
 
     const userData = authState.userData;
     useEffect(() => {
@@ -19,7 +19,9 @@ const Notification = () => {
                 const response = await api.get(url, { params: { userId: userData.userId } })
                 setNotifications(response.data.data)
             } catch (error) {
-                console.log(error);
+                if (error.response.data.error.cause === 'authorization') {
+                    clearUserData();
+                }
             }
         }
 

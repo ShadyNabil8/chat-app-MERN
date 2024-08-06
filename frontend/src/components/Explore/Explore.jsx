@@ -13,7 +13,7 @@ const Explore = () => {
     const [searchQuery, setSearchQuery] = useState('')
     const [searchResult, setSearchResult] = useState([])
     const [isLoading, setIsLoading] = useState(false);
-    const { authState } = useAuth();
+    const { authState, clearUserData } = useAuth();
     const userData = authState.userData;
 
     const debouncedSearch = debounce(async (query) => {
@@ -32,7 +32,9 @@ const Explore = () => {
             }
 
         } catch (error) {
-
+            if (error.response.data.error.cause === 'authorization') {
+                clearUserData();
+            }
         }
         finally {
             setIsLoading(false);

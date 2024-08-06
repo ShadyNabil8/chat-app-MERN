@@ -15,6 +15,7 @@ export const GlobalStateProvider = ({ children }) => {
     });
     const [selectedNav, setSelectedNav] = useState('explore')
     const [chats, setChats] = useState([]);
+    const [messages, setMessages] = useState({});
 
     const { authState } = useAuth();
 
@@ -40,6 +41,8 @@ export const GlobalStateProvider = ({ children }) => {
                 setSelectedNav,
                 chats,
                 setChats,
+                messages,
+                setMessages
             }}>
             {children}
         </globalStateContext.Provider>

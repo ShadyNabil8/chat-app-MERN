@@ -18,9 +18,14 @@ import './Conversation.css'
 const Conversation = () => {
     // console.log("------------> Conversation");
 
-    const { selectedChatData, setSelectedChatData, setChats, chats } = useGlobalState();
+    const {
+        selectedChatData,
+        setSelectedChatData,
+        setChats,
+        messages,
+        setMessages
+    } = useGlobalState();
 
-    const [messages, setMessages] = useState({});
 
     const { authState } = useAuth();
     const userData = authState.userData;
@@ -156,43 +161,48 @@ const Conversation = () => {
                 sendMessage(payload);
             }
             else if (selectedChatData.chatType === 'new-chat') {
-                // try catch
-                const response = await api.post(chatRoute.create, {
-                    receiverId: selectedChatData.receiverId,
-                    body: curMessage,
-                })
+                try {
+                    const response = await api.post(chatRoute.create, {
+                        receiverId: selectedChatData.receiverId,
+                        body: curMessage,
+                    })
 
-                const { chatId, receiverRecord, lastMessageRecord } = response.data.data
+                    const { chatId, receiverRecord, lastMessageRecord } = response.data.data
 
-                const payload = {
-                    senderId: userData.userId,
-                    senderProfilePicture: selectedChatData.profilePicture,
-                    receiverId: selectedChatData.receiverId,
-                    body: curMessageObj[selectedChatData.chatId],
-                    sentAt: new Date(),
-                    chatId,
+                    const payload = {
+                        senderId: userData.userId,
+                        senderProfilePicture: selectedChatData.profilePicture,
+                        receiverId: selectedChatData.receiverId,
+                        body: curMessageObj[selectedChatData.chatId],
+                        sentAt: new Date(),
+                        chatId,
+                    }
+
+                    sendMessage(payload);
+
+                    const newChat = {
+                        chatType: 'existed-chat',
+                        chatId,
+                        receiverId: receiverRecord._id,
+                        displayedName: receiverRecord.displayedName,
+                        profilePicture: receiverRecord.profilePicture,
+                        lastMessage: lastMessageRecord.body,
+                        lastMessageDate: moment(lastMessageRecord.sentAt).format('LT')
+                    }
+                    setChats((prev) => [newChat, ...prev])
+
+                    setSelectedChatData({
+                        chatType: newChat.chatType,
+                        chatId,
+                        receiverId: receiverRecord._id,
+                        displayedName: receiverRecord.displayedName,
+                        profilePicture: receiverRecord.profilePicture,
+                    })
+                } catch (error) {
+                    console.log(error);
+                    
                 }
 
-                sendMessage(payload);
-
-                const newChat = {
-                    chatType: 'existed-chat',
-                    chatId,
-                    receiverId: receiverRecord._id,
-                    displayedName: receiverRecord.displayedName,
-                    profilePicture: receiverRecord.profilePicture,
-                    lastMessage: lastMessageRecord.body,
-                    lastMessageDate: moment(lastMessageRecord.sentAt).format('LT')
-                }
-                setChats((prev) => [newChat, ...prev])
-
-                setSelectedChatData({
-                    chatType: newChat.chatType,
-                    chatId,
-                    receiverId: receiverRecord._id,
-                    displayedName: receiverRecord.displayedName,
-                    profilePicture: receiverRecord.profilePicture,
-                })
 
             }
         }
