@@ -13,6 +13,7 @@ import api from '../../api/api.jsx'
 import { chatRoute } from '../../routes/routes.js'
 import moment from 'moment';
 import debounce from 'lodash.debounce';
+import LoadingDots from '../../components/LoadingDots/LoadingDots'
 
 import './Conversation.css'
 
@@ -27,7 +28,9 @@ const Conversation = () => {
         messages,
         setMessages,
         reachedTopChat,
-        setReachedTopChat
+        setReachedTopChat,
+        messagesLoading,
+        setMessagesLoading
     } = useGlobalState();
 
 
@@ -257,6 +260,9 @@ const Conversation = () => {
 
     return (
         <div className="conversation-display">
+            {
+                (messagesLoading) && <LoadingDots style={{ position: 'absolute', top: '100px', left: '50%', transform: 'translate(-50%, 0%)' }}></LoadingDots>
+            }
             {
                 (selectedChatData.chatId) &&
                 <div className="conversation-header">

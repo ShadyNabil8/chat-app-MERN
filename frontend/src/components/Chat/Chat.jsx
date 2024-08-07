@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useGlobalState } from '../../context/GlobalStateContext.jsx';
-import LoadingDots from '../../components/LoadingDots/LoadingDots'
 import api from '../../api/api.jsx'
 import { messageRoute } from '../../routes/routes.js'
 
@@ -9,7 +8,6 @@ const Chat = ({ chat }) => {
     const limit = 10;
     const [skip, setSkip] = useState(0);
     const [hasMore, setHasMore] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
     const [isSelected, setIsSelected] = useState(false)
 
     const {
@@ -17,11 +15,13 @@ const Chat = ({ chat }) => {
         selectedChatData,
         setMessages,
         reachedTopChat,
+        messagesLoading,
+        setMessagesLoading
     } = useGlobalState();
 
     const loadMessages = async () => {
         try {
-            setIsLoading(true)
+            setMessagesLoading(true)
 
             const response = await api.get(messageRoute.list, {
                 params: { limit, skip, chatId: chat.chatId }
@@ -47,7 +47,7 @@ const Chat = ({ chat }) => {
             }
         }
         finally {
-            setIsLoading(false);
+            setMessagesLoading(false);
         }
     }
 
@@ -60,8 +60,8 @@ const Chat = ({ chat }) => {
     }, [isSelected])
 
     useEffect(() => {
-        if ((reachedTopChat) && (selectedChatData.chatId === chat.chatId) && !isLoading && hasMore) {
-            
+        if ((reachedTopChat) && (selectedChatData.chatId === chat.chatId) && !messagesLoading && hasMore) {
+
             loadMessages();
             console.log('top');
         }
@@ -77,7 +77,7 @@ const Chat = ({ chat }) => {
         <div className='chat-container' onClick={() => {
             console.log(chat.chatId);
             console.log(isSelected);
-            
+
             setSelectedChatData({ chatType: 'existed-chat', ...chat });
             setIsSelected(true);
         }}>
