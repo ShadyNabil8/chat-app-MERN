@@ -144,28 +144,28 @@ const Conversation = () => {
     };
 
     const sendMessage = (payload) => {
-        // if (curMessage) {
-        emitEvent('private-message', payload, ({ status }) => {
-            if (status === 'received') {
-                payload['received'] = true;
-            }
-            else if (status === 'not-received') {
-                payload['received'] = false;
-            }
-            addMessage({
-                ...payload,
-                myMessage: true,
+        if (curMessage) {
+            emitEvent('private-message', payload, ({ status }) => {
+                if (status === 'received') {
+                    payload['received'] = true;
+                }
+                else if (status === 'not-received') {
+                    payload['received'] = false;
+                }
+                addMessage({
+                    ...payload,
+                    myMessage: true,
+                });
+                updateChat(payload);
             });
-            updateChat(payload);
-        });
-        setCurMessageObj((prev) => {
-            return {
-                ...prev,
-                [selectedChatData.chatId]: ''
-            }
-        })
+            setCurMessageObj((prev) => {
+                return {
+                    ...prev,
+                    [selectedChatData.chatId]: ''
+                }
+            })
 
-        // }
+        }
     }
 
     const handleKeyDown = async (event) => {
