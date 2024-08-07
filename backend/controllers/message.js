@@ -5,11 +5,6 @@ const list = asynchandler(async (req, res) => {
     const { limit, skip, chatId } = req.query;
     console.log(req.user);
 
-    // const messagesRecord = await messageModel.find({ chatId: chatId })
-    //     .populate('senderId', 'profilePicture')
-    //     .sort({ sentAt: -1 })
-    //     .skip(parseInt(skip))
-    //     .limit(parseInt(limit));
     const messagesRecord = await messageModel.aggregate([
         {
             $match: { chatId: new mongoose.Types.ObjectId(chatId) }
@@ -23,7 +18,7 @@ const list = asynchandler(async (req, res) => {
             }
         },
         {
-            $unwind: '$senderDetails'          // Deconstruct the array field (if only one document is expected)
+            $unwind: '$senderDetails'          // Deconstruct the array field
         },
         {
             $addFields: {
@@ -55,8 +50,7 @@ const list = asynchandler(async (req, res) => {
 
         }
     ])
-    console.log(messagesRecord);
-
+    
     res.status(200).json({
         success: true,
         data: messagesRecord

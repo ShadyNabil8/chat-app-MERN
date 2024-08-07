@@ -6,7 +6,7 @@ import { messageRoute } from '../../routes/routes.js'
 
 import './Chat.css'
 const Chat = ({ chat }) => {
-    const limit = 20;
+    const limit = 10;
     const [skip, setSkip] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -14,56 +14,56 @@ const Chat = ({ chat }) => {
 
     const {
         setSelectedChatData,
-        setMessages
+        selectedChatData,
+        setMessages,
+        reachedTopChat,
     } = useGlobalState();
 
-    useEffect(() => {
-        const loadMessages = async () => {
-            try {
-                setIsLoading(true)
-                console.log(`limit: ${limit}`);
-                console.log(`skip: ${skip}`);
-                console.log(`chatId: ${chat.chatId}`);
+    const loadMessages = async () => {
+        try {
+            setIsLoading(true)
 
-                const response = await api.get(messageRoute.list, {
-                    params: { limit, skip, chatId: chat.chatId }
-                })
-                const fetchedMessages = response.data.data;
-                console.log(fetchedMessages);
-                setMessages((prev) => {
+            const response = await api.get(messageRoute.list, {
+                params: { limit, skip, chatId: chat.chatId }
+            })
+            const fetchedMessages = response.data.data;
+            fetchedMessages.reverse()
+            setMessages((prev) => {
 
-                    return {
-                        ...prev,
-                        [chat.chatId]: [...fetchedMessages,
-                        ...(prev[chat.chatId] || [])
-                        ]
-                    }
-                });
-                setSkip((prev) => prev + limit);
-                setHasMore(fetchedMessages.length === limit) // If fewer messages are fetched than limit, no more messages
-
-            } catch (error) {
-                console.log(`Error in loading messages: ${error}`);
-                if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
-                    clearUserData();
+                return {
+                    ...prev,
+                    [chat.chatId]: [...fetchedMessages,
+                    ...(prev[chat.chatId] || [])
+                    ]
                 }
-            }
-            finally {
-                setIsLoading(false);
+            });
+            setSkip((prev) => prev + limit);
+            setHasMore(fetchedMessages.length === limit) // If fewer messages are fetched than limit, no more messages
+
+        } catch (error) {
+            console.log(`Error in loading messages: ${error}`);
+            if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
+                clearUserData();
             }
         }
+        finally {
+            setIsLoading(false);
+        }
+    }
 
+    useEffect(() => {
         if (isSelected) {
             loadMessages();
         }
     }, [isSelected])
 
-    const handleScroll = (e) => {
-        const { scrollTop, scrollHeight, clientHeight } = e.target;
-        if (scrollTop === 0 && !isLoading && hasMore) {
-            loadMessages(); // Load more messages when scrolled to the top
+    useEffect(() => {
+        if ((reachedTopChat) && (selectedChatData.chatId === chat.chatId) && !isLoading && hasMore) {
+            loadMessages();
+            console.log('top');
         }
-    };
+
+    }, [reachedTopChat])
 
     const isArabic = (text) => {
         const arabicPattern = /[\u0600-\u06FF]/;

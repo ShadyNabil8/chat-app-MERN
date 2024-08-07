@@ -1,4 +1,4 @@
-import { React, useState, useRef, useEffect } from 'react'
+import { React, useState, useRef, useEffect, useCallback } from 'react'
 import Message from '../../components/Message/Message'
 import { colorEmojiList } from '../../assets/assets.js'
 import EmojiPicker from 'emoji-picker-react';
@@ -12,6 +12,7 @@ import useSocketEvent from '../../hooks/useSocket.js'
 import api from '../../api/api.jsx'
 import { chatRoute } from '../../routes/routes.js'
 import moment from 'moment';
+import debounce from 'lodash.debounce';
 
 import './Conversation.css'
 
@@ -24,7 +25,9 @@ const Conversation = () => {
         chats,
         setChats,
         messages,
-        setMessages
+        setMessages,
+        reachedTopChat,
+        setReachedTopChat
     } = useGlobalState();
 
 
@@ -34,6 +37,7 @@ const Conversation = () => {
     const { emitEvent } = useSocket();
 
     const [curMessageObj, setCurMessageObj] = useState({})
+    const lastScrollHeight = useRef(0);
     const [emojiPicker, setEmojiPicker] = useState(false)
     const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
     const inputRef = useRef(null);
@@ -140,28 +144,28 @@ const Conversation = () => {
     };
 
     const sendMessage = (payload) => {
-        if (curMessage) {
-            emitEvent('private-message', payload, ({ status }) => {
-                if (status === 'received') {
-                    payload['received'] = true;
-                }
-                else if (status === 'not-received') {
-                    payload['received'] = false;
-                }
-                addMessage({
-                    ...payload,
-                    myMessage: true,
-                });
-                updateChat(payload);
+        // if (curMessage) {
+        emitEvent('private-message', payload, ({ status }) => {
+            if (status === 'received') {
+                payload['received'] = true;
+            }
+            else if (status === 'not-received') {
+                payload['received'] = false;
+            }
+            addMessage({
+                ...payload,
+                myMessage: true,
             });
-            setCurMessageObj((prev) => {
-                return {
-                    ...prev,
-                    [selectedChatData.chatId]: ''
-                }
-            })
+            updateChat(payload);
+        });
+        setCurMessageObj((prev) => {
+            return {
+                ...prev,
+                [selectedChatData.chatId]: ''
+            }
+        })
 
-        }
+        // }
     }
 
     const handleKeyDown = async (event) => {
@@ -231,14 +235,23 @@ const Conversation = () => {
         }
     };
 
+    const handleScroll = debounce((e) => {
+        const { scrollTop, scrollHeight, clientHeight } = e.target;
+        setReachedTopChat(scrollTop === 0);
+        lastScrollHeight.current = scrollHeight;
+    }, 200)
+
     useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTo({
-                top: scrollRef.current.scrollHeight,
-                behavior: 'smooth'
+        const container = scrollRef.current;
+        if (container) {
+            const scrollTo = (reachedTopChat) ? container.scrollHeight - lastScrollHeight.current : container.scrollHeight;
+            const behavior = (reachedTopChat) ? 'auto' : 'smooth'
+            container.scrollTo({
+                top: scrollTo,
+                behavior
             });
         }
-    }, [messages])
+    }, [messages[selectedChatData.chatId]])
 
     return (
         <div className="conversation-display">
@@ -251,7 +264,7 @@ const Conversation = () => {
                     </div>
                 </div>
             }
-            <div className='conversation' ref={scrollRef} >
+            <div className='conversation' ref={scrollRef} onScroll={handleScroll} >
                 {messageList.map((message, index) => <Message key={index} data={message}></Message>)}
             </div>
             {
