@@ -32,7 +32,8 @@ const Explore = () => {
             }
 
         } catch (error) {
-            if (error.response.data.error.cause === 'authorization') {
+            console.log(`Error in loading users: ${error}`);
+            if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
                 clearUserData();
             }
         }

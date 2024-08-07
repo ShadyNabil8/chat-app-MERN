@@ -65,7 +65,10 @@ export const AuthProvider = ({ children }) => {
             });
             navigate('./home')
         } catch (error) {
-            console.log(error);
+            console.log(`Error in fetching profile: ${error}`);
+            if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
+                clearUserData();
+            }
             navigate('./login')
         }
     }

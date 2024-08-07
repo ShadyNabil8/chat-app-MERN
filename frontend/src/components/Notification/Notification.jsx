@@ -19,7 +19,8 @@ const Notification = () => {
                 const response = await api.get(url, { params: { userId: userData.userId } })
                 setNotifications(response.data.data)
             } catch (error) {
-                if (error.response.data.error.cause === 'authorization') {
+                console.log(`Error in loading notifications: ${error}`);
+                if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
                     clearUserData();
                 }
             }

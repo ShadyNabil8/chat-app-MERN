@@ -28,6 +28,7 @@ const Chats = () => {
                 const chatsRecord = response.data.data;
 
                 const existedChats = chatsRecord.map((chat) => {
+
                     const dateFormat = (moment(chat.lastMessage.sentAt).isAfter(moment().subtract(1, 'days'))) ? 'LT' : 'L'
                     return {
                         chatId: chat._id,
@@ -43,7 +44,7 @@ const Chats = () => {
                 setIsLoading(false)
 
             } catch (error) {
-                if (error.response.data.error.cause === 'authorization') {
+                if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
                     clearUserData();
                 }
             }
@@ -71,7 +72,7 @@ const Chats = () => {
                     setFriends(friends);
                     setIsLoading(false)
                 } catch (error) {
-                    if (error.response.data.error.cause === 'authorization') {
+                    if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
                         clearUserData();
                     }
                 }

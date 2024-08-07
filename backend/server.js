@@ -49,6 +49,9 @@ app.use('/friends', friendsRoute);
 const chatRoute = require('./routes/chat');
 app.use('/chat', chatRoute);
 
+const messageRoute = require('./routes/message');
+app.use('/message', messageRoute);
+
 
 // socket
 io.on('connection', (socket) => {

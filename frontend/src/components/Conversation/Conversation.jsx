@@ -217,7 +217,8 @@ const Conversation = () => {
                         profilePicture: receiverRecord.profilePicture,
                     })
                 } catch (error) {
-                    if (error.response.data.error.cause === 'authorization') {
+                    console.log(`Error in creating new chat: ${error}`);
+                    if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
                         clearUserData();
                     }
                 }
