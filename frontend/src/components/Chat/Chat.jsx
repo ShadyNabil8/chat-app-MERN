@@ -52,13 +52,16 @@ const Chat = ({ chat }) => {
     }
 
     useEffect(() => {
+        console.log('noooooooooooooooo');
         if (isSelected) {
+            console.log('here');
             loadMessages();
         }
     }, [isSelected])
 
     useEffect(() => {
         if ((reachedTopChat) && (selectedChatData.chatId === chat.chatId) && !isLoading && hasMore) {
+            
             loadMessages();
             console.log('top');
         }
@@ -72,6 +75,9 @@ const Chat = ({ chat }) => {
 
     return (
         <div className='chat-container' onClick={() => {
+            console.log(chat.chatId);
+            console.log(isSelected);
+            
             setSelectedChatData({ chatType: 'existed-chat', ...chat });
             setIsSelected(true);
         }}>

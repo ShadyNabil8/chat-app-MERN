@@ -66,7 +66,7 @@ const onSocketIdentify = (socket, userId, callback) => {
 const onSocketPrivateMessage = (io, payload, callback) => {
 
     try {
-        const { senderId, body, receiverId, chatId, sentAt } = payload;
+        const { senderId, body, receiverId, chatId, sentAt, newChat } = payload;
 
         const messageRecord = messageModel({
             body,
@@ -75,12 +75,13 @@ const onSocketPrivateMessage = (io, payload, callback) => {
             sentAt
         })
 
-        // No need to use async/await
-        Promise.all([
-            messageRecord.save(),
-            chatModel.findByIdAndUpdate(chatId, { lastMessage: messageRecord._id })
-
-        ])
+        if(!newChat){
+            // No need to use async/await
+            Promise.all([
+                messageRecord.save(),
+                chatModel.findByIdAndUpdate(chatId, { lastMessage: messageRecord._id })
+            ])
+        }
 
         payload.sentAt = messageRecord.sentAt;
 
@@ -111,7 +112,7 @@ const onSocketPrivateMessage = (io, payload, callback) => {
         }
     } catch (error) {
         console.log(`Error in sending message or saving it: ${error}`);
-        
+
     }
 }
 

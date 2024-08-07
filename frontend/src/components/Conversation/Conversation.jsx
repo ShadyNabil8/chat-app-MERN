@@ -88,13 +88,13 @@ const Conversation = () => {
                 lastMessage: payload.body,
                 lastMessageDate: moment(payload.lastMessageDate).format('LT')
             }
-            setChats((prev) => [newChat, ...prev])
+            setChats((prev) => [...prev, newChat])
         }
         else {
             updateChat(payload);
+            payload.myMessage = false;
+            addMessage(payload);
         }
-        payload.myMessage = false;
-        addMessage(payload);
         callback({ status: 'received' });
     })
 
@@ -178,6 +178,7 @@ const Conversation = () => {
                     body: curMessageObj[selectedChatData.chatId],
                     chatId: selectedChatData.chatId,
                     sentAt: new Date(),
+                    newChat: false
                 }
                 sendMessage(payload);
             }
@@ -198,6 +199,7 @@ const Conversation = () => {
                         body: curMessageObj[selectedChatData.chatId],
                         sentAt: new Date(),
                         chatId,
+                        newChat: true
                     }
 
                     sendMessage(payload);
