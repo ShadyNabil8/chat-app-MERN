@@ -15,7 +15,7 @@ function Message({ data }) {
             {
                 (!data.myMessage) &&
                 <div className="image-container">
-                    <img src={data.senderProfilePicture}></img>
+                    <img src={data.senderProfilePicture || data.profilePicture}></img>
                 </div>
             }
             <div className={isArabic(data.body) ? "message-body message-body-rtl" : "message-body"}>

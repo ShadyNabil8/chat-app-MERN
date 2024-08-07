@@ -10,6 +10,7 @@ const Chat = ({ chat }) => {
     const [skip, setSkip] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [isSelected, setIsSelected] = useState(false)
 
     const {
         setSelectedChatData,
@@ -28,12 +29,13 @@ const Chat = ({ chat }) => {
                     params: { limit, skip, chatId: chat.chatId }
                 })
                 const fetchedMessages = response.data.data;
-
+                console.log(fetchedMessages);
                 setMessages((prev) => {
+
                     return {
                         ...prev,
                         [chat.chatId]: [...fetchedMessages,
-                        ...prev[chat.chatId]
+                        ...(prev[chat.chatId] || [])
                         ]
                     }
                 });
@@ -50,8 +52,11 @@ const Chat = ({ chat }) => {
                 setIsLoading(false);
             }
         }
-        loadMessages();
-    }, [])
+
+        if (isSelected) {
+            loadMessages();
+        }
+    }, [isSelected])
 
     const handleScroll = (e) => {
         const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -67,7 +72,8 @@ const Chat = ({ chat }) => {
 
     return (
         <div className='chat-container' onClick={() => {
-            setSelectedChatData({ chatType: 'existed-chat', ...chat })
+            setSelectedChatData({ chatType: 'existed-chat', ...chat });
+            setIsSelected(true);
         }}>
             <div className="image-container">
                 <img src={chat.profilePicture}></img>
