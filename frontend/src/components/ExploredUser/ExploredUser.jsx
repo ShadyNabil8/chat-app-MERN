@@ -5,7 +5,7 @@ import { useSocket } from '../../context/SocketContext.jsx'
 import { useAuth } from '../../context/authContext';
 import { IoMdCheckmark } from "react-icons/io";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { IoPersonRemoveOutline } from "react-icons/io5";
+import { FaUserTimes } from "react-icons/fa";
 import { useGlobalState } from '../../context/GlobalStateContext.jsx';
 import LoadingDots from '../../components/LoadingDots/LoadingDots'
 
@@ -36,6 +36,8 @@ const ExploredUser = ({ data }) => {
   const handleDeleteFriend = async () => {
     setDeletingLoading(true);
     await deleteFriend(data._id);
+    data.isFriend = false;
+    setDisplayOption(false);
     setDeletingLoading(false);
   }
 
@@ -46,7 +48,7 @@ const ExploredUser = ({ data }) => {
         < div className="options-container">
           <div className="option-container">
             <div className="delete-option option" style={(deletingLoading) ? { pointerEvents: 'none', opacity: '0.5' } : {}} onClick={() => handleDeleteFriend()}>
-              <IoPersonRemoveOutline className='icon' />
+              <FaUserTimes className='icon' />
               <p>Unfriend</p>
             </div>
             {
