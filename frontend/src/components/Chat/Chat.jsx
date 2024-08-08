@@ -8,7 +8,6 @@ const Chat = ({ chat }) => {
     const limit = 10;
     const [skip, setSkip] = useState(0);
     const [hasMore, setHasMore] = useState(true);
-    const [isSelected, setIsSelected] = useState(false)
 
     const {
         setSelectedChatData,
@@ -53,11 +52,11 @@ const Chat = ({ chat }) => {
 
     useEffect(() => {
         console.log('noooooooooooooooo');
-        if (isSelected) {
+        if (chat.isSelected) {
             console.log('here');
             loadMessages();
         }
-    }, [isSelected])
+    }, [chat.isSelected])
 
     useEffect(() => {
         if ((reachedTopChat) && (selectedChatData.chatId === chat.chatId) && !messagesLoading && hasMore) {
@@ -75,11 +74,8 @@ const Chat = ({ chat }) => {
 
     return (
         <div className='chat-container' onClick={() => {
-            console.log(chat.chatId);
-            console.log(isSelected);
-
             setSelectedChatData({ chatType: 'existed-chat', ...chat });
-            setIsSelected(true);
+            chat.isSelected = true;
         }}>
             <div className="image-container">
                 <img src={chat.profilePicture}></img>

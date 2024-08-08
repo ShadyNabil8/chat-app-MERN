@@ -34,11 +34,10 @@ export const AuthProvider = ({ children }) => {
     const login = async (userEmail, userPassword) => {
         const url = 'user/login'
 
-        const response = await api.post(url, {
+        await api.post(url, {
             email: userEmail,
             password: userPassword
         });
-        console.log(response);
         await fetchProfile();
     }
 
@@ -66,9 +65,6 @@ export const AuthProvider = ({ children }) => {
             navigate('./home')
         } catch (error) {
             console.log(`Error in fetching profile: ${error}`);
-            if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
-                clearUserData();
-            }
             navigate('./login')
         }
     }

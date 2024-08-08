@@ -31,12 +31,14 @@ const Chats = () => {
 
                     const dateFormat = (moment(chat.lastMessage.sentAt).isAfter(moment().subtract(1, 'days'))) ? 'LT' : 'L'
                     return {
+                        chatType: 'existed-chat',
                         chatId: chat._id,
                         receiverId: chat.participants[0]._id,
                         displayedName: chat.participants[0].displayedName,
                         profilePicture: chat.participants[0].profilePicture,
                         lastMessage: chat.lastMessage.body,
-                        lastMessageDate: moment(chat.lastMessage.sentAt).format(dateFormat)
+                        lastMessageDate: moment(chat.lastMessage.sentAt).format(dateFormat),
+                        isSelected: false,
                     }
                 })
 

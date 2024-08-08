@@ -30,7 +30,6 @@ const Conversation = () => {
         reachedTopChat,
         setReachedTopChat,
         messagesLoading,
-        setMessagesLoading
     } = useGlobalState();
 
 
@@ -80,7 +79,6 @@ const Conversation = () => {
 
     useSocketEvent('private-message', (payload, callback) => {
         const existedChat = chats.find((chat) => chat.chatId === payload.chatId)
-        console.log(payload);
         if (!existedChat) {
             const newChat = {
                 chatType: 'existed-chat',
@@ -89,14 +87,17 @@ const Conversation = () => {
                 displayedName: payload.displayedName,
                 profilePicture: payload.senderProfilePicture,
                 lastMessage: payload.body,
-                lastMessageDate: moment(payload.lastMessageDate).format('LT')
+                lastMessageDate: moment(payload.lastMessageDate).format('LT'),
+                isSelected: false,
             }
             setChats((prev) => [...prev, newChat])
         }
         else {
             updateChat(payload);
             payload.myMessage = false;
-            addMessage(payload);
+            if(existedChat.isSelected){
+                addMessage(payload);
+            }
         }
         callback({ status: 'received' });
     })
