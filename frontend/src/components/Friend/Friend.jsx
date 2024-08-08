@@ -9,7 +9,6 @@ const Friend = ({ friend }) => {
         <div className='friend-container' onClick={() => {
             const existedChat = chats.find((chat) => chat.receiverId === friend.receiverId);
             if (existedChat) {
-                console.log('yes');
                 setSelectedChatData({ chatType: 'existed-chat', ...existedChat })
             }
             else {

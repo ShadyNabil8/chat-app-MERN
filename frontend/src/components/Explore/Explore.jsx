@@ -22,7 +22,8 @@ const Explore = () => {
             if (searchQuery) {
                 setIsLoading(true);
                 const response = await api.get(url, { params: { query, userId: userData.userId } })
-
+                console.log(response.data);
+                
                 if (response.data) {
                     setSearchResult(response.data)
                 }

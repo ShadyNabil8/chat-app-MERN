@@ -6,7 +6,7 @@ const { hashPassword, comparePassword } = require('../utils/password')
 const { sendVerificationCode } = require('../config/transporter')
 const crypto = require('crypto');
 const { generateToken } = require('../utils/auth')
-
+const mongoose = require('mongoose')
 require('dotenv').config();
 
 const register = [
@@ -257,13 +257,67 @@ const profile = asyncHandler(async (req, res, next) => {
 })
 
 const search = asyncHandler(async (req, res) => {
-    const { query, userId } = req.query;
-    const users = await userModel
-        .find({
-            displayedName: { $regex: `^${query}`, $options: 'i' },
-            _id: { $ne: userId }
-        })
-        .select('_id displayedName profilePicture email')
+    const { query } = req.query;
+    // const users = await userModel
+    //     .find({
+    //         displayedName: { $regex: `^${query}`, $options: 'i' },
+    //         _id: { $ne: userId }
+    //     })
+    //     .select('_id displayedName profilePicture email')
+    const users = await userModel.aggregate([
+        {
+            $match: {
+                displayedName: { $regex: `^${query}`, $options: 'i' },
+                _id: { $ne: new mongoose.Types.ObjectId(req.user) }
+            }
+        },
+        {
+            $lookup: {
+                from: 'notifications', // Collection name for notifications
+                let: { userId: '$_id' }, // Use the current user's _id
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ['$receiver', '$$userId'] }, // Check if the current user is the receiver
+                                    { $eq: ['$requester', new mongoose.Types.ObjectId(req.user)] }, // Check if the current user is the requester
+                                    { $eq: ['$type', 'friend_request'] } // Check for friend requests
+                                ]
+                            }
+                        }
+                    }
+                ],
+                as: 'pendingRequests'
+            }
+        },
+        // Add fields to indicate friendship status and pending requests
+        {
+            $addFields: {
+                isFriend: {
+                    $in: [new mongoose.Types.ObjectId(req.user), '$friends'] // Check if userId is in the friends array
+                },
+                hasPendingRequest: {
+                    $cond: {
+                        if: { $gt: [{ $size: '$pendingRequests' }, 0] }, // Check if there are any pending requests
+                        then: true,
+                        else: false
+                    }
+                }
+            }
+        },
+        // Project the fields to include in the result
+        {
+            $project: {
+                displayedName: 1,
+                email: 1,
+                profilePicture: 1,
+                isFriend: 1,
+                hasPendingRequest: 1
+            }
+        }
+    ]);
+    console.log(users);
 
     res.json(users)
 });
