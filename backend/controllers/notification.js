@@ -86,4 +86,29 @@ const action = asynchandler(async (req, res) => {
 
 })
 
-module.exports = { list, action }
+const send = asynchandler(async (req, res) => {
+
+    const { senderId, receriverId, notification, type } = req.body
+
+    const notificationRecord = notificationModel({
+        receiver: receriverId,
+        type: type,
+        content: {
+            title: '',
+            message: ''
+        },
+        requester: senderId
+    })
+
+    console.log(notificationRecord);
+
+    await notificationRecord.save();
+
+    return res.status(200).json({
+        success: true,
+        message: 'Friend request is seccessfully sent'
+    })
+
+})
+
+module.exports = { list, action, send }

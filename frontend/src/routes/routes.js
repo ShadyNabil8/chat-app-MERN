@@ -1,5 +1,6 @@
 export const notificationRoute = {
-    action: 'notification/action'
+    action: 'notification/action',
+    send: 'notification/send'
 }
 export const friendsRoute = {
     list: 'friends/list',

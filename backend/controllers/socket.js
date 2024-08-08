@@ -1,4 +1,5 @@
 const notificationModel = require('../models/notification');
+const notificationController = require('../controllers/notification');
 const messageModel = require('../models/message');
 const chatModel = require('../models/chat');
 
@@ -26,25 +27,22 @@ const onSocketDisconnection = (socket) => {
     deleteSocket(socket.id);
 }
 
-const onSocketNotification = async (socket, { senderId, receriverId, notification, type }, callback) => {
+const onSocketNotification = async (io, notificationData, callback) => {
     try {
-        const notificationRecord = notificationModel({
-            receiver: receriverId,
-            type: type,
-            content: {
-                title: '',
-                message: ''
-            },
-            requester: senderId
-        })
-
-        await notificationRecord.save();
+        const { senderId, receriverId, notification, type } = notificationData;
 
         const receiverSocket = sockets.get(receriverId);
 
         if (receiverSocket) {
-            socket.to(receiverSocket).emit('private-notification', type);
-            callback({ status: 'OK', message: 'Notification has been successfully sent' })
+            io.timeout(1000).to(receiverSocket).emit('notification', notification, (error, responses) => {
+                if (error) {
+                    console.log("Error in sending notification to the receiver:", error);
+                }
+                else {
+                    console.log(responses[0]);
+                    callback({ status: 'OK', message: 'Notification has been successfully sent' })
+                }
+            });
         }
         else {
             // Handle the case where the receiver is offline or not connected
@@ -52,7 +50,7 @@ const onSocketNotification = async (socket, { senderId, receriverId, notificatio
             callback({ status: 'NOK' });
         }
     } catch (error) {
-        console.log(`Error while sending notification: ${error}`);
+        console.log(`Error while seding notification: ${error}`);
     }
 }
 
@@ -75,7 +73,7 @@ const onSocketPrivateMessage = (io, payload, callback) => {
             sentAt
         })
 
-        if(!newChat){
+        if (!newChat) {
             // No need to use async/await
             Promise.all([
                 messageRecord.save(),
@@ -112,7 +110,6 @@ const onSocketPrivateMessage = (io, payload, callback) => {
         }
     } catch (error) {
         console.log(`Error in sending message or saving it: ${error}`);
-
     }
 }
 

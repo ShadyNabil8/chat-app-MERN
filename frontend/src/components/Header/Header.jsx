@@ -4,6 +4,7 @@ import { VscSignOut } from "react-icons/vsc";
 import { useAuth } from '../../context/authContext';
 import { MdOutlineExplore } from "react-icons/md";
 import { useGlobalState } from '../../context/GlobalStateContext.jsx'
+import useSocketEvent from '../../hooks/useSocket.js'
 
 import './Header.css'
 
@@ -11,11 +12,19 @@ const Header = () => {
     // console.log("------------> Header");
 
     const [options, setOptions] = useState(false)
+    const [notifications, setNotifications] = useState(0)
 
     const { authState, logout } = useAuth();
     const { userData } = authState;
 
     const { setSelectedNav } = useGlobalState();
+
+    useSocketEvent('notification', (payload, callback) => {
+        console.log(payload);
+        setNotifications((prev) => prev + 1)
+        callback({ status: 'received' });
+    })
+
 
     const toggleOptionsBox = () => {
         setOptions((prev) => !prev)
@@ -25,7 +34,10 @@ const Header = () => {
         <div className="nav-bar">
             <div className="icons">
                 <div className="notification">
-                    <IoIosNotifications className='notification-icon icon' onClick={() => setSelectedNav('notification')} />
+                    {
+                        (notifications > 0) && <div className="notification-dot">{notifications}</div>
+                    }
+                    <IoIosNotifications className='notification-icon icon' onClick={() => { setSelectedNav('notification'); setNotifications(0) }} />
                 </div>
                 <MdOutlineExplore className='explore-icon icon' onClick={() => setSelectedNav('explore')} />
             </div>

@@ -63,7 +63,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('notification', (payload, callback) => {
-    socketController.onSocketNotification(socket, payload, callback);
+    socketController.onSocketNotification(io, payload, callback);
 
   })
 

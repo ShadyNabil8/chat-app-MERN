@@ -4,17 +4,23 @@ import { friendRequests } from '../../assets/assets.js'
 import FriendRequest from '../../components/FriendRequest/FriendRequest'
 import api from '../../api/api.jsx'
 import { useAuth } from '../../context/authContext';
+import LoadingDots from '../../components/LoadingDots/LoadingDots'
+import { useGlobalState } from '../../context/GlobalStateContext.jsx'
 
 const Notification = () => {
     // console.log("------------> Notification");
     const [notifications, setNotifications] = useState([])
     const { authState, clearUserData } = useAuth();
+    const [loading, setLoading] = useState(false)
+    const { selectedNav } = useGlobalState();
 
     const userData = authState.userData;
     useEffect(() => {
+        console.log('not');
+        
         const fetchNotifications = async () => {
             try {
-                console.log('in n hrer');
+                setLoading(true);
                 const url = 'notification/list'
                 const response = await api.get(url, { params: { userId: userData.userId } })
                 setNotifications(response.data.data)
@@ -24,14 +30,23 @@ const Notification = () => {
                     clearUserData();
                 }
             }
+            finally {
+                setLoading(false);
+            }
         }
-
-        fetchNotifications();
-    }, [])
+        if (selectedNav === 'notification') {
+            fetchNotifications();
+        }
+    }, [selectedNav])
 
     return (
-        <div className="notification-container">
-            {notifications.map((req, index) => <FriendRequest key={index} data={req} setNotifications={setNotifications}></FriendRequest>)}
+        <div style={{ position: 'relative', height: '100%' }}>
+            <div className="notification-container">
+                {notifications.map((req, index) => <FriendRequest key={index} data={req} setNotifications={setNotifications}></FriendRequest>)}
+            </div>
+            {
+                (loading) && <LoadingDots style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></LoadingDots>
+            }
         </div>
     )
 }
