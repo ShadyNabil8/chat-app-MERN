@@ -25,6 +25,11 @@
     color: #c5303c;
 }
 
+.explored-user-container .option-container {
+    position: relative;
+}
+
+
 .explored-user-container .option {
     padding: 10px;
     display: flex;

@@ -3,6 +3,7 @@ export const notificationRoute = {
 }
 export const friendsRoute = {
     list: 'friends/list',
+    delete: 'friends/delete',
 }
 export const chatRoute = {
     create: 'chat/create',

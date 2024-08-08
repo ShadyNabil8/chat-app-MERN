@@ -11,14 +11,14 @@ const list = asynchandler(async (req, res) => {
         },
         {
             $lookup: {
-                from: 'users',                // The collection to join
-                localField: 'senderId',       // Field from the message collection
-                foreignField: '_id',          // Field from the user collection
-                as: 'senderDetails'           // Name of the new array field to add
+                from: 'users',          
+                localField: 'senderId', 
+                foreignField: '_id',    
+                as: 'senderDetails'     
             }
         },
         {
-            $unwind: '$senderDetails'          // Deconstruct the array field
+            $unwind: '$senderDetails'          
         },
         {
             $addFields: {

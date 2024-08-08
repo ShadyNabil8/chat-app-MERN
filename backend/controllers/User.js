@@ -258,12 +258,7 @@ const profile = asyncHandler(async (req, res, next) => {
 
 const search = asyncHandler(async (req, res) => {
     const { query } = req.query;
-    // const users = await userModel
-    //     .find({
-    //         displayedName: { $regex: `^${query}`, $options: 'i' },
-    //         _id: { $ne: userId }
-    //     })
-    //     .select('_id displayedName profilePicture email')
+
     const users = await userModel.aggregate([
         {
             $match: {
@@ -273,16 +268,16 @@ const search = asyncHandler(async (req, res) => {
         },
         {
             $lookup: {
-                from: 'notifications', // Collection name for notifications
-                let: { userId: '$_id' }, // Use the current user's _id
+                from: 'notifications',
+                let: { userId: '$_id' }, 
                 pipeline: [
                     {
                         $match: {
                             $expr: {
                                 $and: [
-                                    { $eq: ['$receiver', '$$userId'] }, // Check if the current user is the receiver
-                                    { $eq: ['$requester', new mongoose.Types.ObjectId(req.user)] }, // Check if the current user is the requester
-                                    { $eq: ['$type', 'friend_request'] } // Check for friend requests
+                                    { $eq: ['$receiver', '$$userId'] }, 
+                                    { $eq: ['$requester', new mongoose.Types.ObjectId(req.user)] },
+                                    { $eq: ['$type', 'friend_request'] } 
                                 ]
                             }
                         }
@@ -291,22 +286,20 @@ const search = asyncHandler(async (req, res) => {
                 as: 'pendingRequests'
             }
         },
-        // Add fields to indicate friendship status and pending requests
         {
             $addFields: {
                 isFriend: {
-                    $in: [new mongoose.Types.ObjectId(req.user), '$friends'] // Check if userId is in the friends array
+                    $in: [new mongoose.Types.ObjectId(req.user), '$friends']
                 },
                 hasPendingRequest: {
                     $cond: {
-                        if: { $gt: [{ $size: '$pendingRequests' }, 0] }, // Check if there are any pending requests
+                        if: { $gt: [{ $size: '$pendingRequests' }, 0] },
                         then: true,
                         else: false
                     }
                 }
             }
         },
-        // Project the fields to include in the result
         {
             $project: {
                 displayedName: 1,
