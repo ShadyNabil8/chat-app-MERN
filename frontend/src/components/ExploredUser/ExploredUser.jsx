@@ -18,6 +18,7 @@ const ExploredUser = ({ data }) => {
   const { authState } = useAuth();
   const [displayOption, setDisplayOption] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [deletingLoading, setDeletingLoading] = useState(false)
   const [requestSent, setRequestSent] = useState(false)
 
   const {
@@ -52,7 +53,7 @@ const ExploredUser = ({ data }) => {
 
   const handleDeleteFriend = async () => {
     try {
-      setLoading(true);
+      setDeletingLoading(true);
       await deleteFriend(data._id);
       data.isFriend = false;
       setDisplayOption(false);
@@ -63,7 +64,7 @@ const ExploredUser = ({ data }) => {
       }
     }
     finally {
-      setLoading(false);
+      setDeletingLoading(false);
     }
 
   }
@@ -75,12 +76,12 @@ const ExploredUser = ({ data }) => {
           (displayOption) &&
           < div className="options-container">
             <div className="option-container">
-              <div className="delete-option option" style={(loading) ? { pointerEvents: 'none', opacity: '0.5' } : {}} onClick={() => handleDeleteFriend()}>
+              <div className="delete-option option" style={(deletingLoading) ? { pointerEvents: 'none', opacity: '0.5' } : {}} onClick={() => handleDeleteFriend()}>
                 <FaUserTimes className='icon' />
                 <p>Unfriend</p>
               </div>
               {
-                (loading) && <LoadingDots style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></LoadingDots>
+                (deletingLoading) && <LoadingDots style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></LoadingDots>
               }
             </div>
           </div>

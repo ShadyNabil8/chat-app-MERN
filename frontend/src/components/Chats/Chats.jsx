@@ -46,9 +46,7 @@ const Chats = () => {
                 setIsLoading(false)
 
             } catch (error) {
-                if ((error.response.data.error) && (error.response.data.error.cause === 'authorization')) {
-                    clearUserData();
-                }
+                console.log(`Error in fetching chats: ${error}`);
             }
         }
         fetchChats();

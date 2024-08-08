@@ -1,6 +1,7 @@
 const asynchandler = require('express-async-handler')
 const userModel = require('../models/User');
 const chatModel = require('../models/chat');
+const messageModel = require('../models/message');
 const { default: mongoose } = require('mongoose');
 
 const list = asynchandler(async (req, res) => {
@@ -23,7 +24,7 @@ const list = asynchandler(async (req, res) => {
 })
 
 const unfriend = asynchandler(async (req, res) => {
-    
+
     const { friendId } = req.body;
 
     if (!friendId) {
@@ -35,6 +36,22 @@ const unfriend = asynchandler(async (req, res) => {
             }
         });
     }
+
+    const chatRecord = await chatModel.findOne({
+        participants: {
+            $all: [friendId, req.user]
+        }
+    })
+
+    if (chatRecord) {
+        await Promise.all([
+            chatRecord.deleteOne(),
+            messageModel.deleteMany({
+                chatId: chatRecord._id
+            })
+        ])
+    }
+
 
     const [userRecord, friendRecord] = await Promise.all([
         userModel.findById(req.user),
