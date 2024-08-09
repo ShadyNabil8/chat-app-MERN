@@ -88,14 +88,14 @@ const Conversation = () => {
                 profilePicture: payload.senderProfilePicture,
                 lastMessage: payload.body,
                 lastMessageDate: moment(payload.lastMessageDate).format('LT'),
-                isSelected: false,
+                isSelected: true,
             }
             setChats((prev) => [...prev, newChat])
         }
         else {
             updateChat(payload);
             payload.myMessage = false;
-            if(existedChat.isSelected){
+            if (existedChat.isSelected) {
                 addMessage(payload);
             }
         }
@@ -147,7 +147,7 @@ const Conversation = () => {
         }, 0);
     };
 
-    const sendMessage = (payload) => {
+    const sendMessage = (payload, add) => {
         if (curMessage) {
             emitEvent('private-message', payload, ({ status }) => {
                 if (status === 'received') {
@@ -156,10 +156,12 @@ const Conversation = () => {
                 else if (status === 'not-received') {
                     payload['received'] = false;
                 }
-                addMessage({
-                    ...payload,
-                    myMessage: true,
-                });
+                if (add) {
+                    addMessage({
+                        ...payload,
+                        myMessage: true,
+                    });
+                }
                 updateChat(payload);
             });
             setCurMessageObj((prev) => {
@@ -184,7 +186,7 @@ const Conversation = () => {
                     sentAt: new Date(),
                     newChat: false
                 }
-                sendMessage(payload);
+                sendMessage(payload, true);
             }
             else if (selectedChatData.chatType === 'new-chat') {
                 try {
@@ -206,7 +208,7 @@ const Conversation = () => {
                         newChat: true
                     }
 
-                    sendMessage(payload);
+                    sendMessage(payload, false);
 
                     const newChat = {
                         chatType: 'existed-chat',
@@ -215,7 +217,8 @@ const Conversation = () => {
                         displayedName: receiverRecord.displayedName,
                         profilePicture: receiverRecord.profilePicture,
                         lastMessage: lastMessageRecord.body,
-                        lastMessageDate: moment(lastMessageRecord.sentAt).format('LT')
+                        lastMessageDate: moment(lastMessageRecord.sentAt).format('LT'),
+                        isSelected: true
                     }
                     setChats((prev) => [newChat, ...prev])
 
@@ -318,7 +321,7 @@ const Conversation = () => {
                             <PiMicrophone className='icon' />
                         </div>
                         <div className="action-send">
-                            <IoSend className='icon' onClick={() => sendMessage()} />
+                            <IoSend className='icon' />
                         </div>
                     </div>
                 </div>

@@ -73,11 +73,11 @@ const action = asynchandler(async (req, res) => {
         receiverRecord.friends.push(requester);
         requesterRecord.friends.push(receiver);
 
-        // await Promise.all([
-        //     receiverRecord.save(),
-        //     requesterRecord.save()
+        await Promise.all([
+            receiverRecord.save(),
+            requesterRecord.save()
 
-        // ])
+        ])
     }
 
     await notificationRecord.deleteOne();

@@ -51,20 +51,15 @@ const Chat = ({ chat }) => {
     }
 
     useEffect(() => {
-        console.log('noooooooooooooooo');
         if (chat.isSelected) {
-            console.log('here');
             loadMessages();
         }
     }, [chat.isSelected])
 
     useEffect(() => {
         if ((reachedTopChat) && (selectedChatData.chatId === chat.chatId) && !messagesLoading && hasMore) {
-
             loadMessages();
-            console.log('top');
         }
-
     }, [reachedTopChat])
 
     const isArabic = (text) => {
