@@ -2,13 +2,17 @@ import React, { useState } from 'react'
 import api from '../../api/api.jsx'
 import { notificationRoute } from '../../routes/routes.js'
 import LoadingDots from '../../components/LoadingDots/LoadingDots'
+import { useSocket } from '../../context/SocketContext.jsx'
 
 import './FriendRequest.css'
 const FriendRequest = ({ data, setNotifications }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const { emitEvent } = useSocket();
 
     const handleFriendRequest = async (action) => {
         try {
+            console.log(data);
+
             setIsLoading(true)
             const response = await api.post(notificationRoute.action,
                 {
@@ -20,13 +24,23 @@ const FriendRequest = ({ data, setNotifications }) => {
             setNotifications((prev) => {
                 return prev.filter((req) => req._id != data._id)
             })
-            
+
+            const requestState = (action === 'confirm') ? 'confermed' : 'refused';
+
+            const notificationData = {
+                senderId: data.receiver._id,
+                receriverId: data.requester._id,
+                notification: `${data.receiver.displayedName} has ${requestState} your request`,
+                type: 'friend_response'
+            }
+            emitEvent('notification', notificationData, (response) => {
+                console.log(response.message);
+            })
+
         } catch (error) {
             console.log(error);
-
         }
         finally {
-            console.log('hererereeee in finlay');
             setIsLoading(false)
         }
     }

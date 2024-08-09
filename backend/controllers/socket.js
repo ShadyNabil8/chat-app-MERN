@@ -34,7 +34,7 @@ const onSocketNotification = async (io, notificationData, callback) => {
         const receiverSocket = sockets.get(receriverId);
 
         if (receiverSocket) {
-            io.timeout(1000).to(receiverSocket).emit('notification', notification, (error, responses) => {
+            io.timeout(1000).to(receiverSocket).emit('notification', { notification, type }, (error, responses) => {
                 if (error) {
                     console.log("Error in sending notification to the receiver:", error);
                 }
@@ -89,7 +89,7 @@ const onSocketPrivateMessage = (io, payload, callback) => {
             // Socket.io docs says that I must use io instade of socket here!!!
             io.timeout(1000).to(receiverSocket).emit('private-message', payload, (error, responses) => {
                 if (error) {
-                    console.log("Error in sending message:", error);
+                    console.log("Error in sending notification:", error);
                 }
                 else {
                     if (responses.length) {
@@ -118,5 +118,5 @@ module.exports = {
     onSocketNotification,
     onSocketPrivateMessage,
     onSocketConnection,
-    onSocketDisconnection
+    onSocketDisconnection,
 }

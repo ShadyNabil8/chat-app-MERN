@@ -310,7 +310,6 @@ const search = asyncHandler(async (req, res) => {
             }
         }
     ]);
-    console.log(users);
 
     res.json(users)
 });

@@ -21,10 +21,12 @@ const Header = () => {
 
     const { setSelectedNav } = useGlobalState();
 
-    useSocketEvent('notification', (payload, callback) => {
-        setNotifications((prev) => prev + 1)
+    useSocketEvent('notification', ({ notification, type }, callback) => {
+        if (type !== 'friend_response') {
+            setNotifications((prev) => prev + 1)
+        }
         callback({ status: 'received' });
-        setHint(payload)
+        setHint(notification)
         setTimeout(() => {
             setHint('')
         }, 5000);

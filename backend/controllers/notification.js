@@ -15,7 +15,10 @@ const list = asynchandler(async (req, res) => {
         })
     }
 
-    const notifications = await notificationModel.find({ receiver: userId }).populate('requester', 'displayedName profilePicture')
+    const notifications = await notificationModel
+        .find({ receiver: userId })
+        .populate('requester', 'displayedName profilePicture')
+        .populate('receiver', 'displayedName profilePicture')
 
     return res.status(200).json({
         success: true,
@@ -70,11 +73,11 @@ const action = asynchandler(async (req, res) => {
         receiverRecord.friends.push(requester);
         requesterRecord.friends.push(receiver);
 
-        await Promise.all([
-            receiverRecord.save(),
-            requesterRecord.save()
+        // await Promise.all([
+        //     receiverRecord.save(),
+        //     requesterRecord.save()
 
-        ])
+        // ])
     }
 
     await notificationRecord.deleteOne();
@@ -99,8 +102,6 @@ const send = asynchandler(async (req, res) => {
         },
         requester: senderId
     })
-
-    console.log(notificationRecord);
 
     await notificationRecord.save();
 
