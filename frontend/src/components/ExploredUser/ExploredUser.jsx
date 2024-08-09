@@ -32,7 +32,7 @@ const ExploredUser = ({ data }) => {
       const notificationData = {
         senderId: authState.userData.userId,
         receriverId: data._id,
-        notification: 'Hay, I want to be your friend',
+        notification: `Hay, I am ${authState.userData.displayedName}. Can I be a friend?`,
         type: 'friend_request'
       }
       await api.post(notificationRoute.send, notificationData);
