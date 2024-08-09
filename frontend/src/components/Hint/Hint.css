@@ -9,11 +9,17 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: rgb(207, 113, 113);
+    background: #f12711;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f12711, #f5af19);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f12711, #f5af19);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     border-radius: 10px 10px 0px 10px;
     transition: transform 0.4s ease;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
 
-.hint-container.visible{
+.hint-container.visible {
     transform: translateX(-250px);
 }
