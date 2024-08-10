@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react'
+import { React, useEffect, useState, useRef } from 'react'
 import { IoIosNotifications } from "react-icons/io";
 import { VscSignOut } from "react-icons/vsc";
 import { useAuth } from '../../context/authContext';
@@ -21,12 +21,16 @@ const Header = () => {
 
     const { setSelectedNav } = useGlobalState();
 
+    const audioRef = useRef(null);
+
+
     useSocketEvent('notification', ({ notification, type }, callback) => {
         if (type !== 'friend_response') {
             setNotifications((prev) => prev + 1)
         }
         callback({ status: 'received' });
         setHint(notification)
+        playSound()
         setTimeout(() => {
             setHint('')
         }, 5000);
@@ -36,6 +40,12 @@ const Header = () => {
     const toggleOptionsBox = () => {
         setOptions((prev) => !prev)
     }
+
+    const playSound = () => {
+        if (audioRef.current) {
+            audioRef.current.play();
+        }
+    };
 
     return (
         <div className="nav-bar">
@@ -65,6 +75,7 @@ const Header = () => {
                     </div>
                 }
             </div>
+            <audio ref={audioRef} src="../../public/notification-sound.mp3" preload="auto" />
         </div>
     )
 }

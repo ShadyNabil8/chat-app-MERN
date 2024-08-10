@@ -15,7 +15,8 @@ const Chat = ({ chat }) => {
         setMessages,
         reachedTopChat,
         messagesLoading,
-        setMessagesLoading
+        setMessagesLoading,
+        setChats,
     } = useGlobalState();
 
     const loadMessages = async () => {
@@ -71,7 +72,20 @@ const Chat = ({ chat }) => {
         <div className='chat-container' onClick={() => {
             setSelectedChatData({ chatType: 'existed-chat', ...chat });
             chat.isSelected = true;
+            setChats((prev) => {
+                return prev.map((cur) => {
+                    return (cur.chatId === chat.chatId)
+                        ? {
+                            ...cur,
+                            pending: 0
+                        }
+                        : cur
+                })
+            })
         }}>
+            {
+                (chat.pending > 0) && <div className="alert-dot">{chat.pending}</div>
+            }
             <div className="image-container">
                 <img src={chat.profilePicture}></img>
             </div>

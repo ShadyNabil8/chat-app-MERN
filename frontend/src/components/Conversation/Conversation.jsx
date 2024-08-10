@@ -44,10 +44,17 @@ const Conversation = () => {
     const [displayedEmoji, setDisplayedEmoji] = useState({ index: 0, emoji: colorEmojiList[0], focus: false })
     const inputRef = useRef(null);
     const scrollRef = useRef(null);
+    const audioRef = useRef(null);
 
     const messageList = selectedChatData.chatId ? messages[selectedChatData.chatId] ? messages[selectedChatData.chatId] : [] : [];
     const curMessage = selectedChatData.chatId ? curMessageObj[selectedChatData.chatId] ? curMessageObj[selectedChatData.chatId] : '' : ''
 
+
+    const playSound = () => {
+        if (audioRef.current) {
+            audioRef.current.play();
+        }
+    };
 
     // This function adds a message to a its chat message container.
     const addMessage = (payload) => {
@@ -67,11 +74,16 @@ const Conversation = () => {
         })
     }
     // This function shoe last message on chat.
-    const updateChat = (payload) => {
+    const updateChat = (payload, pending) => {
         setChats((prev) => {
             return prev.map((chat) => {
                 return (chat.chatId === payload.chatId)
-                    ? { ...chat, lastMessage: payload.body, lastMessageDate: moment(payload.sentAt).format('LT') }
+                    ? {
+                        ...chat,
+                        lastMessage: payload.body,
+                        lastMessageDate: moment(payload.sentAt).format('LT'),
+                        pending: pending
+                    }
                     : chat
             })
         })
@@ -89,17 +101,23 @@ const Conversation = () => {
                 lastMessage: payload.body,
                 lastMessageDate: moment(payload.lastMessageDate).format('LT'),
                 isSelected: true,
+                pending: 1
             }
             setChats((prev) => [...prev, newChat])
         }
         else {
-            updateChat(payload);
+            const pending = (selectedChatData.chatId === payload.chatId)
+                ? 0
+                : chats.find((chat) => chat.chatId === payload.chatId).pending + 1
+            console.log(pending);
+            updateChat(payload, pending);
             payload.myMessage = false;
             if (existedChat.isSelected) {
                 addMessage(payload);
             }
         }
         callback({ status: 'received' });
+        playSound()
     })
 
     const isArabic = (text) => {
@@ -162,7 +180,7 @@ const Conversation = () => {
                         myMessage: true,
                     });
                 }
-                updateChat(payload);
+                updateChat(payload, 0);
             });
             setCurMessageObj((prev) => {
                 return {
@@ -218,7 +236,8 @@ const Conversation = () => {
                         profilePicture: receiverRecord.profilePicture,
                         lastMessage: lastMessageRecord.body,
                         lastMessageDate: moment(lastMessageRecord.sentAt).format('LT'),
-                        isSelected: true
+                        isSelected: true,
+                        pending: 0
                     }
                     setChats((prev) => [newChat, ...prev])
 
@@ -327,6 +346,7 @@ const Conversation = () => {
                 </div>
 
             }
+            <audio ref={audioRef} src="../../public/msg-sound.mp3" preload="auto" />
         </div>
     )
 }
