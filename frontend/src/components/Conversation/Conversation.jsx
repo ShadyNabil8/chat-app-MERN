@@ -101,7 +101,8 @@ const Conversation = () => {
                 lastMessage: payload.body,
                 lastMessageDate: moment(payload.lastMessageDate).format('LT'),
                 isSelected: true,
-                pending: 1
+                pending: 1,
+                fetchMgs: true
             }
             setChats((prev) => [...prev, newChat])
         }
@@ -165,7 +166,7 @@ const Conversation = () => {
         }, 0);
     };
 
-    const sendMessage = (payload, add) => {
+    const sendMessage = (payload) => {
         if (curMessage) {
             emitEvent('private-message', payload, ({ status }) => {
                 if (status === 'received') {
@@ -174,12 +175,12 @@ const Conversation = () => {
                 else if (status === 'not-received') {
                     payload['received'] = false;
                 }
-                if (add) {
-                    addMessage({
-                        ...payload,
-                        myMessage: true,
-                    });
-                }
+
+                addMessage({
+                    ...payload,
+                    myMessage: true,
+                });
+
                 updateChat(payload, 0);
             });
             setCurMessageObj((prev) => {
@@ -204,7 +205,7 @@ const Conversation = () => {
                     sentAt: new Date(),
                     newChat: false
                 }
-                sendMessage(payload, true);
+                sendMessage(payload);
             }
             else if (selectedChatData.chatType === 'new-chat') {
                 try {
@@ -226,7 +227,7 @@ const Conversation = () => {
                         newChat: true
                     }
 
-                    sendMessage(payload, false);
+                    sendMessage(payload);
 
                     const newChat = {
                         chatType: 'existed-chat',
@@ -237,7 +238,8 @@ const Conversation = () => {
                         lastMessage: lastMessageRecord.body,
                         lastMessageDate: moment(lastMessageRecord.sentAt).format('LT'),
                         isSelected: true,
-                        pending: 0
+                        pending: 0,
+                        fetchMgs: false
                     }
                     setChats((prev) => [newChat, ...prev])
 

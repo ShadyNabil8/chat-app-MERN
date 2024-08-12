@@ -25,9 +25,9 @@ const Header = () => {
 
 
     useSocketEvent('notification', ({ notification, type }, callback) => {
-        if (type !== 'friend_response') {
-            setNotifications((prev) => prev + 1)
-        }
+        // if (type !== 'friend_response') {
+        // }
+        setNotifications((prev) => prev + 1)
         callback({ status: 'received' });
         setHint(notification)
         playSound()

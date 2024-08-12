@@ -39,7 +39,8 @@ const Chats = () => {
                         lastMessage: chat.lastMessage.body,
                         lastMessageDate: moment(chat.lastMessage.sentAt).format(dateFormat),
                         isSelected: false,
-                        pending: 0
+                        pending: 0,
+                        fetchMgs: true
                     }
                 })
 

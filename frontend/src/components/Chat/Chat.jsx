@@ -52,7 +52,7 @@ const Chat = ({ chat }) => {
     }
 
     useEffect(() => {
-        if (chat.isSelected) {
+        if (chat.isSelected && chat.fetchMgs) {
             loadMessages();
         }
     }, [chat.isSelected])
